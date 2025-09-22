@@ -68,7 +68,7 @@ export default function Labs() {
         <div className="flex flex-wrap gap-2">
           <Link href="/" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">Home</Link>
           <span className="text-gray-400">•</span>
-          <Link href="" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">Kambaz</Link>
+          <Link href="/dashboard" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">Kambaz</Link>
         </div>
       </div>
     </div>
