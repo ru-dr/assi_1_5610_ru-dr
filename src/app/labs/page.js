@@ -5,20 +5,17 @@ export default function Labs() {
     {
       id: 'lab1',
       title: 'Lab 1 - HTML Elements Practice',
-      description: 'Complete HTML elements practice including forms, tables, lists, images, and more',
-      status: 'active'
+      description: 'Complete HTML elements practice including forms, tables, lists, images, and more'
     },
     {
       id: 'lab2',
-      title: 'Lab 2 - Coming Soon',
-      description: 'This lab is currently under development',
-      status: 'coming-soon'
+      title: 'Lab 2 - CSS Styling Fundamentals',
+      description: 'Learn CSS selectors, properties, flexbox, grid layouts, and responsive design techniques'
     },
     {
       id: 'lab3',
-      title: 'Lab 3 - Coming Soon', 
-      description: 'This lab is currently under development',
-      status: 'coming-soon'
+      title: 'Lab 3 - JavaScript Basics', 
+      description: 'Practice JavaScript fundamentals including variables, functions, DOM manipulation, and events'
     }
   ];
 
@@ -31,35 +28,14 @@ export default function Labs() {
       
       <div className="grid gap-6">
         {labs.map((lab) => (
-          <div key={lab.id} className="border border-gray-300 dark:border-gray-600 rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">{lab.title}</h2>
-              <span className={`px-3 py-1 rounded-full text-sm ${
-                lab.status === 'active' 
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                  : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-              }`}>
-                {lab.status === 'active' ? 'Available' : 'Coming Soon'}
-              </span>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">{lab.description}</p>
-            
-            {lab.status === 'active' ? (
-              <Link 
-                href={`/labs/${lab.id}`}
-                className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors"
-              >
-                View Lab
-              </Link>
-            ) : (
-              <Link 
-                href={`/labs/${lab.id}`}
-                className="inline-block bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded transition-colors"
-              >
-                Preview
-              </Link>
-            )}
-          </div>
+          <Link 
+            key={lab.id}
+            href={`/labs/${lab.id}`}
+            className="block border border-gray-300 dark:border-gray-600 rounded-lg p-6 hover:shadow-lg hover:border-blue-400 dark:hover:border-blue-500 transition-all cursor-pointer"
+          >
+            <h2 className="text-xl font-semibold mb-3">{lab.title}</h2>
+            <p className="text-gray-600 dark:text-gray-400">{lab.description}</p>
+          </Link>
         ))}
       </div>
       
