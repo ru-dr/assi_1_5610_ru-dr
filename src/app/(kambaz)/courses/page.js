@@ -80,17 +80,38 @@ export default function Courses() {
           </button>
         </li>
         <li>
-          <button className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <button 
+            onClick={() => {setCourseView('piazza'); setSelectedAssignment(null);}}
+            className={`block w-full text-left p-2 rounded ${
+              courseView === 'piazza' 
+                ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100' 
+                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+            }`}
+          >
             💬 Piazza
           </button>
         </li>
         <li>
-          <button className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <button 
+            onClick={() => {setCourseView('zoom'); setSelectedAssignment(null);}}
+            className={`block w-full text-left p-2 rounded ${
+              courseView === 'zoom' 
+                ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100' 
+                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+            }`}
+          >
             📹 Zoom
           </button>
         </li>
         <li>
-          <button className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <button 
+            onClick={() => {setCourseView('quizzes'); setSelectedAssignment(null);}}
+            className={`block w-full text-left p-2 rounded ${
+              courseView === 'quizzes' 
+                ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100' 
+                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+            }`}
+          >
             📝 Quizzes
           </button>
         </li>
@@ -107,7 +128,14 @@ export default function Courses() {
           </button>
         </li>
         <li>
-          <button className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <button 
+            onClick={() => {setCourseView('grades'); setSelectedAssignment(null);}}
+            className={`block w-full text-left p-2 rounded ${
+              courseView === 'grades' 
+                ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100' 
+                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+            }`}
+          >
             📊 Grades
           </button>
         </li>
@@ -182,6 +210,190 @@ export default function Courses() {
             </ul>
           </div>
         </div>
+      </div>
+    </div>
+  );
+
+  const renderPiazza = () => (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Piazza - Discussion Forum</h2>
+      
+      <div className="bg-orange-100 dark:bg-orange-900 p-4 rounded border border-orange-300 dark:border-orange-700 mb-6">
+        <p className="text-sm text-orange-800 dark:text-orange-200">
+          📢 Welcome to the CS5610 discussion forum! Ask questions and collaborate with your classmates.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div className="bg-white dark:bg-[#171717] p-4 rounded border border-gray-300 dark:border-gray-600">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">📌 Assignment 1 Questions</h3>
+          <p className="text-gray-700 dark:text-gray-300 text-sm mb-2">Posted by Student A - 2 hours ago</p>
+          <p className="text-gray-700 dark:text-gray-300">Can someone help clarify the HTML requirements for A1?</p>
+          <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">3 replies • 12 views</div>
+        </div>
+        
+        <div className="bg-white dark:bg-[#171717] p-4 rounded border border-gray-300 dark:border-gray-600">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">💡 CSS Best Practices</h3>
+          <p className="text-gray-700 dark:text-gray-300 text-sm mb-2">Posted by TA - 1 day ago</p>
+          <p className="text-gray-700 dark:text-gray-300">Here are some CSS best practices for your upcoming assignments...</p>
+          <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">8 replies • 45 views</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderZoom = () => (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Zoom - Virtual Classroom</h2>
+      
+      <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded border border-blue-300 dark:border-blue-700 mb-6">
+        <p className="text-sm text-blue-800 dark:text-blue-200">
+          🎥 Join our virtual classroom for lectures, office hours, and study sessions.
+        </p>
+      </div>
+
+      <div className="space-y-6">
+        <div className="bg-white dark:bg-[#171717] p-4 rounded border border-gray-300 dark:border-gray-600">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">📅 Upcoming Sessions</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
+              <div>
+                <p className="font-medium text-gray-900 dark:text-gray-100">Weekly Lecture</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Monday 6:00 PM - 8:45 PM</p>
+              </div>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Join</button>
+            </div>
+            <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
+              <div>
+                <p className="font-medium text-gray-900 dark:text-gray-100">Office Hours</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Wednesday 2:00 PM - 4:00 PM</p>
+              </div>
+              <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Join</button>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#171717] p-4 rounded border border-gray-300 dark:border-gray-600">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">📼 Recorded Sessions</h3>
+          <div className="space-y-2">
+            <div className="p-2 border-l-4 border-blue-400">
+              <p className="text-gray-900 dark:text-gray-100">Week 1 - Course Introduction</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Duration: 2h 45m</p>
+            </div>
+            <div className="p-2 border-l-4 border-blue-400">
+              <p className="text-gray-900 dark:text-gray-100">Week 2 - HTML Fundamentals</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Duration: 2h 30m</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderQuizzes = () => (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Quizzes</h2>
+      
+      <div className="mb-6">
+        <button className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600">+ Quiz</button>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Import</button>
+      </div>
+
+      <div className="space-y-4">
+        <div className="bg-white dark:bg-[#171717] p-4 rounded border border-gray-300 dark:border-gray-600">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">📝 Q1 - HTML Basics</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Due: September 20, 2025 at 11:59 PM</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Points: 20 | Questions: 10 | Time Limit: 30 minutes</p>
+              <p className="text-sm text-green-600 dark:text-green-400 mt-1">✅ Available</p>
+            </div>
+            <div className="space-x-2">
+              <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm">Edit</button>
+              <button className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm">Delete</button>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#171717] p-4 rounded border border-gray-300 dark:border-gray-600">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">📝 Q2 - CSS Fundamentals</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Due: September 27, 2025 at 11:59 PM</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Points: 25 | Questions: 12 | Time Limit: 45 minutes</p>
+              <p className="text-sm text-orange-600 dark:text-orange-400 mt-1">⏳ Not yet available</p>
+            </div>
+            <div className="space-x-2">
+              <button className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm">Edit</button>
+              <button className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderGrades = () => (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Grades</h2>
+      
+      <div className="mb-6">
+        <div className="bg-gray-100 dark:bg-[#171717] p-4 rounded border border-gray-300 dark:border-gray-600">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Course Summary</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <p className="text-gray-600 dark:text-gray-400">Current Grade</p>
+              <p className="text-xl font-bold text-green-600 dark:text-green-400">92.5%</p>
+            </div>
+            <div>
+              <p className="text-gray-600 dark:text-gray-400">Total Points</p>
+              <p className="text-xl font-bold text-gray-900 dark:text-gray-100">185/200</p>
+            </div>
+            <div>
+              <p className="text-gray-600 dark:text-gray-400">Letter Grade</p>
+              <p className="text-xl font-bold text-blue-600 dark:text-blue-400">A-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#171717]">
+          <thead className="bg-gray-100 dark:bg-gray-800">
+            <tr>
+              <th className="p-3 text-left border-b border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">Assignment</th>
+              <th className="p-3 text-left border-b border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">Due Date</th>
+              <th className="p-3 text-left border-b border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">Points</th>
+              <th className="p-3 text-left border-b border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100">Grade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <td className="p-3 text-gray-900 dark:text-gray-100">A1 - ENV + HTML</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">Sep 23, 2025</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">100</td>
+              <td className="p-3 text-green-600 dark:text-green-400 font-semibold">95/100</td>
+            </tr>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <td className="p-3 text-gray-900 dark:text-gray-100">Q1 - HTML Basics</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">Sep 20, 2025</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">20</td>
+              <td className="p-3 text-green-600 dark:text-green-400 font-semibold">18/20</td>
+            </tr>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <td className="p-3 text-gray-900 dark:text-gray-100">A2 - CSS + BOOTSTRAP</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">Sep 30, 2025</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">100</td>
+              <td className="p-3 text-gray-500 dark:text-gray-400">-</td>
+            </tr>
+            <tr className="border-b border-gray-200 dark:border-gray-700">
+              <td className="p-3 text-gray-900 dark:text-gray-100">Q2 - CSS Fundamentals</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">Sep 27, 2025</td>
+              <td className="p-3 text-gray-600 dark:text-gray-400">25</td>
+              <td className="p-3 text-gray-500 dark:text-gray-400">-</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -406,6 +618,10 @@ export default function Courses() {
               {courseView === 'home' && renderHome()}
               {courseView === 'modules' && renderModules()}
               {courseView === 'assignments' && renderAssignments()}
+              {courseView === 'piazza' && renderPiazza()}
+              {courseView === 'zoom' && renderZoom()}
+              {courseView === 'quizzes' && renderQuizzes()}
+              {courseView === 'grades' && renderGrades()}
             </>
           )}
         </div>
