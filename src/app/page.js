@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -7,7 +7,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100">
           CS5610 Web Development Assignment 1
         </h1>
-        
+
         <div className="bg-white dark:bg-[#171717] p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 mb-8 max-w-md mx-auto">
           <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
             RUDRA JAYESHKUMAR PATEL
@@ -15,7 +15,10 @@ export default function Home() {
           <p className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
             NUID: 002593056
           </p>
-          <Link href="https://rudr.me/" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline">
+          <Link
+            href="https://rudr.me/"
+            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline"
+          >
             rudr.me
           </Link>
         </div>
@@ -28,7 +31,8 @@ export default function Home() {
             <div className="text-3xl mb-3">🎓</div>
             <h2 className="text-xl font-semibold mb-2">kambaz</h2>
             <p className="text-blue-100">
-              Learning Management System with Account, Dashboard, Courses, and more
+              Learning Management System with Account, Dashboard, Courses, and
+              more
             </p>
           </Link>
 
@@ -45,7 +49,9 @@ export default function Home() {
         </div>
 
         <div className="mt-8 text-sm text-gray-500 dark:text-gray-400">
-          <p>Assignment covers all required HTML elements and React components</p>
+          <p>
+            Assignment covers all required HTML elements and React components
+          </p>
           <p>Built with Next.js 15, React 19, and Tailwind CSS</p>
         </div>
       </div>

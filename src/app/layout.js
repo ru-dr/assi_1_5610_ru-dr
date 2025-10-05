@@ -13,7 +13,8 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "CS5610 Assignment 1 - Kambaz",
-  description: "Web Development Assignment covering HTML elements and React components",
+  description:
+    "Web Development Assignment covering HTML elements and React components",
 };
 
 export default function RootLayout({ children }) {

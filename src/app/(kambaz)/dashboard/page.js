@@ -1,131 +1,100 @@
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+
+import Link from "next/link";
+import { MoreVertical } from "lucide-react";
+import { coursesData } from "../courses/coursesData";
 
 export default function Dashboard() {
-  const courses = [
-    { 
-      id: 1, 
-      title: "CS5610 Web Development", 
-      image: "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29kZXxlbnwwfHwwfHx8MA%3D%3D",
-      description: "Full-stack web development using modern technologies"
-    },
-    { 
-      id: 2, 
-      title: "CS5800 Algorithms", 
-      image: "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29kZXxlbnwwfHwwfHx8MA%3D%3D",
-      description: "Data structures and algorithmic problem solving"
-    },
-    { 
-      id: 3, 
-      title: "CS6750 Human Computer Interaction", 
-      image: "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29kZXxlbnwwfHwwfHx8MA%3D%3D",
-      description: "Design and evaluation of user interfaces"
-    },
-    { 
-      id: 4, 
-      title: "CS5500 Software Engineering", 
-      image: "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29kZXxlbnwwfHwwfHx8MA%3D%3D",
-      description: "Software development methodologies and practices"
-    },
-  ];
-
-  const renderNavigation = () => (
-    <nav className="w-64 bg-gray-100 dark:bg-[#0a0a0a] text-gray-900 dark:text-white p-4 border-r border-gray-300 dark:border-gray-600">
-      <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Kambaz</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://northeastern.edu" target="_blank" rel="noopener noreferrer" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🏫 NEU
-            </a>
-          </li>
-          <li>
-            <Link href="/account" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              👤 Account
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard" className="block bg-gray-300 dark:bg-gray-700 p-2 rounded">
-              📊 Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link href="/courses" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📚 Courses
-            </Link>
-          </li>
-          <li>
-            <Link href="/calendar" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📅 Calendar
-            </Link>
-          </li>
-          <li>
-            <Link href="/inbox" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📧 Inbox
-            </Link>
-          </li>
-          <li>
-            <Link href="/labs" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🧪 Labs
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
+  const courses = coursesData;
 
   return (
-    <div className="flex min-h-screen bg-white dark:bg-[#0a0a0a]">
-      {renderNavigation()}
-      <div className="flex-1 p-6 bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">Dashboard</h1>
-        <h2 className="text-xl text-gray-600 dark:text-gray-400 mb-6">Published Courses</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course) => (
-            <div key={course.id} className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-white dark:bg-[#0a0a0a] shadow-lg hover:shadow-xl transition-shadow">
-              <Image 
-                src={course.image} 
-                alt={course.title} 
-                width={300} 
-                height={200} 
-                className="w-full h-40 object-cover" 
-              />
-              <div className="p-4">
-                <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">{course.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{course.description}</p>
-                <Link 
-                  href={`/courses/${course.id}`}
-                  className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-                >
-                  Go to Course
-                </Link>
-              </div>
-            </div>
-          ))}
+    <div className="bg-gray-100 min-h-screen">
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-normal text-gray-800">Dashboard</h1>
+          <button className="p-2 hover:bg-gray-200 rounded">
+            <MoreVertical className="w-6 h-6 text-gray-600" />
+          </button>
         </div>
-
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Recent Activity</h3>
-          <div className="bg-white dark:bg-[#0a0a0a] border border-gray-300 dark:border-gray-600 rounded-lg p-4">
-            <ul className="space-y-3">
-              <li className="flex items-center space-x-3">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span className="text-gray-700 dark:text-gray-300">Assignment A1 submitted for CS5610 Web Development</span>
-                <span className="text-sm text-gray-500 dark:text-gray-500">2 hours ago</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                <span className="text-gray-700 dark:text-gray-300">New announcement posted in CS5800 Algorithms</span>
-                <span className="text-sm text-gray-500 dark:text-gray-500">1 day ago</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                <span className="text-gray-700 dark:text-gray-300">Quiz Q2 available for CS6750 HCI</span>
-                <span className="text-sm text-gray-500 dark:text-gray-500">3 days ago</span>
-              </li>
-            </ul>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {courses.map((course) => (
+            <Link
+              key={course.id}
+              href={`/courses/${course.id}`}
+              className="bg-white rounded overflow-hidden hover:shadow-lg transition-shadow"
+            >
+              <div
+                className={`h-32 ${course.color || "bg-gray-200"} relative`}
+                style={
+                  course.image
+                    ? {
+                        backgroundImage: `url(${course.image})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }
+                    : {}
+                }
+              >
+                <button className="absolute top-2 right-2 p-1 text-white hover:bg-black/20 rounded">
+                  <MoreVertical className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-4">
+                <h3 className="text-blue-600 font-medium text-sm mb-1 hover:underline">
+                  {course.code}
+                </h3>
+                <p className="text-xs text-gray-600 mb-1">{course.fullName}</p>
+                <p className="text-xs text-gray-500">{course.term}</p>
+              </div>
+              <div className="border-t border-gray-200 px-4 py-2 flex justify-end space-x-3 bg-white">
+                <button className="text-gray-400 hover:text-gray-600 p-1">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
+                  </svg>
+                </button>
+                <button className="text-gray-400 hover:text-gray-600 p-1">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                </button>
+                <button className="text-gray-400 hover:text-gray-600 p-1">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

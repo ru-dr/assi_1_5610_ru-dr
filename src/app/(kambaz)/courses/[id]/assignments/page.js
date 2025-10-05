@@ -1,248 +1,243 @@
-import Link from 'next/link';
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { getCourseById } from "../../coursesData";
+import {
+  Menu,
+  X,
+  Home,
+  FileText,
+  Users,
+  MessageSquare,
+  BarChart3,
+  Video,
+  HelpCircle,
+  Search,
+  Plus,
+  GripVertical,
+  Ellipsis,
+} from "lucide-react";
 
-export default function CourseAssignments({ params }) {
+export default function Assignments() {
+  const params = useParams();
   const courseId = params.id;
-  
-  const coursesData = {
-    1: {
-      id: 1,
-      title: "CS5610 Web Development",
-      description: "Full-stack web development using modern technologies",
-      instructor: "Prof. Johnson"
-    },
-    2: {
-      id: 2,
-      title: "CS5800 Algorithms", 
-      description: "Data structures and algorithmic problem solving",
-      instructor: "Prof. Smith"
-    },
-    3: {
-      id: 3,
-      title: "CS6750 Human Computer Interaction",
-      description: "Design and evaluation of user interfaces",
-      instructor: "Prof. Brown"
-    },
-    4: {
-      id: 4,
-      title: "CS5500 Software Engineering",
-      description: "Software development methodologies and practices",
-      instructor: "Prof. Davis"
-    }
-  };
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const course = coursesData[parseInt(courseId)];
+  // Get course data based on ID
+  const course = getCourseById(courseId);
 
-  const renderNavigation = () => (
-    <nav className="w-64 bg-gray-100 dark:bg-[#0a0a0a] text-gray-900 dark:text-white p-4 border-r border-gray-300 dark:border-gray-600">
-      <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Kambaz</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://northeastern.edu" target="_blank" rel="noopener noreferrer" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🏫 NEU
-            </a>
-          </li>
-          <li>
-            <Link href="/account" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              👤 Account
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📊 Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link href="/courses" className="block bg-gray-300 dark:bg-gray-700 p-2 rounded">
-              📚 Courses
-            </Link>
-          </li>
-          <li>
-            <Link href="/calendar" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📅 Calendar
-            </Link>
-          </li>
-          <li>
-            <Link href="/inbox" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📧 Inbox
-            </Link>
-          </li>
-          <li>
-            <Link href="/labs" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🧪 Labs
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
-
-  const renderCourseNav = () => (
-    <div className="bg-gray-100 dark:bg-[#0a0a0a] p-4 border-r border-gray-300 dark:border-gray-600 w-48">
-      <h3 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">
-        {course ? course.title : 'Loading...'}
-      </h3>
-      <ul className="space-y-2">
-        <li>
-          <Link 
-            href={`/courses/${courseId}`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            🏠 Home
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href={`/courses/${courseId}/modules`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📚 Modules
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href={`/courses/${courseId}/piazza`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            💬 Piazza
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href={`/courses/${courseId}/zoom`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📹 Zoom
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href={`/courses/${courseId}/quizzes`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📝 Quizzes
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href={`/courses/${courseId}/assignments`}
-            className="block w-full text-left p-2 rounded bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100"
-          >
-            📋 Assignments
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href={`/courses/${courseId}/grades`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📊 Grades
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
-
-  const renderAssignments = () => (
-    <div className="p-6">
-      <div className="mb-6">
-        <input 
-          type="text" 
-          placeholder="Search for Assignments" 
-          className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full max-w-md bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-        />
-      </div>
-      
-      <div className="mb-4 space-x-2">
-        <button className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">+ Group</button>
-        <button className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">+ Assignment</button>
-        <select className="border border-gray-300 dark:border-gray-600 px-2 py-1 rounded text-sm bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100">
-          <option>Publish All</option>
-          <option>Unpublish All</option>
-        </select>
-      </div>
-
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold mb-3 text-red-600 dark:text-red-400">📚 ASSIGNMENTS</h3>
-          <ul className="ml-4 space-y-2">
-            <li>
-              <Link 
-                href={`/courses/${courseId}/assignments/a1`}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-              >
-                Assignment 1
-              </Link>
-              <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">Not available until Sep 18 at 12:00am</span>
-            </li>
-            <li>
-              <Link 
-                href={`/courses/${courseId}/assignments/a2`}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-              >
-                Assignment 2
-              </Link>
-              <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">Due Sep 23 at 11:59pm</span>
-            </li>
-            <li>
-              <Link 
-                href={`/courses/${courseId}/assignments/a3`}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-              >
-                Assignment 3
-              </Link>
-              <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">Due Sep 30 at 11:59pm</span>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-3 text-red-600 dark:text-red-400">📝 QUIZZES</h3>
-          <ul className="ml-4 space-y-2 text-gray-700 dark:text-gray-300">
-            <li>Quiz 1 <span className="text-gray-500 dark:text-gray-400 text-sm">Due Sep 20 at 11:59pm</span></li>
-            <li>Quiz 2 <span className="text-gray-500 dark:text-gray-400 text-sm">Due Sep 27 at 11:59pm</span></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-3 text-red-600 dark:text-red-400">🎯 EXAMS</h3>
-          <ul className="ml-4 space-y-2 text-gray-700 dark:text-gray-300">
-            <li>Midterm Exam <span className="text-gray-500 dark:text-gray-400 text-sm">Due Oct 15 at 11:59pm</span></li>
-            <li>Final Exam <span className="text-gray-500 dark:text-gray-400 text-sm">Due Dec 10 at 11:59pm</span></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold mb-3 text-red-600 dark:text-red-400">📁 PROJECT</h3>
-          <ul className="ml-4 space-y-2 text-gray-700 dark:text-gray-300">
-            <li>Final Project <span className="text-gray-500 dark:text-gray-400 text-sm">Due Dec 15 at 11:59pm</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-
+  // Fallback if course not found
   if (!course) {
     return (
-      <div className="flex min-h-screen bg-white dark:bg-[#0a0a0a] items-center justify-center">
+      <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Course Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">The course you&apos;re looking for doesn&apos;t exist.</p>
-          <Link href="/courses" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Back to Courses
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Course Not Found
+          </h1>
+          <Link href="/dashboard" className="text-red-600 hover:underline">
+            Return to Dashboard
           </Link>
         </div>
       </div>
     );
   }
 
+  const courseNav = [
+    { name: "Home", icon: Home, href: `/courses/${courseId}` },
+    { name: "Modules", icon: FileText, href: `/courses/${courseId}/modules` },
+    {
+      name: "Piazza",
+      icon: MessageSquare,
+      href: `/courses/${courseId}/piazza`,
+    },
+    { name: "Zoom Meetings", icon: Video, href: `/courses/${courseId}/zoom` },
+    {
+      name: "Assignments",
+      icon: FileText,
+      href: `/courses/${courseId}/assignments`,
+      active: true,
+    },
+    { name: "Quizzes", icon: HelpCircle, href: `/courses/${courseId}/quizzes` },
+    { name: "Grades", icon: BarChart3, href: `/courses/${courseId}/grades` },
+    { name: "People", icon: Users, href: `/courses/${courseId}/people` },
+  ];
+
+  const assignments = [
+    { id: "A2", title: "A2", dueDate: "Oct 6 at 11:59pm", points: 375 },
+    {
+      id: "Q2",
+      title: "Q2",
+      availableFrom: "Oct 6 at 11:59pm",
+      dueDate: "Oct 6 at 11:59pm",
+      points: 22,
+    },
+    {
+      id: "Q3",
+      title: "Q3",
+      notAvailableUntil: "Oct 6 at 12am",
+      dueDate: "Oct 13 at 11:59pm",
+      points: 32,
+    },
+    { id: "A3", title: "A3", dueDate: "Oct 20 at 11:59pm", points: 198 },
+    {
+      id: "Q4",
+      title: "Q4",
+      notAvailableUntil: "Oct 13 at 12am",
+      dueDate: "Oct 20 at 11:59pm",
+      points: 17,
+    },
+    {
+      id: "Q5",
+      title: "Q5",
+      notAvailableUntil: "Oct 20 at 12am",
+      dueDate: "Oct 27 at 11:59pm",
+      points: 31,
+    },
+    { id: "A4", title: "A4", dueDate: "Nov 3 at 11:59pm", points: 126 },
+    {
+      id: "X1",
+      title: "X1",
+      notAvailableUntil: "Oct 27 at 12am",
+      dueDate: "Nov 3 at 11:59pm",
+      points: 100,
+    },
+    {
+      id: "Q6",
+      title: "Q6",
+      notAvailableUntil: "Nov 3 at 12am",
+      dueDate: "Nov 10 at 11:59pm",
+      points: 18,
+    },
+    { id: "A5", title: "A5", dueDate: "Nov 17 at 11:59pm", points: 228 },
+    {
+      id: "Q7",
+      title: "Q7",
+      notAvailableUntil: "Nov 10 at 12am",
+      dueDate: "Nov 17 at 11:59pm",
+      points: 20,
+    },
+  ];
+
   return (
-    <div className="flex min-h-screen bg-white dark:bg-[#0a0a0a]">
-      {renderNavigation()}
-      <div className="flex flex-1 bg-white dark:bg-[#0a0a0a]">
-        {renderCourseNav()}
-        <div className="flex-1 text-gray-900 dark:text-gray-100">
-          {renderAssignments()}
+    <div className="flex h-screen bg-gray-50">
+      <div
+        className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
+          sidebarOpen ? "left-[100px]" : "left-[-256px]"
+        }`}
+      >
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+          <h2 className="font-semibold text-sm text-gray-900">
+            {course.fullName}
+          </h2>
+          <button onClick={() => setSidebarOpen(false)}>
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+        <nav className="p-2">
+          {courseNav.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center space-x-3 px-3 py-2 rounded ${
+                  item.active
+                    ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-sm">{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="bg-white border-b border-gray-300 px-4 py-3 flex items-center">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 hover:bg-gray-100 rounded mr-3"
+          >
+            <Menu className="w-5 h-5 text-gray-700" />
+          </button>
+          <div>
+            <h1 className="text-red-600 font-medium">{course.fullName}</h1>
+            <p className="text-sm text-gray-600">Assignments</p>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-auto p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="relative w-64">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex space-x-2">
+              <button className="px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700 rounded flex items-center">
+                <Plus className="w-4 h-4 mr-1" />
+                SHOW BY DATE
+              </button>
+              <button className="px-4 py-2 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded">
+                SHOW BY TYPE
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white border border-gray-300">
+            <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300">
+              <h2 className="font-semibold text-gray-800">
+                ▼ Upcoming Assignments
+              </h2>
+            </div>
+            <div>
+              {assignments.map((assignment) => (
+                <div
+                  key={assignment.id}
+                  className="flex items-center border-b border-gray-200 hover:bg-gray-50"
+                >
+                  <div className="flex items-center space-x-3 p-4 flex-1 border-l-4 border-green-600">
+                    <GripVertical className="w-4 h-4 text-gray-400" />
+                    <FileText className="w-5 h-5 text-gray-600" />
+                    <div className="flex-1">
+                      <Link
+                        href={`/courses/${courseId}/assignments/${assignment.id}`}
+                        className="text-red-600 hover:underline font-medium"
+                      >
+                        {assignment.title}
+                      </Link>
+                      <div className="text-xs text-gray-600 mt-1">
+                        {assignment.availableFrom && (
+                          <span>
+                            Available until {assignment.availableFrom} |{" "}
+                          </span>
+                        )}
+                        {assignment.notAvailableUntil && (
+                          <span className="text-red-600">
+                            Not available until {assignment.notAvailableUntil}{" "}
+                            |{" "}
+                          </span>
+                        )}
+                        <span>
+                          Due {assignment.dueDate} | {assignment.points} pts
+                        </span>
+                      </div>
+                    </div>
+                    <Ellipsis className="w-5 h-5 text-gray-600 cursor-pointer" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

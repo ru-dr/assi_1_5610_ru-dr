@@ -1,176 +1,310 @@
-import Link from 'next/link';
+"use client";
+
+import { useState } from "react";
+import { Camera, Mail, Phone, MapPin, Calendar, Globe } from "lucide-react";
 
 export default function Profile() {
-  const renderNavigation = () => (
-    <nav className="w-64 bg-gray-100 dark:bg-[#0a0a0a] text-gray-900 dark:text-white p-4 border-r border-gray-300 dark:border-gray-600">
-      <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Kambaz</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://northeastern.edu" target="_blank" rel="noopener noreferrer" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🏫 NEU
-            </a>
-          </li>
-          <li>
-            <Link href="/account" className="block bg-gray-300 dark:bg-gray-700 p-2 rounded">
-              👤 Account
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📊 Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link href="/courses" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📚 Courses
-            </Link>
-          </li>
-          <li>
-            <Link href="/calendar" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📅 Calendar
-            </Link>
-          </li>
-          <li>
-            <Link href="/inbox" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📧 Inbox
-            </Link>
-          </li>
-          <li>
-            <Link href="/labs" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🧪 Labs
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "Rudra",
+    lastName: "Patel",
+    email: "patel.rudraja@northeastern.edu",
+    phone: "+1 (999) 999-999",
+    bio: "Computer Science graduate student at Northeastern University",
+    location: "Boston, MA",
+    birthday: "2004-07-26",
+    website: "https://rudr.me",
+    timezone: "America/New_York",
+  });
 
-  const renderAccountNav = () => (
-    <div className="bg-gray-100 dark:bg-[#0a0a0a] p-4 border-r border-gray-300 dark:border-gray-600 w-48">
-      <h3 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">Account</h3>
-      <ul className="space-y-2">
-        <li>
-          <Link 
-            href="/account/signin"
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            Signin
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href="/account/signup"
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            Signup
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href="/account/profile"
-            className="block w-full text-left p-2 rounded bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100"
-          >
-            Profile
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsEditing(false);
+  };
 
   return (
-    <div className="flex min-h-screen bg-white dark:bg-[#0a0a0a]">
-      {renderNavigation()}
-      <div className="flex flex-1 bg-white dark:bg-[#0a0a0a]">
-        {renderAccountNav()}
-        <div className="flex-1 p-4 bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100">
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Profile</h2>
-            <form className="space-y-4 max-w-md">
-              <div>
-                <label htmlFor="profileUsername" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Username:</label>
-                <input 
-                  type="text" 
-                  id="profileUsername" 
-                  name="username" 
-                  defaultValue="john_doe"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-                />
+    <div className="p-6 max-w-4xl">
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <h1 className="text-2xl font-semibold text-gray-900">Profile</h1>
+          {!isEditing ? (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            >
+              Edit Profile
+            </button>
+          ) : (
+            <div className="space-x-2">
+              <button
+                onClick={() => setIsEditing(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="p-6">
+          <div className="flex items-center space-x-6 mb-8">
+            <div className="relative">
+              <div className="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center text-4xl font-semibold text-blue-600">
+                {formData.firstName[0]}
+                {formData.lastName[0]}
               </div>
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">First Name:</label>
-                <input 
-                  type="text" 
-                  id="firstName" 
-                  name="firstName" 
-                  defaultValue="John"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-                />
-              </div>
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Last Name:</label>
-                <input 
-                  type="text" 
-                  id="lastName" 
-                  name="lastName" 
-                  defaultValue="Doe"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-                />
-              </div>
-              <div>
-                <label htmlFor="profilePassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password:</label>
-                <input 
-                  type="password" 
-                  id="profilePassword" 
-                  name="password" 
-                  defaultValue="password123"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-                />
-              </div>
-              <div>
-                <label htmlFor="profileDob" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Date of Birth:</label>
-                <input 
-                  type="date" 
-                  id="profileDob" 
-                  name="dob" 
-                  defaultValue="1990-01-15"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-                />
-              </div>
-              <div>
-                <label htmlFor="profileEmail" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email:</label>
-                <input 
-                  type="email" 
-                  id="profileEmail" 
-                  name="email" 
-                  defaultValue="john.doe@example.com"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-                />
-              </div>
-              <div>
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Role:</label>
-                <select 
-                  id="role" 
-                  name="role" 
-                  defaultValue="student"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-                >
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="admin">Admin</option>
-                  <option value="ta">Teaching Assistant</option>
-                </select>
-              </div>
-              <div>
-                <Link 
-                  href="/account/signin"
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 inline-block"
-                >
-                  Signout
-                </Link>
-              </div>
-            </form>
+              {isEditing && (
+                <button className="absolute bottom-0 right-0 bg-red-600 text-white p-2 rounded-full hover:bg-red-700">
+                  <Camera className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {formData.firstName} {formData.lastName}
+              </h2>
+              <p className="text-gray-600">Student</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Member since October 2024
+              </p>
+            </div>
           </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Personal Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    First Name
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 py-2">{formData.firstName}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Last Name
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 py-2">{formData.lastName}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Contact Information
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <Mail className="w-4 h-4 inline mr-2" />
+                    Email Address
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 py-2">{formData.email}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <Phone className="w-4 h-4 inline mr-2" />
+                    Phone Number
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 py-2">{formData.phone}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <MapPin className="w-4 h-4 inline mr-2" />
+                    Location
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 py-2">{formData.location}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                About Me
+              </h3>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Bio
+                </label>
+                {isEditing ? (
+                  <textarea
+                    name="bio"
+                    value={formData.bio}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                  />
+                ) : (
+                  <p className="text-gray-900 py-2">{formData.bio}</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Additional Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <Calendar className="w-4 h-4 inline mr-2" />
+                    Birthday
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="date"
+                      name="birthday"
+                      value={formData.birthday}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 py-2">
+                      {(() => {
+                        const [year, month, day] = formData.birthday.split("-");
+                        const date = new Date(
+                          parseInt(year),
+                          parseInt(month) - 1,
+                          parseInt(day),
+                        );
+                        return date.toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                        });
+                      })()}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <Globe className="w-4 h-4 inline mr-2" />
+                    Website
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="url"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                  ) : (
+                    <a
+                      href={formData.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-red-600 hover:underline py-2 block"
+                    >
+                      {formData.website}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Privacy Settings
+              </h3>
+              <div className="space-y-3">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    defaultChecked
+                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Make my profile visible to other students
+                  </span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    defaultChecked
+                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Allow instructors to see my profile
+                  </span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">
+                    Show my email address in profile
+                  </span>
+                </label>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

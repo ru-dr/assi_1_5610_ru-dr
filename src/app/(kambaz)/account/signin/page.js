@@ -1,127 +1,160 @@
-import Link from 'next/link';
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Signin() {
-  const renderNavigation = () => (
-    <nav className="w-64 bg-gray-100 dark:bg-[#0a0a0a] text-gray-900 dark:text-white p-4 border-r border-gray-300 dark:border-gray-600">
-      <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Kambaz</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://northeastern.edu" target="_blank" rel="noopener noreferrer" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🏫 NEU
-            </a>
-          </li>
-          <li>
-            <Link href="/account" className="block bg-gray-300 dark:bg-gray-700 p-2 rounded">
-              👤 Account
-            </Link>
-          </li>
-          <li>
-            <Link href="/dashboard" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📊 Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link href="/courses" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📚 Courses
-            </Link>
-          </li>
-          <li>
-            <Link href="/calendar" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📅 Calendar
-            </Link>
-          </li>
-          <li>
-            <Link href="/inbox" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              📧 Inbox
-            </Link>
-          </li>
-          <li>
-            <Link href="/labs" className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors">
-              🧪 Labs
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const renderAccountNav = () => (
-    <div className="bg-gray-100 dark:bg-[#0a0a0a] p-4 border-r border-gray-300 dark:border-gray-600 w-48">
-      <h3 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">Account</h3>
-      <ul className="space-y-2">
-        <li>
-          <Link 
-            href="/account/signin"
-            className="block w-full text-left p-2 rounded bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100"
-          >
-            Signin
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href="/account/signup"
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            Signup
-          </Link>
-        </li>
-        <li>
-          <Link 
-            href="/account/profile"
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            Profile
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Navigate to dashboard after signin
+    router.push("/dashboard");
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
-    <div className="flex min-h-screen bg-white dark:bg-[#0a0a0a]">
-      {renderNavigation()}
-      <div className="flex flex-1 bg-white dark:bg-[#0a0a0a]">
-        {renderAccountNav()}
-        <div className="flex-1 p-4 bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100">
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Signin</h2>
-            <form className="space-y-4 max-w-md">
+    <div className="min-h-screen bg-gray-50 flex">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              Sign in to Kambaz
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Or{" "}
+              <Link
+                href="/account/signup"
+                className="font-medium text-red-600 hover:text-red-500"
+              >
+                create a new account
+              </Link>
+            </p>
+          </div>
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <div className="rounded-md shadow-sm space-y-4">
               <div>
-                <label htmlFor="signinUsername" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Username:</label>
-                <input 
-                  type="text" 
-                  id="signinUsername" 
-                  name="username" 
-                  defaultValue="john_doe"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
+                  placeholder="Enter your email"
                 />
               </div>
               <div>
-                <label htmlFor="signinPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password:</label>
-                <input 
-                  type="password" 
-                  id="signinPassword" 
-                  name="password" 
-                  defaultValue="password123"
-                  className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
+                  placeholder="Enter your password"
                 />
               </div>
-              <div className="space-x-4">
-                <Link 
-                  href="/dashboard"
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 inline-block"
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-900"
                 >
-                  Signin
-                </Link>
-                <Link 
-                  href="/account/signup"
-                  className="text-blue-500 hover:text-blue-700 inline-block px-4 py-2"
+                  Remember me
+                </label>
+              </div>
+
+              <div className="text-sm">
+                <Link
+                  href="#"
+                  className="font-medium text-red-600 hover:text-red-500"
                 >
-                  Signup
+                  Forgot your password?
                 </Link>
               </div>
-            </form>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                Sign in
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-gray-50 text-gray-500">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              >
+                Google
+              </button>
+              <button
+                type="button"
+                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              >
+                Microsoft
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="hidden lg:block relative w-0 flex-1 bg-gradient-to-br from-red-600 to-red-800">
+        <div className="absolute inset-0 flex items-center justify-center p-12">
+          <div className="text-white text-center">
+            <h1 className="text-4xl font-bold mb-4">Welcome to Kambaz</h1>
+            <p className="text-xl">Your learning management system</p>
           </div>
         </div>
       </div>
