@@ -371,7 +371,7 @@ export default function AssignmentEditor({ params }) {
                         type="text"
                         id="assignTo"
                         defaultValue="Everyone"
-                        className="w-full border border-gray-300 rounded text-balck px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
