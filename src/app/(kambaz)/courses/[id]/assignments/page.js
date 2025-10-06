@@ -25,10 +25,8 @@ export default function Assignments() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Get course data based on ID
   const course = getCourseById(courseId);
 
-  // Fallback if course not found
   if (!course) {
     return (
       <div className="flex items-center justify-center h-screen">

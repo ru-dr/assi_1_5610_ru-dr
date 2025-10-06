@@ -24,10 +24,8 @@ export default function CoursePeople() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("Everyone");
 
-  // Get course data based on ID
   const course = getCourseById(courseId);
 
-  // Fallback if course not found
   if (!course) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -67,7 +65,6 @@ export default function CoursePeople() {
     },
   ];
 
-  // Fake people data
   const people = [
     {
       id: 1,
@@ -127,7 +124,6 @@ export default function CoursePeople() {
     },
   ];
 
-  // Filter people based on search query
   const filteredPeople = people.filter(
     (person) =>
       person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

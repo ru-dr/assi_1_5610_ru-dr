@@ -32,10 +32,8 @@ export default function CourseHome() {
     3: true,
   });
 
-  // Get course data based on ID
   const course = getCourseById(courseId);
 
-  // Fallback if course not found
   if (!course) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -256,7 +254,9 @@ export default function CourseHome() {
               <div className="p-4 border-b border-gray-200 space-y-2">
                 <button
                   onClick={() => {
-                    const allExpanded = Object.keys(expandedModules).length > 0 && Object.values(expandedModules).every(v => v);
+                    const allExpanded =
+                      Object.keys(expandedModules).length > 0 &&
+                      Object.values(expandedModules).every((v) => v);
                     if (allExpanded) {
                       setExpandedModules({});
                     } else {
@@ -265,7 +265,10 @@ export default function CourseHome() {
                   }}
                   className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left"
                 >
-                  {Object.keys(expandedModules).length > 0 && Object.values(expandedModules).every(v => v) ? "Collapse All" : "Expand All"}
+                  {Object.keys(expandedModules).length > 0 &&
+                  Object.values(expandedModules).every((v) => v)
+                    ? "Collapse All"
+                    : "Expand All"}
                 </button>
                 <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
                   <BarChart2 className="w-4 h-4 mr-2" />

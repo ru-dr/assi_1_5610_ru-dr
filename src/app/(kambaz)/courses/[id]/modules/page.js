@@ -37,10 +37,8 @@ export default function CourseModules() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedModules, setExpandedModules] = useState([0, 1, 2, 3]);
 
-  // Get course data based on ID
   const course = getCourseById(courseId);
 
-  // Fallback if course not found
   if (!course) {
     return (
       <div className="flex items-center justify-center h-screen">

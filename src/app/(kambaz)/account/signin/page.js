@@ -13,7 +13,7 @@ export default function Signin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Navigate to dashboard after signin
+
     router.push("/dashboard");
   };
 

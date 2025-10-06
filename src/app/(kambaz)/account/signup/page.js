@@ -16,7 +16,7 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Navigate to profile or dashboard after signup
+
     router.push("/account/profile");
   };
 

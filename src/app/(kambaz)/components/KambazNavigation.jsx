@@ -126,7 +126,7 @@ export default function KambazNavigation() {
             key={link.name}
             href={href}
             className={`
-              ${active ? (link.activeBgColor || link.bgColor) : "bg-black"}
+              ${active ? link.activeBgColor || link.bgColor : "bg-black"}
               ${active ? link.textColor : "text-white"}
               w-[90px] py-3 flex flex-col items-center justify-center
               hover:bg-gray-800 transition-colors

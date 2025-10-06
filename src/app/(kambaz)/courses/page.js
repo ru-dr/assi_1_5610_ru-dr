@@ -10,11 +10,10 @@ export default function Courses() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  // Open sidebar when navigating from nav with ?sidebar=true
   useEffect(() => {
     if (searchParams.get("sidebar") === "true") {
       setSidebarOpen(true);
-      // Clean up URL without reloading
+
       router.replace("/courses", { scroll: false });
     }
   }, [searchParams, router]);

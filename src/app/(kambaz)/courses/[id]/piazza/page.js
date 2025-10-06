@@ -21,10 +21,8 @@ export default function CoursePiazza() {
   const courseId = params.id;
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Get course data based on ID
   const course = getCourseById(courseId);
 
-  // Fallback if course not found
   if (!course) {
     return (
       <div className="flex items-center justify-center h-screen">

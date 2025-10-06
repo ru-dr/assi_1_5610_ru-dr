@@ -54,7 +54,6 @@ export default function AssignmentEditor({ params }) {
     until: "2025-10-06",
   });
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -78,7 +77,7 @@ export default function AssignmentEditor({ params }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
+
     console.log("Form submitted:", formData);
   };
 
@@ -102,7 +101,6 @@ export default function AssignmentEditor({ params }) {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar Navigation */}
       <div
         className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
           sidebarOpen ? "left-[100px]" : "left-[-256px]"
@@ -137,9 +135,7 @@ export default function AssignmentEditor({ params }) {
         </nav>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
         <div className="bg-white border-b border-gray-300 px-4 py-3 flex items-center">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -153,329 +149,318 @@ export default function AssignmentEditor({ params }) {
           </div>
         </div>
 
-        {/* Scrollable Content Area */}
         <div className="flex-1 overflow-auto">
           <div className="max-w-full mx-auto p-6">
-
-        <form onSubmit={handleSubmit}>
-          {/* Header with Save/Cancel buttons */}
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-normal text-gray-900">
-              Edit Assignment
-            </h1>
-            <div className="flex space-x-2">
-              <Link
-                href={`/courses/${courseId}/assignments`}
-                className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
-              >
-                Cancel
-              </Link>
-              <button
-                type="submit"
-                className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-
-          {/* Assignment Name */}
-          <div className="bg-white border border-gray-300 rounded-lg mb-4">
-            <div className="p-6 space-y-4">
-              <div>
-                <label
-                  htmlFor="assignmentName"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  Assignment Name
-                </label>
-                <input
-                  type="text"
-                  id="assignmentName"
-                  name="assignmentName"
-                  value={formData.assignmentName}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  rows="6"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500"
-                  placeholder="Enter assignment description..."
-                />
-              </div>
-
-              {/* Points */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="points"
-                    className="block text-sm font-semibold text-gray-700 mb-2"
+            <form onSubmit={handleSubmit}>
+              <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-normal text-gray-900">
+                  Edit Assignment
+                </h1>
+                <div className="flex space-x-2">
+                  <Link
+                    href={`/courses/${courseId}/assignments`}
+                    className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
                   >
-                    Points
-                  </label>
-                  <input
-                    type="number"
-                    id="points"
-                    name="points"
-                    value={formData.points}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                {/* Assignment Group */}
-                <div>
-                  <label
-                    htmlFor="assignmentGroup"
-                    className="block text-sm font-semibold text-gray-700 mb-2"
+                    Cancel
+                  </Link>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
                   >
-                    Assignment Group
-                  </label>
-                  <select
-                    id="assignmentGroup"
-                    name="assignmentGroup"
-                    value={formData.assignmentGroup}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="ASSIGNMENTS">ASSIGNMENTS</option>
-                    <option value="QUIZZES">QUIZZES</option>
-                    <option value="EXAMS">EXAMS</option>
-                    <option value="PROJECT">PROJECT</option>
-                  </select>
+                    Save
+                  </button>
                 </div>
               </div>
 
-              {/* Display Grade As */}
-              <div>
-                <label
-                  htmlFor="displayGradeAs"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  Display Grade as
-                </label>
-                <select
-                  id="displayGradeAs"
-                  name="displayGradeAs"
-                  value={formData.displayGradeAs}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="Percentage">Percentage</option>
-                  <option value="Points">Points</option>
-                  <option value="Letter Grade">Letter Grade</option>
-                  <option value="Complete/Incomplete">
-                    Complete/Incomplete
-                  </option>
-                </select>
-              </div>
-
-              {/* Submission Type */}
-              <div>
-                <label
-                  htmlFor="submissionType"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
-                >
-                  Submission Type
-                </label>
-                <select
-                  id="submissionType"
-                  name="submissionType"
-                  value={formData.submissionType}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="Online">Online</option>
-                  <option value="On Paper">On Paper</option>
-                  <option value="No Submission">No Submission</option>
-                  <option value="External Tool">External Tool</option>
-                </select>
-              </div>
-
-              {/* Online Entry Options */}
-              {formData.submissionType === "Online" && (
-                <div className="ml-6 space-y-2">
-                  <p className="text-sm font-semibold text-gray-700 mb-2">
-                    Online Entry Options
-                  </p>
-                  <div className="space-y-2">
-                    <label className="flex items-center text-sm text-gray-700">
-                      <input
-                        type="checkbox"
-                        checked={formData.onlineEntryOptions.includes(
-                          "Text Entry"
-                        )}
-                        onChange={() => handleCheckboxChange("Text Entry")}
-                        className="mr-2"
-                      />
-                      Text Entry
-                    </label>
-                    <label className="flex items-center text-sm text-gray-700">
-                      <input
-                        type="checkbox"
-                        checked={formData.onlineEntryOptions.includes(
-                          "Website URL"
-                        )}
-                        onChange={() => handleCheckboxChange("Website URL")}
-                        className="mr-2"
-                      />
-                      Website URL
-                    </label>
-                    <label className="flex items-center text-sm text-gray-700">
-                      <input
-                        type="checkbox"
-                        checked={formData.onlineEntryOptions.includes(
-                          "Media Recordings"
-                        )}
-                        onChange={() => handleCheckboxChange("Media Recordings")}
-                        className="mr-2"
-                      />
-                      Media Recordings
-                    </label>
-                    <label className="flex items-center text-sm text-gray-700">
-                      <input
-                        type="checkbox"
-                        checked={formData.onlineEntryOptions.includes(
-                          "File Uploads"
-                        )}
-                        onChange={() => handleCheckboxChange("File Uploads")}
-                        className="mr-2"
-                      />
-                      File Uploads
-                    </label>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Assign Section */}
-          <div className="bg-white border border-gray-300 rounded-lg mb-4">
-            <div className="p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Assign
-              </h2>
-
-              <div className="border border-gray-300 rounded p-4 space-y-4">
-                {/* Assign to */}
-                <div>
-                  <label
-                    htmlFor="assignTo"
-                    className="block text-sm font-semibold text-gray-700 mb-2"
-                  >
-                    Assign to
-                  </label>
-                  <input
-                    type="text"
-                    id="assignTo"
-                    defaultValue="Everyone"
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                {/* Due Date */}
-                <div>
-                  <label
-                    htmlFor="dueDate"
-                    className="block text-sm font-semibold text-gray-700 mb-2"
-                  >
-                    Due
-                  </label>
-                  <input
-                    type="date"
-                    id="dueDate"
-                    name="dueDate"
-                    value={formData.dueDate}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
-                  />
-                </div>
-
-                {/* Available From */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white border border-gray-300 rounded-lg mb-4">
+                <div className="p-6 space-y-4">
                   <div>
                     <label
-                      htmlFor="availableFrom"
+                      htmlFor="assignmentName"
                       className="block text-sm font-semibold text-gray-700 mb-2"
                     >
-                      Available from
+                      Assignment Name
                     </label>
                     <input
-                      type="date"
-                      id="availableFrom"
-                      name="availableFrom"
-                      value={formData.availableFrom}
+                      type="text"
+                      id="assignmentName"
+                      name="assignmentName"
+                      value={formData.assignmentName}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
-                  {/* Until */}
                   <div>
                     <label
-                      htmlFor="until"
+                      htmlFor="description"
                       className="block text-sm font-semibold text-gray-700 mb-2"
                     >
-                      Until
+                      Description
                     </label>
-                    <input
-                      type="date"
-                      id="until"
-                      name="until"
-                      value={formData.until}
+                    <textarea
+                      id="description"
+                      name="description"
+                      rows="6"
+                      value={formData.description}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500"
+                      placeholder="Enter assignment description..."
                     />
                   </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label
+                        htmlFor="points"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Points
+                      </label>
+                      <input
+                        type="number"
+                        id="points"
+                        name="points"
+                        value={formData.points}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="assignmentGroup"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Assignment Group
+                      </label>
+                      <select
+                        id="assignmentGroup"
+                        name="assignmentGroup"
+                        value={formData.assignmentGroup}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+                        <option value="QUIZZES">QUIZZES</option>
+                        <option value="EXAMS">EXAMS</option>
+                        <option value="PROJECT">PROJECT</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="displayGradeAs"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Display Grade as
+                    </label>
+                    <select
+                      id="displayGradeAs"
+                      name="displayGradeAs"
+                      value={formData.displayGradeAs}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Percentage">Percentage</option>
+                      <option value="Points">Points</option>
+                      <option value="Letter Grade">Letter Grade</option>
+                      <option value="Complete/Incomplete">
+                        Complete/Incomplete
+                      </option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="submissionType"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Submission Type
+                    </label>
+                    <select
+                      id="submissionType"
+                      name="submissionType"
+                      value={formData.submissionType}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Online">Online</option>
+                      <option value="On Paper">On Paper</option>
+                      <option value="No Submission">No Submission</option>
+                      <option value="External Tool">External Tool</option>
+                    </select>
+                  </div>
+
+                  {formData.submissionType === "Online" && (
+                    <div className="ml-6 space-y-2">
+                      <p className="text-sm font-semibold text-gray-700 mb-2">
+                        Online Entry Options
+                      </p>
+                      <div className="space-y-2">
+                        <label className="flex items-center text-sm text-gray-700">
+                          <input
+                            type="checkbox"
+                            checked={formData.onlineEntryOptions.includes(
+                              "Text Entry",
+                            )}
+                            onChange={() => handleCheckboxChange("Text Entry")}
+                            className="mr-2"
+                          />
+                          Text Entry
+                        </label>
+                        <label className="flex items-center text-sm text-gray-700">
+                          <input
+                            type="checkbox"
+                            checked={formData.onlineEntryOptions.includes(
+                              "Website URL",
+                            )}
+                            onChange={() => handleCheckboxChange("Website URL")}
+                            className="mr-2"
+                          />
+                          Website URL
+                        </label>
+                        <label className="flex items-center text-sm text-gray-700">
+                          <input
+                            type="checkbox"
+                            checked={formData.onlineEntryOptions.includes(
+                              "Media Recordings",
+                            )}
+                            onChange={() =>
+                              handleCheckboxChange("Media Recordings")
+                            }
+                            className="mr-2"
+                          />
+                          Media Recordings
+                        </label>
+                        <label className="flex items-center text-sm text-gray-700">
+                          <input
+                            type="checkbox"
+                            checked={formData.onlineEntryOptions.includes(
+                              "File Uploads",
+                            )}
+                            onChange={() =>
+                              handleCheckboxChange("File Uploads")
+                            }
+                            className="mr-2"
+                          />
+                          File Uploads
+                        </label>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <button
-                type="button"
-                className="mt-4 px-4 py-2 text-sm text-blue-600 hover:underline"
-              >
-                + Add
-              </button>
-            </div>
-          </div>
+              <div className="bg-white border border-gray-300 rounded-lg mb-4">
+                <div className="p-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                    Assign
+                  </h2>
 
-          {/* Bottom Action Buttons */}
-          <div className="flex items-center justify-between border-t border-gray-300 pt-4">
-            <div className="flex space-x-2">
-              <Link
-                href={`/courses/${courseId}/assignments`}
-                className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
-              >
-                Cancel
-              </Link>
-              <button
-                type="submit"
-                className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
-              >
-                Save
-              </button>
-            </div>
-            <button
-              type="button"
-              className="px-4 py-2 text-sm text-gray-700 hover:underline"
-            >
-              Save & Publish
-            </button>
-          </div>
-        </form>
+                  <div className="border border-gray-300 rounded p-4 space-y-4">
+                    <div>
+                      <label
+                        htmlFor="assignTo"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Assign to
+                      </label>
+                      <input
+                        type="text"
+                        id="assignTo"
+                        defaultValue="Everyone"
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="dueDate"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
+                      >
+                        Due
+                      </label>
+                      <input
+                        type="date"
+                        id="dueDate"
+                        name="dueDate"
+                        value={formData.dueDate}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label
+                          htmlFor="availableFrom"
+                          className="block text-sm font-semibold text-gray-700 mb-2"
+                        >
+                          Available from
+                        </label>
+                        <input
+                          type="date"
+                          id="availableFrom"
+                          name="availableFrom"
+                          value={formData.availableFrom}
+                          onChange={handleChange}
+                          className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="until"
+                          className="block text-sm font-semibold text-gray-700 mb-2"
+                        >
+                          Until
+                        </label>
+                        <input
+                          type="date"
+                          id="until"
+                          name="until"
+                          value={formData.until}
+                          onChange={handleChange}
+                          className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="mt-4 px-4 py-2 text-sm text-blue-600 hover:underline"
+                  >
+                    + Add
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-gray-300 pt-4">
+                <div className="flex space-x-2">
+                  <Link
+                    href={`/courses/${courseId}/assignments`}
+                    className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+                  >
+                    Cancel
+                  </Link>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
+                  >
+                    Save
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="px-4 py-2 text-sm text-gray-700 hover:underline"
+                >
+                  Save & Publish
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
