@@ -126,15 +126,15 @@ export default function KambazNavigation() {
             key={link.name}
             href={href}
             className={`
-              ${active ? link.activeBgColor || link.bgColor : "bg-black"}
-              ${active ? link.textColor : "text-white"}
+              ${active ? "bg-white" : "bg-black"}
+              ${active ? "text-red-600" : "text-white"}
               w-[90px] py-3 flex flex-col items-center justify-center
               hover:bg-gray-800 transition-colors
-              border-l-4 border-transparent
+              ${active ? "border-l-4 border-white" : "border-l-4 border-transparent"}
             `}
           >
             <Icon
-              className={`w-6 h-6 mb-1 ${active ? link.iconColor : link.iconColor}`}
+              className={`w-6 h-6 mb-1 ${active ? "text-red-600" : link.iconColor}`}
             />
             <span className="text-xs text-center">{link.name}</span>
           </Link>
