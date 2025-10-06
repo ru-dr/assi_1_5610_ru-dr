@@ -1,22 +1,26 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Star, X, ArrowUpDown } from "lucide-react";
 
-export default function Courses() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+function SidebarHandler({ setSidebarOpen }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
 
   useEffect(() => {
     if (searchParams.get("sidebar") === "true") {
       setSidebarOpen(true);
-
       router.replace("/courses", { scroll: false });
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, setSidebarOpen]);
+
+  return null;
+}
+
+function CoursesContent() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
   const courses = [
     {
       id: 1,
@@ -85,6 +89,9 @@ export default function Courses() {
 
   return (
     <div className="bg-white min-h-screen relative">
+      <Suspense fallback={null}>
+        <SidebarHandler setSidebarOpen={setSidebarOpen} />
+      </Suspense>
       <div
         className={`fixed top-0 h-full w-80 bg-white border-r border-gray-300 p-4 z-40 transition-all duration-300 ease-in-out shadow-lg ${
           sidebarOpen ? "left-[100px]" : "left-[-320px]"
@@ -367,5 +374,13 @@ export default function Courses() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Courses() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CoursesContent />
+    </Suspense>
   );
 }
