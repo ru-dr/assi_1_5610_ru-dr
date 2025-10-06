@@ -194,7 +194,7 @@ export default function CourseHome() {
 
         <div className="flex-1 overflow-auto">
           <div className="flex h-full">
-            <div className="flex-1 p-6 bg-gray-50">
+            <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
               {modules.map((module) => (
                 <div
                   key={module.id}
@@ -250,7 +250,7 @@ export default function CourseHome() {
               ))}
             </div>
 
-            <div className="w-80 bg-white border-l border-gray-300 overflow-y-auto">
+            <div className="hidden lg:block w-80 bg-white border-l border-gray-300 overflow-y-auto">
               <div className="p-4 border-b border-gray-200 space-y-2">
                 <button
                   onClick={() => {

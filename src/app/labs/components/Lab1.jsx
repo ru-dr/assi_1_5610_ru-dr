@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import "./Lab1.css";
 
 export default function Lab1() {
   return (
@@ -16,6 +17,18 @@ export default function Lab1() {
       <h1 className="text-3xl font-bold mb-6">
         Lab 1 - HTML Elements Practice
       </h1>
+
+      <section className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4">CSS - ID Selectors</h2>
+        <p id="white-on-red">
+          This is a paragraph with white text on a red background using ID
+          selector.
+        </p>
+        <p id="black-on-yellow" className="mt-4">
+          This is a paragraph with black text on a yellow background using ID
+          selector.
+        </p>
+      </section>
 
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Heading Tags</h2>

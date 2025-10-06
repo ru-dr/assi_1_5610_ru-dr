@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Rocket, Atom, Laptop, Palette, Smartphone, Globe } from "lucide-react";
 
@@ -509,8 +511,15 @@ export default function Lab2() {
           </div>
         </div>
 
-        <div className="fixed bottom-4 right-4 bg-black text-white p-2 text-xs">
-          Responsive breakpoint indicator
+        {/* Responsive Breakpoint Indicator */}
+        <div className="fixed bottom-4 right-4 bg-black text-white p-3 text-xs font-mono rounded shadow-lg z-50">
+          <div className="font-semibold mb-1">Current Breakpoint:</div>
+          <div className="2xl:hidden xl:hidden lg:hidden md:hidden sm:hidden">XS (&lt; 640px)</div>
+          <div className="hidden sm:block md:hidden">SM (≥ 640px)</div>
+          <div className="hidden md:block lg:hidden">MD (≥ 768px)</div>
+          <div className="hidden lg:block xl:hidden">LG (≥ 1024px)</div>
+          <div className="hidden xl:block 2xl:hidden">XL (≥ 1280px)</div>
+          <div className="hidden 2xl:block">2XL (≥ 1536px)</div>
         </div>
       </section>
 

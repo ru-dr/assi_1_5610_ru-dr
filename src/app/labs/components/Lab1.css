@@ -1,0 +1,13 @@
+/* Lab 1 - Traditional CSS with ID Selectors */
+
+#white-on-red {
+  background-color: red;
+  color: white;
+  padding: 0.5rem;
+}
+
+#black-on-yellow {
+  background-color: yellow;
+  color: black;
+  padding: 0.5rem;
+}
