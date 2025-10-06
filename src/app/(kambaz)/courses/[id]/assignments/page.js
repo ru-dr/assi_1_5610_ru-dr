@@ -66,58 +66,6 @@ export default function Assignments() {
 
   const assignments = [
     { id: "A2", title: "A2", dueDate: "Oct 6 at 11:59pm", points: 375 },
-    {
-      id: "Q2",
-      title: "Q2",
-      availableFrom: "Oct 6 at 11:59pm",
-      dueDate: "Oct 6 at 11:59pm",
-      points: 22,
-    },
-    {
-      id: "Q3",
-      title: "Q3",
-      notAvailableUntil: "Oct 6 at 12am",
-      dueDate: "Oct 13 at 11:59pm",
-      points: 32,
-    },
-    { id: "A3", title: "A3", dueDate: "Oct 20 at 11:59pm", points: 198 },
-    {
-      id: "Q4",
-      title: "Q4",
-      notAvailableUntil: "Oct 13 at 12am",
-      dueDate: "Oct 20 at 11:59pm",
-      points: 17,
-    },
-    {
-      id: "Q5",
-      title: "Q5",
-      notAvailableUntil: "Oct 20 at 12am",
-      dueDate: "Oct 27 at 11:59pm",
-      points: 31,
-    },
-    { id: "A4", title: "A4", dueDate: "Nov 3 at 11:59pm", points: 126 },
-    {
-      id: "X1",
-      title: "X1",
-      notAvailableUntil: "Oct 27 at 12am",
-      dueDate: "Nov 3 at 11:59pm",
-      points: 100,
-    },
-    {
-      id: "Q6",
-      title: "Q6",
-      notAvailableUntil: "Nov 3 at 12am",
-      dueDate: "Nov 10 at 11:59pm",
-      points: 18,
-    },
-    { id: "A5", title: "A5", dueDate: "Nov 17 at 11:59pm", points: 228 },
-    {
-      id: "Q7",
-      title: "Q7",
-      notAvailableUntil: "Nov 10 at 12am",
-      dueDate: "Nov 17 at 11:59pm",
-      points: 20,
-    },
   ];
 
   return (
@@ -144,8 +92,8 @@ export default function Assignments() {
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
                   item.active
-                    ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
-                    : "text-gray-700 hover:bg-gray-100"
+                    ? "bg-white text-gray-900 border-l-4 border-black"
+                    : "text-red-600 hover:bg-gray-100"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -176,25 +124,26 @@ export default function Assignments() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search for Assignment"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="flex space-x-2">
-              <button className="px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700 rounded flex items-center">
+              <button className="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded flex items-center">
                 <Plus className="w-4 h-4 mr-1" />
-                SHOW BY DATE
+                Group
               </button>
-              <button className="px-4 py-2 text-sm text-white bg-gray-500 hover:bg-gray-600 rounded">
-                SHOW BY TYPE
+              <button className="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center">
+                <Plus className="w-4 h-4 mr-1" />
+                Assignment
               </button>
             </div>
           </div>
 
           <div className="bg-white border border-gray-300">
-            <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300">
+            <div className="flex items-center justify-between p-4 bg-gray-200 border-b border-gray-300">
               <h2 className="font-semibold text-gray-800">
                 ▼ Upcoming Assignments
               </h2>

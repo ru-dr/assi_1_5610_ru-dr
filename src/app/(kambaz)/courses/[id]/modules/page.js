@@ -16,11 +16,19 @@ import {
   BarChart3,
   Video,
   HelpCircle,
-  Bell,
+  Plus,
+  Search,
+  GripVertical,
+  EllipsisVertical,
+  Check,
+  Ban,
+  Link as LinkIcon,
   Tv,
   Calendar,
-  GripVertical,
-  Ellipsis,
+  Bell,
+  Edit,
+  Trash2,
+  CheckCircle,
 } from "lucide-react";
 
 export default function CourseModules() {
@@ -80,27 +88,104 @@ export default function CourseModules() {
 
   const modules = [
     {
-      title: "Module 0: Technical Resources and Syllabus",
-      lessons: [{ title: "Technical Resources", icon: FileText }],
+      id: 1,
+      title: "Week 0 - INTRO",
+      status: "Completed",
+      lessons: [
+        {
+          id: 1,
+          type: "assignment",
+          title: "LEARNING MODULE",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 2,
+          type: "assignment",
+          title: "LEARNING OBJECTIVES",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 3,
+          type: "reading",
+          title: "READING",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 4,
+          type: "assignment",
+          title: "SLIDES",
+          points: 0,
+          due: null,
+        },
+      ],
     },
     {
-      title: "Module 1: Design Explorations and Testing",
-      lessons: [{ title: "The Essence of Objects", icon: FileText }],
+      id: 2,
+      title: "Week 1 - COURSE INTRO, HTML, CSS, BOOTSTRAP",
+      status: "Completed",
+      lessons: [
+        {
+          id: 5,
+          type: "assignment",
+          title: "LEARNING OBJECTIVES",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 6,
+          type: "reading",
+          title: "READING",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 7,
+          type: "assignment",
+          title: "SLIDES",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 8,
+          type: "assignment",
+          title: "HTML",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 9,
+          type: "assignment",
+          title: "CSS",
+          points: 0,
+          due: null,
+        },
+      ],
     },
     {
-      title: "Module 2: Review of Java",
-      lessons: [{ title: "Java Safari", icon: FileText }],
-    },
-    {
-      title: "Module 3: Interface and Class Design",
-      lessons: [{ title: "Interface and Class Design", icon: FileText }],
-    },
-    {
-      title: "Module 4: Abstraction",
-      lessons: [],
+      id: 3,
+      title: "Week 2 - FORMATTING USER INTERFACES WITH HTML AND CSS",
+      status: "In Progress",
+      lessons: [
+        {
+          id: 10,
+          type: "assignment",
+          title: "LEARNING OBJECTIVES",
+          points: 0,
+          due: null,
+        },
+        {
+          id: 11,
+          type: "reading",
+          title: "LESSON",
+          points: 0,
+          due: null,
+        },
+      ],
     },
   ];
-
   return (
     <div className="flex h-screen bg-gray-50">
       <div
@@ -125,8 +210,8 @@ export default function CourseModules() {
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
                   item.active
-                    ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
-                    : "text-gray-700 hover:bg-gray-100"
+                    ? "bg-white text-gray-900 border-l-4 border-black"
+                    : "text-red-600 hover:bg-gray-100"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -156,8 +241,43 @@ export default function CourseModules() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <button className="px-3 py-1.5 text-sm border border-gray-300 rounded hover:bg-gray-50">
-              Collapse All
+            <button
+              onClick={() => setExpandedModules([])}
+              className="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300"
+            >
+              {expandedModules.length > 0 ? "Collapse All" : "Expand All"}
+            </button>
+            <button className="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300">
+              View Progress
+            </button>
+            <div className="relative group">
+              <button className="px-3 py-1.5 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center gap-1">
+                <CheckCircle className="w-4 h-4" />
+                Publish All
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="hidden group-hover:block absolute top-full left-0 mt-1 w-64 bg-white border border-gray-300 rounded shadow-lg z-50">
+                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  Publish all
+                </button>
+                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
+                  <Ban className="w-4 h-4" />
+                  Unpublish all
+                </button>
+                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  Publish all modules and items
+                </button>
+                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
+                  <Ban className="w-4 h-4" />
+                  Unpublish all modules and items
+                </button>
+              </div>
+            </div>
+            <button className="px-3 py-1.5 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center gap-1">
+              <Plus className="w-4 h-4" />
+              Module
             </button>
             <button
               className="p-2 text-gray-600 hover:bg-gray-50 rounded"
@@ -187,88 +307,116 @@ export default function CourseModules() {
         </div>
 
         <div className="flex flex-1 overflow-hidden">
-          <div className="flex h-full">
-            <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
-              {modules.map((module, index) => (
-                <div
-                  key={index}
-                  className="bg-white border border-gray-300 mb-4"
-                >
-                  <button
-                    onClick={() => toggleModule(index)}
-                    className="w-full flex items-center p-4 hover:bg-gray-50 text-left"
-                  >
-                    <div className="flex items-center space-x-2">
-                      {expandedModules.includes(index) ? (
-                        <ChevronDown className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 text-gray-600" />
-                      )}
-                      <h3 className="font-semibold text-gray-800">
+          <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+            {modules.map((module, index) => (
+              <div
+                key={index}
+                className="bg-white border border-gray-300 mb-4 rounded"
+              >
+                <div className="bg-gray-200 border-b border-gray-300">
+                  <div className="flex items-center justify-between p-4">
+                    <div className="flex items-center space-x-3">
+                      <GripVertical className="w-5 h-5 text-gray-500" />
+                      <button
+                        onClick={() => toggleModule(index)}
+                        className="flex items-center space-x-2"
+                      >
+                        {expandedModules.includes(index) ? (
+                          <ChevronDown className="w-5 h-5 text-gray-700" />
+                        ) : (
+                          <ChevronRight className="w-5 h-5 text-gray-700" />
+                        )}
+                      </button>
+                      <h3 className="font-semibold text-gray-900">
                         {module.title}
                       </h3>
                     </div>
-                  </button>
-
-                  {expandedModules.includes(index) && (
-                    <div className="border-t border-gray-200">
-                      {module.lessons.map((lesson, lessonIndex) => {
-                        const LessonIcon = lesson.icon;
-                        return (
-                          <div
-                            key={lessonIndex}
-                            className="flex items-center space-x-3 py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
-                          >
-                            <LessonIcon className="w-4 h-4 text-gray-600" />
-                            <span className="text-gray-800 text-sm flex-1">
-                              {lesson.title}
-                            </span>
-                          </div>
-                        );
-                      })}
+                    <div className="flex items-center space-x-2">
+                      <button className="p-1 hover:bg-gray-300 rounded">
+                        <Edit className="w-4 h-4 text-gray-600" />
+                      </button>
+                      <button className="p-1 hover:bg-gray-300 rounded">
+                        <Trash2 className="w-4 h-4 text-gray-600" />
+                      </button>
+                      <button className="p-1 hover:bg-gray-300 rounded">
+                        <Plus className="w-4 h-4 text-gray-600" />
+                      </button>
+                      <button className="p-1 hover:bg-gray-300 rounded">
+                        <EllipsisVertical className="w-4 h-4 text-gray-600" />
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
-              ))}
+
+                {expandedModules.includes(index) && (
+                  <div>
+                    {module.lessons.map((lesson, lessonIndex) => (
+                      <div
+                        key={lessonIndex}
+                        className="flex items-center justify-between py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0 border-l-4 border-l-green-600"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <GripVertical className="w-4 h-4 text-gray-400" />
+                          <FileText className="w-5 h-5 text-gray-600" />
+                          <span className="text-gray-800 text-sm">
+                            {lesson.title}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <button className="p-1 hover:bg-gray-200 rounded">
+                            <Edit className="w-4 h-4 text-gray-500" />
+                          </button>
+                          <button className="p-1 hover:bg-gray-200 rounded">
+                            <Trash2 className="w-4 h-4 text-gray-500" />
+                          </button>
+                          <button className="p-1 hover:bg-gray-200 rounded">
+                            <EllipsisVertical className="w-4 h-4 text-gray-500" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="w-80 bg-white border-l border-gray-300 overflow-y-auto">
+            <div className="p-4 border-b border-gray-200 space-y-2">
+              <button
+                onClick={() => setExpandedModules([])}
+                className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left"
+              >
+                {expandedModules.length > 0 ? "Collapse All" : "Expand All"}
+              </button>
+              <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
+                <Tv className="w-4 h-4 mr-2" />
+                View Course Stream
+              </button>
+              <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
+                <BarChart3 className="w-4 h-4 mr-2" />
+                Course Analytics
+              </button>
+              <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
+                <Calendar className="w-4 h-4 mr-2" />
+                View Course Calendar
+              </button>
+              <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
+                <Bell className="w-4 h-4 mr-2" />
+                View Course Notifications
+              </button>
             </div>
 
-            <div className="w-80 bg-white border-l border-gray-300 overflow-y-auto">
-              <div className="p-4 border-b border-gray-200 space-y-2">
-                <button
-                  onClick={() => setExpandedModules([])}
-                  className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left"
-                >
-                  Collapse All
-                </button>
-                <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
-                  <Tv className="w-4 h-4 mr-2" />
-                  View Course Stream
-                </button>
-                <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Course Analytics
-                </button>
-                <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  View Course Calendar
-                </button>
-                <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
-                  <Bell className="w-4 h-4 mr-2" />
-                  View Course Notifications
-                </button>
-              </div>
+            <div className="p-4 border-b border-gray-200">
+              <h3 className="font-semibold text-gray-800 mb-3">To Do</h3>
+              <p className="text-sm text-gray-500">Nothing for now</p>
+            </div>
 
-              <div className="p-4 border-b border-gray-200">
-                <h3 className="font-semibold text-gray-800 mb-3">To Do</h3>
-                <p className="text-sm text-gray-500">Nothing for now</p>
-              </div>
-
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-800 mb-3">
-                  Recent Feedback
-                </h3>
-                <p className="text-sm text-gray-500">Nothing for now</p>
-              </div>
+            <div className="p-4">
+              <h3 className="font-semibold text-gray-800 mb-3">
+                Recent Feedback
+              </h3>
+              <p className="text-sm text-gray-500">Nothing for now</p>
             </div>
           </div>
         </div>

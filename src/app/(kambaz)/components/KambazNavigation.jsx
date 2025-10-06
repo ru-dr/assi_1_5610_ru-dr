@@ -34,13 +34,14 @@ export default function KambazNavigation() {
       bgColor: "bg-white",
       textColor: "text-red-600",
       iconColor: "text-red-600",
+      activeBgColor: "bg-white",
     },
     {
       name: "Courses",
       href: "/courses",
       icon: BookOpen,
-      bgColor: "bg-white",
-      textColor: "text-red-600",
+      bgColor: "bg-black",
+      textColor: "text-white",
       iconColor: "text-red-600",
     },
     {
@@ -125,11 +126,11 @@ export default function KambazNavigation() {
             key={link.name}
             href={href}
             className={`
-              ${active ? link.bgColor : "bg-black"}
+              ${active ? (link.activeBgColor || link.bgColor) : "bg-black"}
               ${active ? link.textColor : "text-white"}
               w-[90px] py-3 flex flex-col items-center justify-center
               hover:bg-gray-800 transition-colors
-              border-l-4 ${active && link.name === "Dashboard" ? "border-transparent" : "border-transparent"}
+              border-l-4 border-transparent
             `}
           >
             <Icon

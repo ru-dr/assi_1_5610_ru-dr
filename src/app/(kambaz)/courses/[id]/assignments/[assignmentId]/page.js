@@ -1,368 +1,97 @@
+"use client";
+
+import { use, useState } from "react";
 import Link from "next/link";
+import { getCourseById } from "../../../coursesData";
+import {
+  Menu,
+  X,
+  Home,
+  FileText,
+  Users,
+  MessageSquare,
+  BarChart3,
+  Video,
+  HelpCircle,
+} from "lucide-react";
 
 export default function AssignmentEditor({ params }) {
-  const courseId = params.id;
-  const assignmentId = params.assignmentId;
+  const { id: courseId } = use(params);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const coursesData = {
-    1: {
-      id: 1,
-      title: "CS5610 Web Development",
-      description: "Full-stack web development using modern technologies",
-      instructor: "Prof. Johnson",
+  const course = getCourseById(courseId);
+
+  const courseNav = [
+    { name: "Home", icon: Home, href: `/courses/${courseId}` },
+    { name: "Modules", icon: FileText, href: `/courses/${courseId}/modules` },
+    {
+      name: "Piazza",
+      icon: MessageSquare,
+      href: `/courses/${courseId}/piazza`,
     },
-    2: {
-      id: 2,
-      title: "CS5800 Algorithms",
-      description: "Data structures and algorithmic problem solving",
-      instructor: "Prof. Smith",
+    { name: "Zoom Meetings", icon: Video, href: `/courses/${courseId}/zoom` },
+    {
+      name: "Assignments",
+      icon: FileText,
+      href: `/courses/${courseId}/assignments`,
+      active: true,
     },
-    3: {
-      id: 3,
-      title: "CS6750 Human Computer Interaction",
-      description: "Design and evaluation of user interfaces",
-      instructor: "Prof. Brown",
-    },
-    4: {
-      id: 4,
-      title: "CS5500 Software Engineering",
-      description: "Software development methodologies and practices",
-      instructor: "Prof. Davis",
-    },
+    { name: "Quizzes", icon: HelpCircle, href: `/courses/${courseId}/quizzes` },
+    { name: "Grades", icon: BarChart3, href: `/courses/${courseId}/grades` },
+    { name: "People", icon: Users, href: `/courses/${courseId}/people` },
+  ];
+
+  const [formData, setFormData] = useState({
+    assignmentName: "A2",
+    description: "This is assignment 2 description.",
+    points: 375,
+    assignmentGroup: "ASSIGNMENTS",
+    displayGradeAs: "Percentage",
+    submissionType: "Online",
+    onlineEntryOptions: ["Website URL"],
+    dueDate: "2025-10-06",
+    availableFrom: "2025-09-30",
+    until: "2025-10-06",
+  });
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  // Static assignment data
-  const assignmentsData = {
-    a1: {
-      id: "a1",
-      name: "Assignment 1",
-      description:
-        "This assignment covers the core concepts of the course. Students will demonstrate their understanding through practical implementation.",
-      points: 100,
-      dueDate: "2025-09-23",
-      availableDate: "2025-09-18",
-    },
-    a2: {
-      id: "a2",
-      name: "Assignment 2",
-      description:
-        "Advanced assignment building on previous concepts with more complex requirements and implementation challenges.",
-      points: 150,
-      dueDate: "2025-09-30",
-      availableDate: "2025-09-25",
-    },
-    a3: {
-      id: "a3",
-      name: "Assignment 3",
-      description:
-        "Final project assignment integrating all course concepts into a comprehensive application.",
-      points: 200,
-      dueDate: "2025-10-07",
-      availableDate: "2025-10-02",
-    },
+  const handleCheckboxChange = (option) => {
+    setFormData((prev) => {
+      const currentOptions = prev.onlineEntryOptions;
+      const newOptions = currentOptions.includes(option)
+        ? currentOptions.filter((opt) => opt !== option)
+        : [...currentOptions, option];
+      return {
+        ...prev,
+        onlineEntryOptions: newOptions,
+      };
+    });
   };
 
-  const course = coursesData[parseInt(courseId)];
-  const assignment = assignmentsData[assignmentId];
-
-  const renderNavigation = () => (
-    <nav className="w-64 bg-gray-100 dark:bg-[#0a0a0a] text-gray-900 dark:text-white p-4 border-r border-gray-300 dark:border-gray-600">
-      <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Kambaz</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://northeastern.edu"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              🏫 NEU
-            </a>
-          </li>
-          <li>
-            <Link
-              href="/account"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              👤 Account
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/dashboard"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              📊 Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/courses"
-              className="block bg-gray-300 dark:bg-gray-700 p-2 rounded"
-            >
-              📚 Courses
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/calendar"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              📅 Calendar
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/inbox"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              📧 Inbox
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/labs"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              🧪 Labs
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
-
-  const renderCourseNav = () => (
-    <div className="bg-gray-100 dark:bg-[#0a0a0a] p-4 border-r border-gray-300 dark:border-gray-600 w-48">
-      <h3 className="font-semibold mb-4 text-gray-900 dark:text-gray-100">
-        {course ? course.title : "Loading..."}
-      </h3>
-      <ul className="space-y-2">
-        <li>
-          <Link
-            href={`/courses/${courseId}`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            🏠 Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={`/courses/${courseId}/modules`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📚 Modules
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={`/courses/${courseId}/piazza`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            💬 Piazza
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={`/courses/${courseId}/zoom`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📹 Zoom
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={`/courses/${courseId}/quizzes`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📝 Quizzes
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={`/courses/${courseId}/assignments`}
-            className="block w-full text-left p-2 rounded bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100"
-          >
-            📋 Assignments
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={`/courses/${courseId}/grades`}
-            className="block w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-          >
-            📊 Grades
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
-
-  const renderAssignmentEditor = () => (
-    <div className="p-6">
-      <div className="mb-6">
-        <Link
-          href={`/courses/${courseId}/assignments`}
-          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-        >
-          ← Back to Assignments
-        </Link>
-      </div>
-
-      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-        Assignment Editor
-      </h2>
-
-      <form className="space-y-6 max-w-2xl">
-        <div>
-          <label
-            htmlFor="assignmentName"
-            className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
-          >
-            Assignment Name
-          </label>
-          <input
-            type="text"
-            id="assignmentName"
-            defaultValue={assignment ? assignment.name : "New Assignment"}
-            className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="assignmentDescription"
-            className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
-          >
-            Description
-          </label>
-          <textarea
-            id="assignmentDescription"
-            rows="4"
-            defaultValue={
-              assignment ? assignment.description : "Assignment description..."
-            }
-            className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label
-              htmlFor="points"
-              className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
-            >
-              Points
-            </label>
-            <input
-              type="number"
-              id="points"
-              defaultValue={assignment ? assignment.points : 100}
-              className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="availableDate"
-              className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
-            >
-              Available Date
-            </label>
-            <input
-              type="date"
-              id="availableDate"
-              defaultValue={
-                assignment ? assignment.availableDate : "2025-09-22"
-              }
-              className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="dueDate"
-              className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
-            >
-              Due Date
-            </label>
-            <input
-              type="date"
-              id="dueDate"
-              defaultValue={assignment ? assignment.dueDate : "2025-09-29"}
-              className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="assignmentType"
-            className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300"
-          >
-            Assignment Type
-          </label>
-          <select
-            id="assignmentType"
-            className="border border-gray-300 dark:border-gray-600 px-3 py-2 rounded w-full bg-white dark:bg-[#171717] text-gray-900 dark:text-gray-100"
-          >
-            <option value="assignment">Assignment</option>
-            <option value="quiz">Quiz</option>
-            <option value="exam">Exam</option>
-            <option value="project">Project</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              className="rounded border-gray-300 dark:border-gray-600"
-            />
-            <span className="text-sm text-gray-700 dark:text-gray-300">
-              Publish Assignment
-            </span>
-          </label>
-        </div>
-
-        <div className="space-x-4">
-          <button
-            type="button"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Save & Publish
-          </button>
-          <Link
-            href={`/courses/${courseId}/assignments`}
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 inline-block"
-          >
-            Cancel
-          </Link>
-        </div>
-      </form>
-    </div>
-  );
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log("Form submitted:", formData);
+  };
 
   if (!course) {
     return (
-      <div className="flex min-h-screen bg-white dark:bg-[#0a0a0a] items-center justify-center">
+      <div className="flex min-h-screen bg-white items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
             Course Not Found
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            The course you&apos;re looking for doesn&apos;t exist.
-          </p>
           <Link
             href="/courses"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
           >
             Back to Courses
           </Link>
@@ -372,12 +101,382 @@ export default function AssignmentEditor({ params }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-white dark:bg-[#0a0a0a]">
-      {renderNavigation()}
-      <div className="flex flex-1 bg-white dark:bg-[#0a0a0a]">
-        {renderCourseNav()}
-        <div className="flex-1 text-gray-900 dark:text-gray-100">
-          {renderAssignmentEditor()}
+    <div className="flex h-screen bg-gray-50">
+      {/* Sidebar Navigation */}
+      <div
+        className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
+          sidebarOpen ? "left-[100px]" : "left-[-256px]"
+        }`}
+      >
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+          <h2 className="font-semibold text-sm text-gray-900">
+            {course.fullName}
+          </h2>
+          <button onClick={() => setSidebarOpen(false)}>
+            <X className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+        <nav className="p-2">
+          {courseNav.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center space-x-3 px-3 py-2 rounded ${
+                  item.active
+                    ? "bg-white text-gray-900 border-l-4 border-black"
+                    : "text-red-600 hover:bg-gray-100"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-sm">{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Bar */}
+        <div className="bg-white border-b border-gray-300 px-4 py-3 flex items-center">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 hover:bg-gray-100 rounded mr-3"
+          >
+            <Menu className="w-5 h-5 text-gray-700" />
+          </button>
+          <div>
+            <h1 className="text-red-600 font-medium">{course.fullName}</h1>
+            <p className="text-sm text-gray-600">Edit Assignment</p>
+          </div>
+        </div>
+
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-auto">
+          <div className="max-w-full mx-auto p-6">
+
+        <form onSubmit={handleSubmit}>
+          {/* Header with Save/Cancel buttons */}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-normal text-gray-900">
+              Edit Assignment
+            </h1>
+            <div className="flex space-x-2">
+              <Link
+                href={`/courses/${courseId}/assignments`}
+                className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+
+          {/* Assignment Name */}
+          <div className="bg-white border border-gray-300 rounded-lg mb-4">
+            <div className="p-6 space-y-4">
+              <div>
+                <label
+                  htmlFor="assignmentName"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Assignment Name
+                </label>
+                <input
+                  type="text"
+                  id="assignmentName"
+                  name="assignmentName"
+                  value={formData.assignmentName}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="6"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500"
+                  placeholder="Enter assignment description..."
+                />
+              </div>
+
+              {/* Points */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label
+                    htmlFor="points"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Points
+                  </label>
+                  <input
+                    type="number"
+                    id="points"
+                    name="points"
+                    value={formData.points}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Assignment Group */}
+                <div>
+                  <label
+                    htmlFor="assignmentGroup"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Assignment Group
+                  </label>
+                  <select
+                    id="assignmentGroup"
+                    name="assignmentGroup"
+                    value={formData.assignmentGroup}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+                    <option value="QUIZZES">QUIZZES</option>
+                    <option value="EXAMS">EXAMS</option>
+                    <option value="PROJECT">PROJECT</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Display Grade As */}
+              <div>
+                <label
+                  htmlFor="displayGradeAs"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Display Grade as
+                </label>
+                <select
+                  id="displayGradeAs"
+                  name="displayGradeAs"
+                  value={formData.displayGradeAs}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="Percentage">Percentage</option>
+                  <option value="Points">Points</option>
+                  <option value="Letter Grade">Letter Grade</option>
+                  <option value="Complete/Incomplete">
+                    Complete/Incomplete
+                  </option>
+                </select>
+              </div>
+
+              {/* Submission Type */}
+              <div>
+                <label
+                  htmlFor="submissionType"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Submission Type
+                </label>
+                <select
+                  id="submissionType"
+                  name="submissionType"
+                  value={formData.submissionType}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="Online">Online</option>
+                  <option value="On Paper">On Paper</option>
+                  <option value="No Submission">No Submission</option>
+                  <option value="External Tool">External Tool</option>
+                </select>
+              </div>
+
+              {/* Online Entry Options */}
+              {formData.submissionType === "Online" && (
+                <div className="ml-6 space-y-2">
+                  <p className="text-sm font-semibold text-gray-700 mb-2">
+                    Online Entry Options
+                  </p>
+                  <div className="space-y-2">
+                    <label className="flex items-center text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={formData.onlineEntryOptions.includes(
+                          "Text Entry"
+                        )}
+                        onChange={() => handleCheckboxChange("Text Entry")}
+                        className="mr-2"
+                      />
+                      Text Entry
+                    </label>
+                    <label className="flex items-center text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={formData.onlineEntryOptions.includes(
+                          "Website URL"
+                        )}
+                        onChange={() => handleCheckboxChange("Website URL")}
+                        className="mr-2"
+                      />
+                      Website URL
+                    </label>
+                    <label className="flex items-center text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={formData.onlineEntryOptions.includes(
+                          "Media Recordings"
+                        )}
+                        onChange={() => handleCheckboxChange("Media Recordings")}
+                        className="mr-2"
+                      />
+                      Media Recordings
+                    </label>
+                    <label className="flex items-center text-sm text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={formData.onlineEntryOptions.includes(
+                          "File Uploads"
+                        )}
+                        onChange={() => handleCheckboxChange("File Uploads")}
+                        className="mr-2"
+                      />
+                      File Uploads
+                    </label>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Assign Section */}
+          <div className="bg-white border border-gray-300 rounded-lg mb-4">
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Assign
+              </h2>
+
+              <div className="border border-gray-300 rounded p-4 space-y-4">
+                {/* Assign to */}
+                <div>
+                  <label
+                    htmlFor="assignTo"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Assign to
+                  </label>
+                  <input
+                    type="text"
+                    id="assignTo"
+                    defaultValue="Everyone"
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Due Date */}
+                <div>
+                  <label
+                    htmlFor="dueDate"
+                    className="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Due
+                  </label>
+                  <input
+                    type="date"
+                    id="dueDate"
+                    name="dueDate"
+                    value={formData.dueDate}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                  />
+                </div>
+
+                {/* Available From */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="availableFrom"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Available from
+                    </label>
+                    <input
+                      type="date"
+                      id="availableFrom"
+                      name="availableFrom"
+                      value={formData.availableFrom}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                    />
+                  </div>
+
+                  {/* Until */}
+                  <div>
+                    <label
+                      htmlFor="until"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Until
+                    </label>
+                    <input
+                      type="date"
+                      id="until"
+                      name="until"
+                      value={formData.until}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="mt-4 px-4 py-2 text-sm text-blue-600 hover:underline"
+              >
+                + Add
+              </button>
+            </div>
+          </div>
+
+          {/* Bottom Action Buttons */}
+          <div className="flex items-center justify-between border-t border-gray-300 pt-4">
+            <div className="flex space-x-2">
+              <Link
+                href={`/courses/${courseId}/assignments`}
+                className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
+              >
+                Save
+              </button>
+            </div>
+            <button
+              type="button"
+              className="px-4 py-2 text-sm text-gray-700 hover:underline"
+            >
+              Save & Publish
+            </button>
+          </div>
+        </form>
+          </div>
         </div>
       </div>
     </div>

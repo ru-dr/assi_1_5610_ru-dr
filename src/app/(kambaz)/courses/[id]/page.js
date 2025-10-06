@@ -168,8 +168,8 @@ export default function CourseHome() {
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
                   item.active
-                    ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
-                    : "text-gray-700 hover:bg-gray-100"
+                    ? "bg-white text-gray-900 border-l-4 border-black"
+                    : "text-red-600 hover:bg-gray-100"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -204,7 +204,7 @@ export default function CourseHome() {
                 >
                   <button
                     onClick={() => toggleModule(module.id)}
-                    className="w-full flex items-center p-4 hover:bg-gray-50 text-left"
+                    className="w-full flex items-center p-4 bg-gray-200 hover:bg-gray-300 text-left"
                   >
                     <div className="flex items-center space-x-2">
                       {expandedModules[module.id] ? (
@@ -223,7 +223,7 @@ export default function CourseHome() {
                       {module.items.map((item, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center space-x-3 py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
+                          className="flex items-center space-x-3 py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0 border-l-4 border-l-green-600"
                         >
                           {item.type === "link" ? (
                             <>
@@ -255,10 +255,17 @@ export default function CourseHome() {
             <div className="w-80 bg-white border-l border-gray-300 overflow-y-auto">
               <div className="p-4 border-b border-gray-200 space-y-2">
                 <button
-                  onClick={() => setExpandedModules({})}
+                  onClick={() => {
+                    const allExpanded = Object.keys(expandedModules).length > 0 && Object.values(expandedModules).every(v => v);
+                    if (allExpanded) {
+                      setExpandedModules({});
+                    } else {
+                      setExpandedModules({ 1: true, 2: true, 3: true });
+                    }
+                  }}
                   className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left"
                 >
-                  Collapse All
+                  {Object.keys(expandedModules).length > 0 && Object.values(expandedModules).every(v => v) ? "Collapse All" : "Expand All"}
                 </button>
                 <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
                   <BarChart2 className="w-4 h-4 mr-2" />
