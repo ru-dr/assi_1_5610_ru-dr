@@ -9,11 +9,11 @@ export default function Dashboard() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-normal text-gray-800">Dashboard</h1>
+      <div className="p-3 sm:p-6">
+        <div className="flex justify-between items-center mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-normal text-gray-800">Dashboard</h1>
           <button className="p-2 hover:bg-gray-200 rounded">
-            <MoreVertical className="w-6 h-6 text-gray-600" />
+            <MoreVertical className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
           </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

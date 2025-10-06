@@ -25,9 +25,8 @@ export default function Signin() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               Sign in to Kambaz
@@ -133,28 +132,18 @@ export default function Signin() {
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-              >
-                Google
-              </button>
-              <button
-                type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-              >
-                Microsoft
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="hidden lg:block relative w-0 flex-1 bg-gradient-to-br from-red-600 to-red-800">
-        <div className="absolute inset-0 flex items-center justify-center p-12">
-          <div className="text-white text-center">
-            <h1 className="text-4xl font-bold mb-4">Welcome to Kambaz</h1>
-            <p className="text-xl">Your learning management system</p>
+            <button
+              type="button"
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+            >
+              Google
+            </button>
+            <button
+              type="button"
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+            >
+              Microsoft
+            </button>
           </div>
         </div>
       </div>

@@ -133,8 +133,8 @@ export default function CoursePeople() {
   return (
     <div className="flex h-screen bg-gray-50">
       <div
-        className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
-          sidebarOpen ? "left-[100px]" : "left-[-256px]"
+        className={`fixed top-14 md:top-0 h-[calc(100%-3.5rem)] md:h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
+          sidebarOpen ? "left-0 md:left-[100px]" : "left-[-256px]"
         }`}
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">

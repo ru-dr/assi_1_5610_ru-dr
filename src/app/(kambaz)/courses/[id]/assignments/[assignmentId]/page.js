@@ -102,8 +102,8 @@ export default function AssignmentEditor({ params }) {
   return (
     <div className="flex h-screen bg-gray-50">
       <div
-        className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
-          sidebarOpen ? "left-[100px]" : "left-[-256px]"
+        className={`fixed top-14 md:top-0 h-[calc(100%-3.5rem)] md:h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
+          sidebarOpen ? "left-0 md:left-[100px]" : "left-[-256px]"
         }`}
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -150,22 +150,22 @@ export default function AssignmentEditor({ params }) {
         </div>
 
         <div className="flex-1 overflow-auto">
-          <div className="max-w-full mx-auto p-6">
+          <div className="max-w-full mx-auto p-3 sm:p-6">
             <form onSubmit={handleSubmit}>
-              <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-normal text-gray-900">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+                <h1 className="text-xl sm:text-2xl font-normal text-gray-900">
                   Edit Assignment
                 </h1>
                 <div className="flex space-x-2">
                   <Link
                     href={`/courses/${courseId}/assignments`}
-                    className="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
+                    className="flex-1 sm:flex-none px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 text-center"
                   >
                     Cancel
                   </Link>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
+                    className="flex-1 sm:flex-none px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700"
                   >
                     Save
                   </button>

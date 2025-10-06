@@ -69,8 +69,8 @@ export default function Assignments() {
   return (
     <div className="flex h-screen bg-gray-50">
       <div
-        className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
-          sidebarOpen ? "left-[100px]" : "left-[-256px]"
+        className={`fixed top-14 md:top-0 h-[calc(100%-3.5rem)] md:h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
+          sidebarOpen ? "left-0 md:left-[100px]" : "left-[-256px]"
         }`}
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -103,22 +103,22 @@ export default function Assignments() {
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="bg-white border-b border-gray-300 px-4 py-3 flex items-center">
+        <div className="bg-white border-b border-gray-300 px-3 sm:px-4 py-3 flex items-center">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 hover:bg-gray-100 rounded mr-3"
+            className="p-2 hover:bg-gray-100 rounded mr-2 sm:mr-3"
           >
             <Menu className="w-5 h-5 text-gray-700" />
           </button>
-          <div>
-            <h1 className="text-red-600 font-medium">{course.fullName}</h1>
-            <p className="text-sm text-gray-600">Assignments</p>
+          <div className="min-w-0">
+            <h1 className="text-red-600 font-medium text-sm sm:text-base truncate">{course.fullName}</h1>
+            <p className="text-xs sm:text-sm text-gray-600">Assignments</p>
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="relative w-64">
+        <div className="flex-1 overflow-auto p-3 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
@@ -129,11 +129,11 @@ export default function Assignments() {
               />
             </div>
             <div className="flex space-x-2">
-              <button className="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded flex items-center">
+              <button className="flex-1 sm:flex-none px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded flex items-center justify-center">
                 <Plus className="w-4 h-4 mr-1" />
                 Group
               </button>
-              <button className="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center">
+              <button className="flex-1 sm:flex-none px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center justify-center">
                 <Plus className="w-4 h-4 mr-1" />
                 Assignment
               </button>

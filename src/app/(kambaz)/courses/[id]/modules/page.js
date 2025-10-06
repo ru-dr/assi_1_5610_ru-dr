@@ -187,8 +187,8 @@ export default function CourseModules() {
   return (
     <div className="flex h-screen bg-gray-50">
       <div
-        className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
-          sidebarOpen ? "left-[100px]" : "left-[-256px]"
+        className={`fixed top-14 md:top-0 h-[calc(100%-3.5rem)] md:h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
+          sidebarOpen ? "left-0 md:left-[100px]" : "left-[-256px]"
         }`}
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -221,31 +221,31 @@ export default function CourseModules() {
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="bg-white border-b border-gray-300 px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white border-b border-gray-300 px-3 sm:px-4 py-3 flex items-center justify-between overflow-x-auto">
+          <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="text-gray-600 hover:text-gray-800"
+              className="text-gray-600 hover:text-gray-800 flex-shrink-0"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
-            <div className="text-sm">
-              <span className="text-red-600 font-medium">
+            <div className="text-xs sm:text-sm min-w-0">
+              <span className="text-red-600 font-medium truncate block">
                 {course.fullName}
               </span>
-              <span className="text-gray-400 mx-2">›</span>
-              <span className="text-gray-700">Modules</span>
+              <span className="text-gray-400 mx-1 hidden sm:inline">›</span>
+              <span className="text-gray-700 hidden sm:inline">Modules</span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
             <button
               onClick={() => setExpandedModules([])}
-              className="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300"
+              className="px-2 sm:px-3 py-1.5 text-xs sm:text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300 whitespace-nowrap"
             >
-              {expandedModules.length > 0 ? "Collapse All" : "Expand All"}
+              {expandedModules.length > 0 ? "Collapse" : "Expand"}
             </button>
-            <button className="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300">
+            <button className="hidden sm:inline-block px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300">
               View Progress
             </button>
             <div className="relative group">
@@ -305,7 +305,7 @@ export default function CourseModules() {
         </div>
 
         <div className="flex flex-1 overflow-hidden">
-          <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-6 bg-gray-50">
             {modules.map((module, index) => (
               <div
                 key={index}
@@ -379,7 +379,7 @@ export default function CourseModules() {
             ))}
           </div>
 
-          <div className="w-80 bg-white border-l border-gray-300 overflow-y-auto">
+          <div className="hidden xl:block w-80 bg-white border-l border-gray-300 overflow-y-auto">
             <div className="p-4 border-b border-gray-200 space-y-2">
               <button
                 onClick={() => setExpandedModules([])}

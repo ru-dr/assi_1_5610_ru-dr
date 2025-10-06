@@ -28,9 +28,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               Create your account
@@ -206,29 +205,5 @@ export default function Signup() {
           </div>
         </div>
       </div>
-
-      <div className="hidden lg:block relative w-0 flex-1 bg-gradient-to-br from-red-600 to-red-800">
-        <div className="absolute inset-0 flex items-center justify-center p-12">
-          <div className="text-white text-center">
-            <h1 className="text-4xl font-bold mb-4">Join Kambaz</h1>
-            <p className="text-xl mb-6">Start your learning journey today</p>
-            <ul className="text-left space-y-2 max-w-md mx-auto">
-              <li className="flex items-center">
-                <span className="mr-2">✓</span>
-                Access to all courses
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">✓</span>
-                Track your progress
-              </li>
-              <li className="flex items-center">
-                <span className="mr-2">✓</span>
-                Collaborate with peers
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

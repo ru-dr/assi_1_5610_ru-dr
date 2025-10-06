@@ -24,8 +24,8 @@ export default function AccountLayout({ children }) {
   ];
 
   return (
-    <div className="flex h-screen bg-white">
-      <aside className="w-64 bg-white border-r border-gray-300 overflow-y-auto">
+    <div className="flex flex-col md:flex-row h-screen bg-white">
+      <aside className="w-full md:w-64 bg-white border-r border-gray-300 overflow-y-auto md:block">
         <div className="p-4">
           <div className="mb-6 text-center">
             <div className="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-3 flex items-center justify-center">

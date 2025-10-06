@@ -145,8 +145,8 @@ export default function CourseHome() {
   return (
     <div className="flex h-screen bg-gray-50">
       <div
-        className={`fixed top-0 h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
-          sidebarOpen ? "left-[100px]" : "left-[-256px]"
+        className={`fixed top-14 md:top-0 h-[calc(100%-3.5rem)] md:h-full w-64 bg-white border-r border-gray-300 z-40 transition-all duration-300 ease-in-out shadow-lg ${
+          sidebarOpen ? "left-0 md:left-[100px]" : "left-[-256px]"
         }`}
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -179,22 +179,22 @@ export default function CourseHome() {
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="bg-white border-b border-gray-300 px-4 py-3 flex items-center">
+        <div className="bg-white border-b border-gray-300 px-3 sm:px-4 py-3 flex items-center">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 hover:bg-gray-100 rounded mr-3"
+            className="p-2 hover:bg-gray-100 rounded mr-2 sm:mr-3"
           >
             <Menu className="w-5 h-5 text-gray-700" />
           </button>
-          <div>
-            <h1 className="text-red-600 font-medium">{course.fullName}</h1>
-            <p className="text-sm text-gray-600">Modules</p>
+          <div className="min-w-0">
+            <h1 className="text-red-600 font-medium text-sm sm:text-base truncate">{course.fullName}</h1>
+            <p className="text-xs sm:text-sm text-gray-600">Modules</p>
           </div>
         </div>
 
         <div className="flex-1 overflow-auto">
           <div className="flex h-full">
-            <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
+            <div className="flex-1 p-3 sm:p-6 bg-gray-50 overflow-y-auto">
               {modules.map((module) => (
                 <div
                   key={module.id}
