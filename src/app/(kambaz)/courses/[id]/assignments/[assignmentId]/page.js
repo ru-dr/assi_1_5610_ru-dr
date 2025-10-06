@@ -187,7 +187,7 @@ export default function AssignmentEditor({ params }) {
                       name="assignmentName"
                       value={formData.assignmentName}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
@@ -204,7 +204,7 @@ export default function AssignmentEditor({ params }) {
                       rows="6"
                       value={formData.description}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500"
+                      className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500"
                       placeholder="Enter assignment description..."
                     />
                   </div>
@@ -223,7 +223,7 @@ export default function AssignmentEditor({ params }) {
                         name="points"
                         value={formData.points}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -239,7 +239,7 @@ export default function AssignmentEditor({ params }) {
                         name="assignmentGroup"
                         value={formData.assignmentGroup}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="ASSIGNMENTS">ASSIGNMENTS</option>
                         <option value="QUIZZES">QUIZZES</option>
@@ -261,7 +261,7 @@ export default function AssignmentEditor({ params }) {
                       name="displayGradeAs"
                       value={formData.displayGradeAs}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="Percentage">Percentage</option>
                       <option value="Points">Points</option>
@@ -284,7 +284,7 @@ export default function AssignmentEditor({ params }) {
                       name="submissionType"
                       value={formData.submissionType}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="Online">Online</option>
                       <option value="On Paper">On Paper</option>
@@ -371,7 +371,7 @@ export default function AssignmentEditor({ params }) {
                         type="text"
                         id="assignTo"
                         defaultValue="Everyone"
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full border border-gray-300 rounded text-balck px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
@@ -388,7 +388,7 @@ export default function AssignmentEditor({ params }) {
                         name="dueDate"
                         value={formData.dueDate}
                         onChange={handleChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                        className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
                       />
                     </div>
 
@@ -406,7 +406,7 @@ export default function AssignmentEditor({ params }) {
                           name="availableFrom"
                           value={formData.availableFrom}
                           onChange={handleChange}
-                          className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                          className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
                         />
                       </div>
 
@@ -423,7 +423,7 @@ export default function AssignmentEditor({ params }) {
                           name="until"
                           value={formData.until}
                           onChange={handleChange}
-                          className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
+                          className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:light]"
                         />
                       </div>
                     </div>
