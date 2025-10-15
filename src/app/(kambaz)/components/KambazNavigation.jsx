@@ -103,7 +103,7 @@ export default function KambazNavigation() {
 
   return (
     <>
-      {/* Mobile Hamburger Menu Bar */}
+      
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-black flex items-center justify-between px-4 z-50">
         <Link href="https://northeastern.edu" target="_blank" rel="noopener noreferrer">
           <Image
@@ -123,7 +123,7 @@ export default function KambazNavigation() {
         </button>
       </div>
 
-      {/* Overlay for mobile menu */}
+      
       {isOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 top-14"
@@ -133,7 +133,7 @@ export default function KambazNavigation() {
         />
       )}
 
-      {/* Mobile Slide-in Menu */}
+      
       <nav
         className={`md:hidden fixed top-14 left-0 bottom-0 w-64 bg-black transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -167,7 +167,7 @@ export default function KambazNavigation() {
         </div>
       </nav>
 
-      {/* Desktop Sidebar (hidden on mobile) */}
+      
       <nav className="hidden md:flex w-[100px] bg-black flex-col items-center py-4 space-y-1 relative z-50">
       <Link
         href="https://northeastern.edu"

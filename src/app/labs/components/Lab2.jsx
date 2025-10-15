@@ -511,7 +511,7 @@ export default function Lab2() {
           </div>
         </div>
 
-        {/* Responsive Breakpoint Indicator */}
+        
         <div className="fixed bottom-4 right-4 bg-black text-white p-3 text-xs font-mono rounded shadow-lg z-50">
           <div className="font-semibold mb-1">Current Breakpoint:</div>
           <div className="2xl:hidden xl:hidden lg:hidden md:hidden sm:hidden">XS (&lt; 640px)</div>

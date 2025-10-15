@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Lab1 from "../components/Lab1";
 import Lab2 from "../components/Lab2";
+import Lab3 from "../components/Lab3";
 
 export default async function LabDetail({ params }) {
   const { id } = await params;
@@ -10,6 +11,8 @@ export default async function LabDetail({ params }) {
     return <Lab1 />;
   } else if (id === "lab2") {
     return <Lab2 />;
+  } else if (id === "lab3") {
+    return <Lab3 />;
   }
 
   return (
