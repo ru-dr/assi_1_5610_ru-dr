@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Rocket, Atom, Laptop, Palette, Smartphone, Globe } from "lucide-react";
 
 export default function Lab2() {
@@ -354,12 +355,12 @@ export default function Lab2() {
 
         <div className="mb-4">
           <h3 className="text-xl font-medium mb-2">
-            Three rectangles laid out horizontally
+            Three images laid out horizontally
           </h3>
           <div className="flex space-x-4">
-            <div className="w-20 h-20 bg-red-500"></div>
-            <div className="w-20 h-20 bg-green-500"></div>
-            <div className="w-20 h-20 bg-blue-500"></div>
+            <Image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop" alt="Mountain landscape" width={128} height={128} className="object-cover rounded" />
+            <Image src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&h=200&fit=crop" alt="Forest scene" width={128} height={128} className="object-cover rounded" />
+            <Image src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=200&h=200&fit=crop" alt="Ocean view" width={128} height={128} className="object-cover rounded" />
           </div>
         </div>
 
@@ -371,7 +372,7 @@ export default function Lab2() {
               sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
               incididunt ut labore et dolore magna aliqua.
             </p>
-            <div className="w-20 h-20 bg-purple-500 ml-4"></div>
+            <Image src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=200&h=200&fit=crop" alt="Cat portrait" width={128} height={128} className="object-cover rounded ml-4" />
           </div>
         </div>
       </section>
@@ -583,12 +584,12 @@ export default function Lab2() {
 
         <div className="mb-4">
           <h3 className="text-xl font-medium mb-2">Favorite list of movies</h3>
-          <ul className="list-disc list-inside">
-            <li>The Shawshank Redemption</li>
-            <li>The Godfather</li>
-            <li>The Dark Knight</li>
-            <li>Pulp Fiction</li>
-            <li>Forrest Gump</li>
+          <ul className="border border-gray-300 dark:border-gray-600 rounded-lg divide-y divide-gray-300 dark:divide-gray-600">
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Shawshank Redemption</li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Godfather</li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Dark Knight</li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Pulp Fiction</li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Forrest Gump</li>
           </ul>
         </div>
 
@@ -596,29 +597,29 @@ export default function Lab2() {
           <h3 className="text-xl font-medium mb-2">
             Favorite list of links to books
           </h3>
-          <ul className="list-disc list-inside">
-            <li>
-              <a href="#" className="text-blue-600 hover:underline">
+          <ul className="border border-gray-300 dark:border-gray-600 rounded-lg divide-y divide-gray-300 dark:divide-gray-600">
+            <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                 To Kill a Mockingbird
               </a>
             </li>
-            <li>
-              <a href="#" className="text-blue-600 hover:underline">
+            <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                 1984
               </a>
             </li>
-            <li>
-              <a href="#" className="text-blue-600 hover:underline">
+            <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                 The Great Gatsby
               </a>
             </li>
-            <li>
-              <a href="#" className="text-blue-600 hover:underline">
+            <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                 Pride and Prejudice
               </a>
             </li>
-            <li>
-              <a href="#" className="text-blue-600 hover:underline">
+            <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                 The Catcher in the Rye
               </a>
             </li>
@@ -786,16 +787,25 @@ export default function Lab2() {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Cards</h2>
 
-        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md p-6 max-w-sm">
-          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
-            Starship
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            The Starship is SpaceX's next-generation launch vehicle.
-          </p>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700">
-            Learn More
-          </button>
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden max-w-sm">
+          <Image 
+            src="https://images.unsplash.com/photo-1700508317396-e343a69ac72f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3RhcnNoaXB8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500" 
+            alt="SpaceX Starship" 
+            width={500} 
+            height={300} 
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-6">
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+              Starship
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              The Starship is SpaceX's next-generation launch vehicle.
+            </p>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700">
+              Learn More
+            </button>
+          </div>
         </div>
       </section>
     </div>

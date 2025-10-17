@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "CS5610 Assignment 1 - Kambaz",
+  title: "CS5610 Assignment - Kambaz",
   description:
     "Web Development Assignment covering HTML elements and React components",
 };
