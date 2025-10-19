@@ -15,12 +15,20 @@ export default function Home() {
           <p className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
             NUID: 002593056
           </p>
-          <Link
-            href="https://rudr.me/"
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline"
-          >
-            rudr.me
-          </Link>
+          <div className="flex flex-col gap-2">
+            <Link
+              href="https://rudr.me/"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline"
+            >
+              rudr.me
+            </Link>
+            <Link
+              href="https://github.com/ru-dr"
+              className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:underline"
+            >
+              github.com/ru-dr
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
