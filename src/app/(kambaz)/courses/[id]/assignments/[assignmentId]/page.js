@@ -2,49 +2,32 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { getCourseById } from "../../../coursesData";
+import { getCourseById } from "@/app/(kambaz)/data/coursesData";
+import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
+import { 
+  getAssignmentById,
+  assignmentGroupOptions,
+  displayGradeOptions,
+  submissionTypeOptions,
+  onlineEntryOptionsData,
+} from "@/app/(kambaz)/data/assignmentsData";
 import {
   Menu,
   X,
-  Home,
-  FileText,
-  Users,
-  MessageSquare,
-  BarChart3,
-  Video,
-  HelpCircle,
 } from "lucide-react";
 
 export default function AssignmentEditor({ params }) {
-  const { id: courseId } = use(params);
+  const { id: courseId, assignmentId } = use(params);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const course = getCourseById(courseId);
-
-  const courseNav = [
-    { name: "Home", icon: Home, href: `/courses/${courseId}` },
-    { name: "Modules", icon: FileText, href: `/courses/${courseId}/modules` },
-    {
-      name: "Piazza",
-      icon: MessageSquare,
-      href: `/courses/${courseId}/piazza`,
-    },
-    { name: "Zoom Meetings", icon: Video, href: `/courses/${courseId}/zoom` },
-    {
-      name: "Assignments",
-      icon: FileText,
-      href: `/courses/${courseId}/assignments`,
-      active: true,
-    },
-    { name: "Quizzes", icon: HelpCircle, href: `/courses/${courseId}/quizzes` },
-    { name: "Grades", icon: BarChart3, href: `/courses/${courseId}/grades` },
-    { name: "People", icon: Users, href: `/courses/${courseId}/people` },
-  ];
+  const courseNav = getCourseNavigation(courseId);
+  const assignmentData = getAssignmentById(courseId, assignmentId);
 
   const [formData, setFormData] = useState({
-    assignmentName: "A2",
-    description: "This is assignment 2 description.",
-    points: 375,
+    assignmentName: assignmentData?.title || "",
+    description: assignmentData?.description || "This is assignment 2 description.",
+    points: assignmentData?.points || 375,
     assignmentGroup: "ASSIGNMENTS",
     displayGradeAs: "Percentage",
     submissionType: "Online",
@@ -122,7 +105,7 @@ export default function AssignmentEditor({ params }) {
                 key={item.name}
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
-                  item.active
+                  item.href === `/courses/${courseId}/assignments`
                     ? "bg-white text-gray-900 border-l-4 border-black"
                     : "text-red-600 hover:bg-gray-100"
                 }`}
@@ -241,10 +224,9 @@ export default function AssignmentEditor({ params }) {
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
-                        <option value="ASSIGNMENTS">ASSIGNMENTS</option>
-                        <option value="QUIZZES">QUIZZES</option>
-                        <option value="EXAMS">EXAMS</option>
-                        <option value="PROJECT">PROJECT</option>
+                        {assignmentGroupOptions.map(option => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -262,14 +244,11 @@ export default function AssignmentEditor({ params }) {
                       value={formData.displayGradeAs}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="Percentage">Percentage</option>
-                      <option value="Points">Points</option>
-                      <option value="Letter Grade">Letter Grade</option>
-                      <option value="Complete/Incomplete">
-                        Complete/Incomplete
-                      </option>
-                    </select>
+                      >
+                        {displayGradeOptions.map(option => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
+                      </select>
                   </div>
 
                   <div>
@@ -285,12 +264,11 @@ export default function AssignmentEditor({ params }) {
                       value={formData.submissionType}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="Online">Online</option>
-                      <option value="On Paper">On Paper</option>
-                      <option value="No Submission">No Submission</option>
-                      <option value="External Tool">External Tool</option>
-                    </select>
+                      >
+                        {submissionTypeOptions.map(option => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
+                      </select>
                   </div>
 
                   {formData.submissionType === "Online" && (
@@ -299,54 +277,17 @@ export default function AssignmentEditor({ params }) {
                         Online Entry Options
                       </p>
                       <div className="space-y-2">
-                        <label className="flex items-center text-sm text-gray-700">
-                          <input
-                            type="checkbox"
-                            checked={formData.onlineEntryOptions.includes(
-                              "Text Entry",
-                            )}
-                            onChange={() => handleCheckboxChange("Text Entry")}
-                            className="mr-2"
-                          />
-                          Text Entry
-                        </label>
-                        <label className="flex items-center text-sm text-gray-700">
-                          <input
-                            type="checkbox"
-                            checked={formData.onlineEntryOptions.includes(
-                              "Website URL",
-                            )}
-                            onChange={() => handleCheckboxChange("Website URL")}
-                            className="mr-2"
-                          />
-                          Website URL
-                        </label>
-                        <label className="flex items-center text-sm text-gray-700">
-                          <input
-                            type="checkbox"
-                            checked={formData.onlineEntryOptions.includes(
-                              "Media Recordings",
-                            )}
-                            onChange={() =>
-                              handleCheckboxChange("Media Recordings")
-                            }
-                            className="mr-2"
-                          />
-                          Media Recordings
-                        </label>
-                        <label className="flex items-center text-sm text-gray-700">
-                          <input
-                            type="checkbox"
-                            checked={formData.onlineEntryOptions.includes(
-                              "File Uploads",
-                            )}
-                            onChange={() =>
-                              handleCheckboxChange("File Uploads")
-                            }
-                            className="mr-2"
-                          />
-                          File Uploads
-                        </label>
+                        {onlineEntryOptionsData.map(option => (
+                          <label key={option} className="flex items-center text-sm text-gray-700">
+                            <input
+                              type="checkbox"
+                              checked={formData.onlineEntryOptions.includes(option)}
+                              onChange={() => handleCheckboxChange(option)}
+                              className="mr-2"
+                            />
+                            {option}
+                          </label>
+                        ))}
                       </div>
                     </div>
                   )}

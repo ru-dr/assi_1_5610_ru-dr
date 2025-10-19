@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 
 export default function Lab3() {
-  // Variables and Constants
+ 
   const variableScalars = {
     integerVariable: 123,
     floatingPointNumber: 234.345,
@@ -12,7 +13,7 @@ export default function Lab3() {
   const booleanVariable = true;
   const booleanFalse = false;
 
-  // Arrays
+ 
   const [todos, setTodos] = useState([
     { id: 1, title: "Buy milk", done: false },
     { id: 2, title: "Feed the pets", done: true },
@@ -20,7 +21,7 @@ export default function Lab3() {
     { id: 4, title: "Exercise", done: false }
   ]);
 
-  // Working with Arrays
+ 
   const numberArray1 = [1, 2, 3, 4, 5];
   const stringArray1 = ["string1", "string2"];
 
@@ -30,7 +31,7 @@ export default function Lab3() {
     variableScalars.stringVariable
   ];
 
-  // JSON Objects
+ 
   const json = {
     integerVariable: 123,
     floatingPointNumber: 234.345,
@@ -44,7 +45,7 @@ export default function Lab3() {
     arrayVariable: [1, 2, 3]
   };
 
-  // Functions
+ 
   function add(a, b) {
     return a + b;
   }
@@ -55,7 +56,7 @@ export default function Lab3() {
 
   const multiply = (a, b) => a * b;
 
-  // Spread Operator
+ 
   const todos1 = todos;
   const todos2 = [...todos];
   const todosWithNewItem = [
@@ -77,7 +78,7 @@ export default function Lab3() {
     }
   });
 
-  // Destructuring
+ 
   const { integerVariable, floatingPointNumber, stringVariable } = variableScalars;
   const [firstNumber, secondNumber, ...restNumbers] = numberArray1;
   
@@ -85,7 +86,7 @@ export default function Lab3() {
     return `${id} - ${title} - ${done}`;
   };
 
-  // Find functions
+ 
   const fourthItem = numberArray1[3];
   const arrayLength = numberArray1.length;
   const lastItem = numberArray1[numberArray1.length - 1];
@@ -467,15 +468,15 @@ export default function Lab3() {
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Encoding Path Parameters</h2>
         <div className="space-y-2 font-mono text-sm">
-          <div>1 + 2 = {1 + 2}</div>
-          <div>3 + 4 = {3 + 4}</div>
+          <Link href="/labs/add/1/2">1 + 2</Link>
+          <br />
+          <Link href="/labs/add/3/4">3 + 4</Link>
         </div>
       </section>
     </div>
   );
 }
 
-// TodoItem Component
 function TodoItem({ todo }) {
   return (
     <li className="py-1">
@@ -484,7 +485,6 @@ function TodoItem({ todo }) {
   );
 }
 
-// TodoList Component
 function TodoList({ todos }) {
   return (
     <ul className="list-disc pl-5">
@@ -495,7 +495,6 @@ function TodoList({ todos }) {
   );
 }
 
-// Square Component for Parameterizing
 function Square({ color }) {
   return (
     <div 
@@ -510,7 +509,6 @@ function Square({ color }) {
   );
 }
 
-// Parent Component for Child Components
 function Parent({ children }) {
   return (
     <div className="border-4 border-solid p-2.5">

@@ -2,21 +2,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { getCourseById } from "../../coursesData";
+import { getCourseById } from "@/app/(kambaz)/data/coursesData";
+import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
+import { getAssignmentsByCourseId } from "@/app/(kambaz)/data/assignmentsData";
 import {
   Menu,
   X,
-  Home,
-  FileText,
-  Users,
-  MessageSquare,
-  BarChart3,
-  Video,
-  HelpCircle,
   Search,
   Plus,
   GripVertical,
   Ellipsis,
+  FileText,
 } from "lucide-react";
 
 export default function Assignments() {
@@ -26,6 +22,8 @@ export default function Assignments() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const course = getCourseById(courseId);
+  const courseNav = getCourseNavigation(courseId);
+  const assignments = getAssignmentsByCourseId(courseId);
 
   if (!course) {
     return (
@@ -41,30 +39,6 @@ export default function Assignments() {
       </div>
     );
   }
-
-  const courseNav = [
-    { name: "Home", icon: Home, href: `/courses/${courseId}` },
-    { name: "Modules", icon: FileText, href: `/courses/${courseId}/modules` },
-    {
-      name: "Piazza",
-      icon: MessageSquare,
-      href: `/courses/${courseId}/piazza`,
-    },
-    { name: "Zoom Meetings", icon: Video, href: `/courses/${courseId}/zoom` },
-    {
-      name: "Assignments",
-      icon: FileText,
-      href: `/courses/${courseId}/assignments`,
-      active: true,
-    },
-    { name: "Quizzes", icon: HelpCircle, href: `/courses/${courseId}/quizzes` },
-    { name: "Grades", icon: BarChart3, href: `/courses/${courseId}/grades` },
-    { name: "People", icon: Users, href: `/courses/${courseId}/people` },
-  ];
-
-  const assignments = [
-    { id: "A2", title: "A2", dueDate: "Oct 6 at 11:59pm", points: 375 },
-  ];
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -89,7 +63,7 @@ export default function Assignments() {
                 key={item.name}
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
-                  item.active
+                  item.href === `/courses/${courseId}/assignments`
                     ? "bg-white text-gray-900 border-l-4 border-black"
                     : "text-red-600 hover:bg-gray-100"
                 }`}

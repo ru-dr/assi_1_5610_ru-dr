@@ -6,16 +6,11 @@ import { useParams } from "next/navigation";
 import {
   Menu,
   X,
-  Home,
-  FileText,
-  Users,
-  MessageSquare,
-  BarChart3,
-  Video,
-  HelpCircle,
   Search,
 } from "lucide-react";
-import { getCourseById } from "../../coursesData";
+import peopleData from "@/app/(kambaz)/data/peopleData";
+import { getCourseById } from "@/app/(kambaz)/data/coursesData";
+import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
 
 export default function CoursePeople() {
   const params = useParams();
@@ -25,6 +20,7 @@ export default function CoursePeople() {
   const [selectedTab, setSelectedTab] = useState("Everyone");
 
   const course = getCourseById(courseId);
+  const courseNav = getCourseNavigation(courseId);
 
   if (!course) {
     return (
@@ -41,88 +37,11 @@ export default function CoursePeople() {
     );
   }
 
-  const courseNav = [
-    { name: "Home", icon: Home, href: `/courses/${courseId}` },
-    { name: "Modules", icon: FileText, href: `/courses/${courseId}/modules` },
-    {
-      name: "Piazza",
-      icon: MessageSquare,
-      href: `/courses/${courseId}/piazza`,
-    },
-    { name: "Zoom Meetings", icon: Video, href: `/courses/${courseId}/zoom` },
-    {
-      name: "Assignments",
-      icon: FileText,
-      href: `/courses/${courseId}/assignments`,
-    },
-    { name: "Quizzes", icon: HelpCircle, href: `/courses/${courseId}/quizzes` },
-    { name: "Grades", icon: BarChart3, href: `/courses/${courseId}/grades` },
-    {
-      name: "People",
-      icon: Users,
-      href: `/courses/${courseId}/people`,
-      active: true,
-    },
-  ];
-
-  const people = [
-    {
-      id: 1,
-      name: "Alice Johnson",
-      section: `${course.fullName}`,
-      role: "Student",
-      avatar: null,
-    },
-    {
-      id: 2,
-      name: "Bob Smith",
-      section: `${course.fullName}`,
-      role: "Student",
-      avatar: null,
-    },
-    {
-      id: 3,
-      name: "Carol Martinez",
-      section: `${course.fullName}`,
-      role: "Student",
-      avatar: null,
-    },
-    {
-      id: 4,
-      name: "David Chen",
-      section: `${course.fullName}`,
-      role: "TA",
-      avatar: null,
-    },
-    {
-      id: 5,
-      name: "Emma Williams",
-      section: `${course.fullName}`,
-      role: "Student",
-      avatar: null,
-    },
-    {
-      id: 6,
-      name: "Frank Rodriguez",
-      section: `${course.fullName}`,
-      role: "Student",
-      avatar: null,
-    },
-    {
-      id: 7,
-      name: "Grace Lee",
-      section: `${course.fullName}`,
-      role: "TA",
-      avatar: null,
-    },
-    {
-      id: 8,
-      name: course.instructor || "Dr. Sarah Thompson",
-      section: `${course.fullName}`,
-      role: "Teacher",
-      avatar: null,
-    },
-  ];
+  const people = peopleData.map(person => ({
+    ...person,
+    section: course.fullName,
+    avatar: null,
+  }));
 
   const filteredPeople = people.filter(
     (person) =>
@@ -153,7 +72,7 @@ export default function CoursePeople() {
                 key={item.name}
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
-                  item.active
+                  item.href === `/courses/${courseId}/people`
                     ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}

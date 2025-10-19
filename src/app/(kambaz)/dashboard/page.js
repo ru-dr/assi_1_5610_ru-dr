@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { MoreVertical } from "lucide-react";
-import { coursesData } from "../courses/coursesData";
+import { coursesData } from "@/app/(kambaz)/data/coursesData";
 
 export default function Dashboard() {
   const courses = coursesData;

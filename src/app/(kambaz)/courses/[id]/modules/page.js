@@ -3,19 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { getCourseById } from "../../coursesData";
+import { getCourseById } from "@/app/(kambaz)/data/coursesData";
+import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
+import { getModulesByCourseId } from "@/app/(kambaz)/data/modulesData";
 import {
   Menu,
   X,
-  Home,
   ChevronDown,
   ChevronRight,
-  FileText,
-  Users,
-  MessageSquare,
-  BarChart3,
-  Video,
-  HelpCircle,
   Plus,
   Search,
   GripVertical,
@@ -29,6 +24,8 @@ import {
   Edit,
   Trash2,
   CheckCircle,
+  FileText,
+  BarChart3,
 } from "lucide-react";
 
 export default function CourseModules() {
@@ -38,6 +35,8 @@ export default function CourseModules() {
   const [expandedModules, setExpandedModules] = useState([0, 1, 2, 3]);
 
   const course = getCourseById(courseId);
+  const courseNav = getCourseNavigation(courseId);
+  const modules = getModulesByCourseId(courseId);
 
   if (!course) {
     return (
@@ -59,131 +58,6 @@ export default function CourseModules() {
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
-
-  const courseNav = [
-    { name: "Home", icon: Home, href: `/courses/${courseId}` },
-    {
-      name: "Modules",
-      icon: FileText,
-      href: `/courses/${courseId}/modules`,
-      active: true,
-    },
-    {
-      name: "Piazza",
-      icon: MessageSquare,
-      href: `/courses/${courseId}/piazza`,
-    },
-    { name: "Zoom Meetings", icon: Video, href: `/courses/${courseId}/zoom` },
-    {
-      name: "Assignments",
-      icon: FileText,
-      href: `/courses/${courseId}/assignments`,
-    },
-    { name: "Quizzes", icon: HelpCircle, href: `/courses/${courseId}/quizzes` },
-    { name: "Grades", icon: BarChart3, href: `/courses/${courseId}/grades` },
-    { name: "People", icon: Users, href: `/courses/${courseId}/people` },
-  ];
-
-  const modules = [
-    {
-      id: 1,
-      title: "Week 0 - INTRO",
-      status: "Completed",
-      lessons: [
-        {
-          id: 1,
-          type: "assignment",
-          title: "LEARNING MODULE",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 2,
-          type: "assignment",
-          title: "LEARNING OBJECTIVES",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 3,
-          type: "reading",
-          title: "READING",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 4,
-          type: "assignment",
-          title: "SLIDES",
-          points: 0,
-          due: null,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Week 1 - COURSE INTRO, HTML, CSS, BOOTSTRAP",
-      status: "Completed",
-      lessons: [
-        {
-          id: 5,
-          type: "assignment",
-          title: "LEARNING OBJECTIVES",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 6,
-          type: "reading",
-          title: "READING",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 7,
-          type: "assignment",
-          title: "SLIDES",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 8,
-          type: "assignment",
-          title: "HTML",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 9,
-          type: "assignment",
-          title: "CSS",
-          points: 0,
-          due: null,
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: "Week 2 - FORMATTING USER INTERFACES WITH HTML AND CSS",
-      status: "In Progress",
-      lessons: [
-        {
-          id: 10,
-          type: "assignment",
-          title: "LEARNING OBJECTIVES",
-          points: 0,
-          due: null,
-        },
-        {
-          id: 11,
-          type: "reading",
-          title: "LESSON",
-          points: 0,
-          due: null,
-        },
-      ],
-    },
-  ];
   return (
     <div className="flex h-screen bg-gray-50">
       <div
@@ -207,7 +81,7 @@ export default function CourseModules() {
                 key={item.name}
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
-                  item.active
+                  item.href === `/courses/${courseId}/modules`
                     ? "bg-white text-gray-900 border-l-4 border-black"
                     : "text-red-600 hover:bg-gray-100"
                 }`}

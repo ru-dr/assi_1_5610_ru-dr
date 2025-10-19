@@ -4,99 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import {
-  User,
-  LayoutDashboard,
-  BookOpen,
-  Calendar,
-  Inbox,
-  Clock,
-  Beaker as Labs,
-  BrainCircuit as Studio,
-  HelpCircle,
-  Menu,
-  X,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { navigationLinks } from "@/app/(kambaz)/data/navigationData";
 
 export default function KambazNavigation() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  const links = [
-    {
-      name: "Account",
-      href: "/account",
-      icon: User,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-white",
-    },
-    {
-      name: "Dashboard",
-      href: "/dashboard",
-      icon: LayoutDashboard,
-      bgColor: "bg-white",
-      textColor: "text-red-600",
-      iconColor: "text-red-600",
-      activeBgColor: "bg-white",
-    },
-    {
-      name: "Courses",
-      href: "/courses",
-      icon: BookOpen,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-red-600",
-    },
-    {
-      name: "Calendar",
-      href: "/calendar",
-      icon: Calendar,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-red-600",
-    },
-    {
-      name: "Inbox",
-      href: "/inbox",
-      icon: Inbox,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-red-600",
-    },
-    {
-      name: "Labs",
-      href: "/labs",
-      icon: Labs,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-red-600",
-    },
-    {
-      name: "History",
-      href: "/history",
-      icon: Clock,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-red-600",
-    },
-    {
-      name: "Studio",
-      href: "/studio",
-      icon: Studio,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-red-600",
-    },
-    {
-      name: "Help",
-      href: "/help",
-      icon: HelpCircle,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      iconColor: "text-red-600",
-    },
-  ];
+  const links = navigationLinks;
 
   const isActive = (href) =>
     pathname === href || pathname.startsWith(href + "/");

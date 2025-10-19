@@ -5,13 +5,6 @@ import { useParams } from "next/navigation";
 import {
   Menu,
   X,
-  Home,
-  FileText,
-  Users,
-  MessageSquare,
-  BarChart3,
-  Video,
-  HelpCircle,
   CheckCircle,
   Calendar as CalendarIcon,
   ChevronDown,
@@ -19,8 +12,15 @@ import {
   Bell,
   BarChart2,
   Link as LinkIcon,
+  FileText,
 } from "lucide-react";
-import { getCourseById } from "../coursesData";
+import { getCourseById } from "@/app/(kambaz)/data/coursesData";
+import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
+import { 
+  getHomeScreenModules, 
+  getTodoItems, 
+  getRecentFeedback 
+} from "@/app/(kambaz)/data/homeScreenData";
 
 export default function CourseHome() {
   const params = useParams();
@@ -33,6 +33,16 @@ export default function CourseHome() {
   });
 
   const course = getCourseById(courseId);
+  const courseNav = getCourseNavigation(courseId);
+  const modules = getHomeScreenModules(courseId);
+  const todoItems = getTodoItems(courseId).map(item => ({
+    ...item,
+    course: course?.title || "",
+  }));
+  const recentFeedback = getRecentFeedback(courseId).map(item => ({
+    ...item,
+    course: course?.fullName || "",
+  }));
 
   if (!course) {
     return (
@@ -48,92 +58,6 @@ export default function CourseHome() {
       </div>
     );
   }
-
-  const courseNav = [
-    { name: "Home", icon: Home, href: `/courses/${courseId}`, active: true },
-    { name: "Modules", icon: FileText, href: `/courses/${courseId}/modules` },
-    {
-      name: "Piazza",
-      icon: MessageSquare,
-      href: `/courses/${courseId}/piazza`,
-    },
-    { name: "Zoom Meetings", icon: Video, href: `/courses/${courseId}/zoom` },
-    {
-      name: "Assignments",
-      icon: FileText,
-      href: `/courses/${courseId}/assignments`,
-    },
-    { name: "Quizzes", icon: HelpCircle, href: `/courses/${courseId}/quizzes` },
-    { name: "Grades", icon: BarChart3, href: `/courses/${courseId}/grades` },
-    { name: "People", icon: Users, href: `/courses/${courseId}/people` },
-  ];
-
-  const todoItems = [
-    {
-      id: 1,
-      title: "Q6",
-      course: course.title,
-      points: 18,
-      dueDate: "Nov 10 at 11:59pm",
-    },
-    {
-      id: 2,
-      title: "Lecture Wed 05 & 07",
-      course: course.title,
-      dueDate: "Nov 12 at 3pm",
-    },
-    {
-      id: 3,
-      title: "Assignment 1",
-      course: course.title,
-      dueDate: "Nov 14 at 1pm",
-    },
-    {
-      id: 4,
-      title: "Quiz 3",
-      course: course.title,
-      dueDate: "Nov 14 at 2pm",
-    },
-  ];
-
-  const recentFeedback = [
-    { id: 1, title: "Q2", course: course.fullName, score: "22 out of 23" },
-    { id: 2, title: "Q1", course: course.fullName, score: "27 out of 29" },
-    { id: 3, title: "A1", course: course.fullName, score: "99.68%" },
-  ];
-
-  const modules = [
-    {
-      id: 1,
-      title: "Resources",
-      items: [
-        { type: "link", title: "Syllabus", icon: "🔗" },
-        { type: "document", title: "Office Hours" },
-        { type: "document", title: "Piazza Hours" },
-        { type: "link", title: "Piazza", icon: "🔗" },
-        { type: "document", title: "Final Project" },
-        { type: "link", title: "WebDev TA", icon: "🔗" },
-      ],
-    },
-    {
-      id: 2,
-      title: "GITHUB",
-      items: [
-        { type: "link", title: "Jose's GitHub username: jannunzi", icon: "🔗" },
-      ],
-    },
-    {
-      id: 3,
-      title: "TEXTBOOK",
-      items: [
-        {
-          type: "link",
-          title: "Developing Full Stack Next.js Web Applications",
-          icon: "🔗",
-        },
-      ],
-    },
-  ];
 
   const toggleModule = (moduleId) => {
     setExpandedModules((prev) => ({
@@ -165,7 +89,7 @@ export default function CourseHome() {
                 key={item.name}
                 href={item.href}
                 className={`flex items-center space-x-3 px-3 py-2 rounded ${
-                  item.active
+                  item.href === `/courses/${courseId}`
                     ? "bg-white text-gray-900 border-l-4 border-black"
                     : "text-red-600 hover:bg-gray-100"
                 }`}
@@ -227,7 +151,7 @@ export default function CourseHome() {
                             <>
                               <LinkIcon className="w-4 h-4 text-gray-600" />
                               <Link
-                                href="#"
+                                href={item.href || "#"}
                                 className="text-red-600 hover:underline text-sm flex-1"
                               >
                                 {item.title}
