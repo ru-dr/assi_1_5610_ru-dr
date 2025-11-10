@@ -1,35 +1,35 @@
 export const assignmentsData = {
   1: [
-    { 
-      id: "A1", 
-      title: "A1 - HTML and CSS Basics", 
-      dueDate: "Sep 28 at 11:59pm", 
+    {
+      id: "A1",
+      title: "A1 - HTML and CSS Basics",
+      dueDate: "Sep 28 at 11:59pm",
       points: 100,
       availableFrom: "Sep 20 at 12:00am",
       description: "Introduction to HTML and CSS fundamentals",
     },
-    { 
-      id: "A2", 
-      title: "A2 - Advanced CSS and Bootstrap", 
-      dueDate: "Oct 6 at 11:59pm", 
+    {
+      id: "A2",
+      title: "A2 - Advanced CSS and Bootstrap",
+      dueDate: "Oct 6 at 11:59pm",
       points: 375,
       availableFrom: "Sep 30 at 12:00am",
       description: "This is assignment 2 description.",
     },
   ],
   2: [
-    { 
-      id: "A1", 
-      title: "A1 - HTML and CSS Basics", 
-      dueDate: "Sep 28 at 11:59pm", 
+    {
+      id: "A1",
+      title: "A1 - HTML and CSS Basics",
+      dueDate: "Sep 28 at 11:59pm",
       points: 100,
       availableFrom: "Sep 20 at 12:00am",
       description: "Introduction to HTML and CSS fundamentals",
     },
-    { 
-      id: "A2", 
-      title: "A2 - Advanced CSS and Bootstrap", 
-      dueDate: "Oct 6 at 11:59pm", 
+    {
+      id: "A2",
+      title: "A2 - Advanced CSS and Bootstrap",
+      dueDate: "Oct 6 at 11:59pm",
       points: 375,
       availableFrom: "Sep 30 at 12:00am",
       description: "This is assignment 2 description.",
@@ -43,7 +43,7 @@ export const getAssignmentsByCourseId = (courseId) => {
 
 export const getAssignmentById = (courseId, assignmentId) => {
   const assignments = assignmentsData[courseId] || [];
-  return assignments.find(assignment => assignment.id === assignmentId);
+  return assignments.find((assignment) => assignment.id === assignmentId);
 };
 
 export const assignmentFormDefaults = {

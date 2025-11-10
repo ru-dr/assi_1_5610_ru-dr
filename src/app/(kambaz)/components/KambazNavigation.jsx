@@ -18,9 +18,12 @@ export default function KambazNavigation() {
 
   return (
     <>
-      
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-black flex items-center justify-between px-4 z-50">
-        <Link href="https://northeastern.edu" target="_blank" rel="noopener noreferrer">
+        <Link
+          href="https://northeastern.edu"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Image
             src="https://instructure-uploads.s3.amazonaws.com/account_145230000000000001/attachments/949/NU_MonoLVX_RGB_RW.png"
             alt="Northeastern"
@@ -38,17 +41,15 @@ export default function KambazNavigation() {
         </button>
       </div>
 
-      
       {isOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 top-14"
           onClick={() => setIsOpen(false)}
           onTouchStart={() => setIsOpen(false)}
-          style={{ pointerEvents: 'auto' }}
+          style={{ pointerEvents: "auto" }}
         />
       )}
 
-      
       <nav
         className={`md:hidden fixed top-14 left-0 bottom-0 w-64 bg-black transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -82,46 +83,45 @@ export default function KambazNavigation() {
         </div>
       </nav>
 
-      
       <nav className="hidden md:flex w-[100px] bg-black flex-col items-center py-4 space-y-1 relative z-50">
-      <Link
-        href="https://northeastern.edu"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mb-4"
-      >
-        <Image
-          src="https://instructure-uploads.s3.amazonaws.com/account_145230000000000001/attachments/949/NU_MonoLVX_RGB_RW.png"
-          alt="Northeastern"
-          width={64}
-          height={64}
-          className="w-16 h-16 object-contain"
-        />
-      </Link>
+        <Link
+          href="https://northeastern.edu"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-4"
+        >
+          <Image
+            src="https://instructure-uploads.s3.amazonaws.com/account_145230000000000001/attachments/949/NU_MonoLVX_RGB_RW.png"
+            alt="Northeastern"
+            width={64}
+            height={64}
+            className="w-16 h-16 object-contain"
+          />
+        </Link>
 
-      {links.map((link) => {
-        const Icon = link.icon;
-        const active = isActive(link.href);
+        {links.map((link) => {
+          const Icon = link.icon;
+          const active = isActive(link.href);
 
-        return (
-          <Link
-            key={link.name}
-            href={link.href}
-            className={`
+          return (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`
               ${active ? "bg-white" : "bg-black"}
               ${active ? "text-red-600" : "text-white"}
               w-[90px] py-3 flex flex-col items-center justify-center
               hover:bg-gray-800 transition-colors
               ${active ? "border-l-4 border-white" : "border-l-4 border-transparent"}
             `}
-          >
-            <Icon
-              className={`w-6 h-6 mb-1 ${active ? "text-red-600" : link.iconColor}`}
-            />
-            <span className="text-xs text-center">{link.name}</span>
-          </Link>
-        );
-      })}
+            >
+              <Icon
+                className={`w-6 h-6 mb-1 ${active ? "text-red-600" : link.iconColor}`}
+              />
+              <span className="text-xs text-center">{link.name}</span>
+            </Link>
+          );
+        })}
       </nav>
     </>
   );

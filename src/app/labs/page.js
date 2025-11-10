@@ -20,6 +20,12 @@ export default function Labs() {
       description:
         "Practice JavaScript fundamentals including variables, functions, DOM manipulation, and events",
     },
+    {
+      id: "lab4",
+      title: "Lab 4 - React State Management",
+      description:
+        "Learn React state management with hooks and Redux, including user events, component state, and application state",
+    },
   ];
 
   return (

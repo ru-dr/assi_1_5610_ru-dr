@@ -358,9 +358,27 @@ export default function Lab2() {
             Three images laid out horizontally
           </h3>
           <div className="flex space-x-4">
-            <Image src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop" alt="Mountain landscape" width={128} height={128} className="object-cover rounded" />
-            <Image src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&h=200&fit=crop" alt="Forest scene" width={128} height={128} className="object-cover rounded" />
-            <Image src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=200&h=200&fit=crop" alt="Ocean view" width={128} height={128} className="object-cover rounded" />
+            <Image
+              src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop"
+              alt="Mountain landscape"
+              width={128}
+              height={128}
+              className="object-cover rounded"
+            />
+            <Image
+              src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=200&h=200&fit=crop"
+              alt="Forest scene"
+              width={128}
+              height={128}
+              className="object-cover rounded"
+            />
+            <Image
+              src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=200&h=200&fit=crop"
+              alt="Ocean view"
+              width={128}
+              height={128}
+              className="object-cover rounded"
+            />
           </div>
         </div>
 
@@ -372,7 +390,13 @@ export default function Lab2() {
               sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
               incididunt ut labore et dolore magna aliqua.
             </p>
-            <Image src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=200&h=200&fit=crop" alt="Cat portrait" width={128} height={128} className="object-cover rounded ml-4" />
+            <Image
+              src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=200&h=200&fit=crop"
+              alt="Cat portrait"
+              width={128}
+              height={128}
+              className="object-cover rounded ml-4"
+            />
           </div>
         </div>
       </section>
@@ -512,10 +536,11 @@ export default function Lab2() {
           </div>
         </div>
 
-        
         <div className="fixed bottom-4 right-4 bg-black text-white p-3 text-xs font-mono rounded shadow-lg z-50">
           <div className="font-semibold mb-1">Current Breakpoint:</div>
-          <div className="2xl:hidden xl:hidden lg:hidden md:hidden sm:hidden">XS (&lt; 640px)</div>
+          <div className="2xl:hidden xl:hidden lg:hidden md:hidden sm:hidden">
+            XS (&lt; 640px)
+          </div>
           <div className="hidden sm:block md:hidden">SM (≥ 640px)</div>
           <div className="hidden md:block lg:hidden">MD (≥ 768px)</div>
           <div className="hidden lg:block xl:hidden">LG (≥ 1024px)</div>
@@ -585,11 +610,21 @@ export default function Lab2() {
         <div className="mb-4">
           <h3 className="text-xl font-medium mb-2">Favorite list of movies</h3>
           <ul className="border border-gray-300 dark:border-gray-600 rounded-lg divide-y divide-gray-300 dark:divide-gray-600">
-            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Shawshank Redemption</li>
-            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Godfather</li>
-            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">The Dark Knight</li>
-            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Pulp Fiction</li>
-            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Forrest Gump</li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              The Shawshank Redemption
+            </li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              The Godfather
+            </li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              The Dark Knight
+            </li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              Pulp Fiction
+            </li>
+            <li className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              Forrest Gump
+            </li>
           </ul>
         </div>
 
@@ -599,27 +634,42 @@ export default function Lab2() {
           </h3>
           <ul className="border border-gray-300 dark:border-gray-600 rounded-lg divide-y divide-gray-300 dark:divide-gray-600">
             <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+              <a
+                href="#"
+                className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+              >
                 To Kill a Mockingbird
               </a>
             </li>
             <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+              <a
+                href="#"
+                className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+              >
                 1984
               </a>
             </li>
             <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+              <a
+                href="#"
+                className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+              >
                 The Great Gatsby
               </a>
             </li>
             <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+              <a
+                href="#"
+                className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+              >
                 Pride and Prejudice
               </a>
             </li>
             <li className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-              <a href="#" className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+              <a
+                href="#"
+                className="block px-4 py-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+              >
                 The Catcher in the Rye
               </a>
             </li>
@@ -788,11 +838,11 @@ export default function Lab2() {
         <h2 className="text-2xl font-semibold mb-4">Cards</h2>
 
         <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden max-w-sm">
-          <Image 
-            src="https://images.unsplash.com/photo-1700508317396-e343a69ac72f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3RhcnNoaXB8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500" 
-            alt="SpaceX Starship" 
-            width={500} 
-            height={300} 
+          <Image
+            src="https://images.unsplash.com/photo-1700508317396-e343a69ac72f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3RhcnNoaXB8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500"
+            alt="SpaceX Starship"
+            width={500}
+            height={300}
             className="w-full h-48 object-cover"
           />
           <div className="p-6">

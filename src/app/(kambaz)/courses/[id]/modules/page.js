@@ -3,9 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { getCourseById } from "@/app/(kambaz)/data/coursesData";
+import { useSelector, useDispatch } from "react-redux";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
-import { getModulesByCourseId } from "@/app/(kambaz)/data/modulesData";
+import {
+  addModule,
+  deleteModule,
+  updateModule,
+  setModule,
+} from "@/app/store/modulesReducer";
 import {
   Menu,
   X,
@@ -31,12 +36,50 @@ import {
 export default function CourseModules() {
   const params = useParams();
   const courseId = params.id;
+  const dispatch = useDispatch();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedModules, setExpandedModules] = useState([0, 1, 2, 3]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingModule, setEditingModule] = useState(null);
+  const [newModuleTitle, setNewModuleTitle] = useState("");
 
-  const course = getCourseById(courseId);
+  const courses = useSelector((state) => state.courses.courses);
+  const allModules = useSelector((state) => state.modules.modules);
+  const course = courses.find((c) => c.id === courseId);
+  const modules = allModules.filter((module) => module.course === courseId);
+
   const courseNav = getCourseNavigation(courseId);
-  const modules = getModulesByCourseId(courseId);
+
+  const handleAddModule = () => {
+    if (newModuleTitle.trim()) {
+      dispatch(
+        addModule({
+          title: newModuleTitle,
+          course: courseId,
+          status: "Not Started",
+          lessons: [],
+        }),
+      );
+      setNewModuleTitle("");
+      setShowAddForm(false);
+    }
+  };
+
+  const handleDeleteModule = (moduleId) => {
+    if (confirm("Are you sure you want to delete this module?")) {
+      dispatch(deleteModule(moduleId));
+    }
+  };
+
+  const handleEditModule = (module) => {
+    setEditingModule({ ...module });
+  };
+
+  const handleUpdateModule = () => {
+    dispatch(updateModule(editingModule));
+    setEditingModule(null);
+  };
 
   if (!course) {
     return (
@@ -147,7 +190,11 @@ export default function CourseModules() {
                 </button>
               </div>
             </div>
-            <button className="px-3 py-1.5 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center gap-1">
+            <button
+              className="px-3 py-1.5 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center gap-1"
+              onClick={() => setShowAddForm(!showAddForm)}
+              id="wd-add-module-btn"
+            >
               <Plus className="w-4 h-4" />
               Module
             </button>
@@ -180,77 +227,165 @@ export default function CourseModules() {
 
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 overflow-y-auto p-3 sm:p-6 bg-gray-50">
-            {modules.map((module, index) => (
-              <div
-                key={index}
-                className="bg-white border border-gray-300 mb-4 rounded"
-              >
-                <div className="bg-gray-200 border-b border-gray-300">
-                  <div className="flex items-center justify-between p-4">
-                    <div className="flex items-center space-x-3">
-                      <GripVertical className="w-5 h-5 text-gray-500" />
-                      <button
-                        onClick={() => toggleModule(index)}
-                        className="flex items-center space-x-2"
-                      >
-                        {expandedModules.includes(index) ? (
-                          <ChevronDown className="w-5 h-5 text-gray-700" />
-                        ) : (
-                          <ChevronRight className="w-5 h-5 text-gray-700" />
-                        )}
-                      </button>
-                      <h3 className="font-semibold text-gray-900">
-                        {module.title}
-                      </h3>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button className="p-1 hover:bg-gray-300 rounded">
-                        <Edit className="w-4 h-4 text-gray-600" />
-                      </button>
-                      <button className="p-1 hover:bg-gray-300 rounded">
-                        <Trash2 className="w-4 h-4 text-gray-600" />
-                      </button>
-                      <button className="p-1 hover:bg-gray-300 rounded">
-                        <Plus className="w-4 h-4 text-gray-600" />
-                      </button>
-                      <button className="p-1 hover:bg-gray-300 rounded">
-                        <EllipsisVertical className="w-4 h-4 text-gray-600" />
-                      </button>
-                    </div>
+            {showAddForm && (
+              <div className="bg-white border border-gray-300 mb-4 rounded p-4">
+                <h3 className="font-semibold mb-3 text-black">
+                  Add New Module
+                </h3>
+                <input
+                  type="text"
+                  value={newModuleTitle}
+                  onChange={(e) => setNewModuleTitle(e.target.value)}
+                  placeholder="Module Title"
+                  className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-black"
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleAddModule}
+                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowAddForm(false);
+                      setNewModuleTitle("");
+                    }}
+                    className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {editingModule && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-lg p-6 max-w-md w-full">
+                  <h3 className="font-semibold mb-3 text-black">Edit Module</h3>
+                  <input
+                    type="text"
+                    value={editingModule.title}
+                    onChange={(e) =>
+                      setEditingModule({
+                        ...editingModule,
+                        title: e.target.value,
+                      })
+                    }
+                    placeholder="Module Title"
+                    className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-black"
+                  />
+                  <select
+                    value={editingModule.status}
+                    onChange={(e) =>
+                      setEditingModule({
+                        ...editingModule,
+                        status: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-black"
+                  >
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleUpdateModule}
+                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => setEditingModule(null)}
+                      className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
-
-                {expandedModules.includes(index) && (
-                  <div>
-                    {module.lessons.map((lesson, lessonIndex) => (
-                      <div
-                        key={lessonIndex}
-                        className="flex items-center justify-between py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0 border-l-4 border-l-green-600"
-                      >
-                        <div className="flex items-center space-x-3">
-                          <GripVertical className="w-4 h-4 text-gray-400" />
-                          <FileText className="w-5 h-5 text-gray-600" />
-                          <span className="text-gray-800 text-sm">
-                            {lesson.title}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <button className="p-1 hover:bg-gray-200 rounded">
-                            <Edit className="w-4 h-4 text-gray-500" />
-                          </button>
-                          <button className="p-1 hover:bg-gray-200 rounded">
-                            <Trash2 className="w-4 h-4 text-gray-500" />
-                          </button>
-                          <button className="p-1 hover:bg-gray-200 rounded">
-                            <EllipsisVertical className="w-4 h-4 text-gray-500" />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
-            ))}
+            )}
+
+            <div id="wd-modules">
+              {modules.map((module, index) => (
+                <div
+                  key={index}
+                  className="wd-module bg-white border border-gray-300 mb-4 rounded"
+                >
+                  <div className="bg-gray-200 border-b border-gray-300">
+                    <div className="flex items-center justify-between p-4">
+                      <div className="flex items-center space-x-3">
+                        <GripVertical className="w-5 h-5 text-gray-500" />
+                        <button
+                          onClick={() => toggleModule(index)}
+                          className="flex items-center space-x-2"
+                        >
+                          {expandedModules.includes(index) ? (
+                            <ChevronDown className="w-5 h-5 text-gray-700" />
+                          ) : (
+                            <ChevronRight className="w-5 h-5 text-gray-700" />
+                          )}
+                        </button>
+                        <h3 className="wd-title font-semibold text-gray-900">
+                          {module.title}
+                        </h3>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleEditModule(module)}
+                          className="p-1 hover:bg-gray-300 rounded"
+                        >
+                          <Edit className="w-4 h-4 text-gray-600" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteModule(module.id)}
+                          className="p-1 hover:bg-gray-300 rounded"
+                        >
+                          <Trash2 className="w-4 h-4 text-gray-600" />
+                        </button>
+                        <button className="p-1 hover:bg-gray-300 rounded">
+                          <Plus className="w-4 h-4 text-gray-600" />
+                        </button>
+                        <button className="p-1 hover:bg-gray-300 rounded">
+                          <EllipsisVertical className="w-4 h-4 text-gray-600" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {expandedModules.includes(index) && (
+                    <div className="wd-lessons">
+                      {module.lessons.map((lesson, lessonIndex) => (
+                        <div
+                          key={lessonIndex}
+                          className="flex items-center justify-between py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0 border-l-4 border-l-green-600"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <GripVertical className="w-4 h-4 text-gray-400" />
+                            <FileText className="w-5 h-5 text-gray-600" />
+                            <span className="text-gray-800 text-sm">
+                              {lesson.title}
+                            </span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <button className="p-1 hover:bg-gray-200 rounded">
+                              <Edit className="w-4 h-4 text-gray-500" />
+                            </button>
+                            <button className="p-1 hover:bg-gray-200 rounded">
+                              <Trash2 className="w-4 h-4 text-gray-500" />
+                            </button>
+                            <button className="p-1 hover:bg-gray-200 rounded">
+                              <EllipsisVertical className="w-4 h-4 text-gray-500" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="hidden xl:block w-80 bg-white border-l border-gray-300 overflow-y-auto">

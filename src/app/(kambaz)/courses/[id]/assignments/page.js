@@ -2,9 +2,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { getCourseById } from "@/app/(kambaz)/data/coursesData";
+import { useSelector, useDispatch } from "react-redux";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
-import { getAssignmentsByCourseId } from "@/app/(kambaz)/data/assignmentsData";
+import {
+  addAssignment,
+  deleteAssignment,
+  updateAssignment,
+  setAssignment,
+} from "@/app/store/assignmentsReducer";
 import {
   Menu,
   X,
@@ -13,17 +18,67 @@ import {
   GripVertical,
   Ellipsis,
   FileText,
+  Edit,
+  Trash2,
 } from "lucide-react";
 
 export default function Assignments() {
   const params = useParams();
   const courseId = params.id;
+  const dispatch = useDispatch();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingAssignment, setEditingAssignment] = useState(null);
+  const [newAssignment, setNewAssignment] = useState({
+    title: "",
+    dueDate: "",
+    points: 100,
+    availableFrom: "",
+    description: "",
+  });
 
-  const course = getCourseById(courseId);
+  const courses = useSelector((state) => state.courses.courses);
+  const allAssignments = useSelector((state) => state.assignments.assignments);
+  const course = courses.find((c) => c.id === courseId);
+  const assignments = allAssignments.filter((a) => a.course === courseId);
+
   const courseNav = getCourseNavigation(courseId);
-  const assignments = getAssignmentsByCourseId(courseId);
+
+  const handleAddAssignment = () => {
+    if (newAssignment.title.trim()) {
+      dispatch(
+        addAssignment({
+          ...newAssignment,
+          course: courseId,
+        }),
+      );
+      setNewAssignment({
+        title: "",
+        dueDate: "",
+        points: 100,
+        availableFrom: "",
+        description: "",
+      });
+      setShowAddForm(false);
+    }
+  };
+
+  const handleDeleteAssignment = (assignmentId) => {
+    if (confirm("Are you sure you want to delete this assignment?")) {
+      dispatch(deleteAssignment(assignmentId));
+    }
+  };
+
+  const handleEditAssignment = (assignment) => {
+    setEditingAssignment({ ...assignment });
+  };
+
+  const handleUpdateAssignment = () => {
+    dispatch(updateAssignment(editingAssignment));
+    setEditingAssignment(null);
+  };
 
   if (!course) {
     return (
@@ -85,7 +140,9 @@ export default function Assignments() {
             <Menu className="w-5 h-5 text-gray-700" />
           </button>
           <div className="min-w-0">
-            <h1 className="text-red-600 font-medium text-sm sm:text-base truncate">{course.fullName}</h1>
+            <h1 className="text-red-600 font-medium text-sm sm:text-base truncate">
+              {course.fullName}
+            </h1>
             <p className="text-xs sm:text-sm text-gray-600">Assignments</p>
           </div>
         </div>
@@ -95,6 +152,7 @@ export default function Assignments() {
             <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
+                id="wd-search-assignment"
                 type="text"
                 placeholder="Search for Assignment"
                 value={searchQuery}
@@ -103,28 +161,212 @@ export default function Assignments() {
               />
             </div>
             <div className="flex space-x-2">
-              <button className="flex-1 sm:flex-none px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded flex items-center justify-center">
+              <button
+                id="wd-add-assignment-group"
+                className="flex-1 sm:flex-none px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded flex items-center justify-center"
+              >
                 <Plus className="w-4 h-4 mr-1" />
                 Group
               </button>
-              <button className="flex-1 sm:flex-none px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center justify-center">
+              <button
+                onClick={() => setShowAddForm(!showAddForm)}
+                id="wd-add-assignment"
+                className="flex-1 sm:flex-none px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded flex items-center justify-center"
+              >
                 <Plus className="w-4 h-4 mr-1" />
                 Assignment
               </button>
             </div>
           </div>
 
-          <div className="bg-white border border-gray-300">
+          {showAddForm && (
+            <div className="bg-white border border-gray-300 rounded p-6 mb-4">
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                Add New Assignment
+              </h2>
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Assignment Title"
+                  value={newAssignment.title}
+                  onChange={(e) =>
+                    setNewAssignment({
+                      ...newAssignment,
+                      title: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                />
+                <textarea
+                  placeholder="Description"
+                  value={newAssignment.description}
+                  onChange={(e) =>
+                    setNewAssignment({
+                      ...newAssignment,
+                      description: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                  rows="3"
+                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <input
+                    type="number"
+                    placeholder="Points"
+                    value={newAssignment.points}
+                    onChange={(e) =>
+                      setNewAssignment({
+                        ...newAssignment,
+                        points: parseInt(e.target.value),
+                      })
+                    }
+                    className="px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Due Date (e.g., Nov 20 at 11:59pm)"
+                    value={newAssignment.dueDate}
+                    onChange={(e) =>
+                      setNewAssignment({
+                        ...newAssignment,
+                        dueDate: e.target.value,
+                      })
+                    }
+                    className="px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Available From (e.g., Nov 10 at 12:00am)"
+                    value={newAssignment.availableFrom}
+                    onChange={(e) =>
+                      setNewAssignment({
+                        ...newAssignment,
+                        availableFrom: e.target.value,
+                      })
+                    }
+                    className="px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2 mt-4">
+                <button
+                  onClick={handleAddAssignment}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                >
+                  Save Assignment
+                </button>
+                <button
+                  onClick={() => setShowAddForm(false)}
+                  className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {editingAssignment && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <h2 className="text-xl font-semibold mb-4 text-black">
+                  Edit Assignment
+                </h2>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Assignment Title"
+                    value={editingAssignment.title}
+                    onChange={(e) =>
+                      setEditingAssignment({
+                        ...editingAssignment,
+                        title: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                  />
+                  <textarea
+                    placeholder="Description"
+                    value={editingAssignment.description}
+                    onChange={(e) =>
+                      setEditingAssignment({
+                        ...editingAssignment,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                    rows="3"
+                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input
+                      type="number"
+                      placeholder="Points"
+                      value={editingAssignment.points}
+                      onChange={(e) =>
+                        setEditingAssignment({
+                          ...editingAssignment,
+                          points: parseInt(e.target.value),
+                        })
+                      }
+                      className="px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Due Date"
+                      value={editingAssignment.dueDate}
+                      onChange={(e) =>
+                        setEditingAssignment({
+                          ...editingAssignment,
+                          dueDate: e.target.value,
+                        })
+                      }
+                      className="px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Available From"
+                      value={editingAssignment.availableFrom}
+                      onChange={(e) =>
+                        setEditingAssignment({
+                          ...editingAssignment,
+                          availableFrom: e.target.value,
+                        })
+                      }
+                      className="px-3 py-2 border border-gray-300 rounded bg-white text-black"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-4">
+                  <button
+                    onClick={handleUpdateAssignment}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  >
+                    Update Assignment
+                  </button>
+                  <button
+                    onClick={() => setEditingAssignment(null)}
+                    className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div id="wd-assignments" className="bg-white border border-gray-300">
             <div className="flex items-center justify-between p-4 bg-gray-200 border-b border-gray-300">
-              <h2 className="font-semibold text-gray-800">
+              <h2
+                id="wd-assignments-title"
+                className="font-semibold text-gray-800"
+              >
                 ▼ Upcoming Assignments
               </h2>
             </div>
-            <div>
+            <div id="wd-assignment-list">
               {assignments.map((assignment) => (
                 <div
                   key={assignment.id}
-                  className="flex items-center border-b border-gray-200 hover:bg-gray-50"
+                  className="wd-assignment-list-item flex items-center border-b border-gray-200 hover:bg-gray-50"
                 >
                   <div className="flex items-center space-x-3 p-4 flex-1 border-l-4 border-green-600">
                     <GripVertical className="w-4 h-4 text-gray-400" />
@@ -132,7 +374,7 @@ export default function Assignments() {
                     <div className="flex-1">
                       <Link
                         href={`/courses/${courseId}/assignments/${assignment.id}`}
-                        className="text-red-600 hover:underline font-medium"
+                        className="wd-assignment-link text-red-600 hover:underline font-medium"
                       >
                         {assignment.title}
                       </Link>
@@ -153,7 +395,23 @@ export default function Assignments() {
                         </span>
                       </div>
                     </div>
-                    <Ellipsis className="w-5 h-5 text-gray-600 cursor-pointer" />
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleEditAssignment(assignment)}
+                        className="p-1 hover:bg-gray-200 rounded"
+                        title="Edit Assignment"
+                      >
+                        <Edit className="w-4 h-4 text-blue-600" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteAssignment(assignment.id)}
+                        className="p-1 hover:bg-gray-200 rounded"
+                        title="Delete Assignment"
+                      >
+                        <Trash2 className="w-4 h-4 text-red-600" />
+                      </button>
+                      <Ellipsis className="w-5 h-5 text-gray-600 cursor-pointer" />
+                    </div>
                   </div>
                 </div>
               ))}

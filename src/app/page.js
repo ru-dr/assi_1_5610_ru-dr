@@ -51,7 +51,7 @@ export default function Home() {
             <div className="text-3xl mb-3">🧪</div>
             <h2 className="text-xl font-semibold mb-2">Labs</h2>
             <p className="text-green-100">
-              Lab1: HTML Elements Practice, Lab2 & Lab3: Coming Soon
+              View and access various lab assignments and practice exercises
             </p>
           </Link>
         </div>

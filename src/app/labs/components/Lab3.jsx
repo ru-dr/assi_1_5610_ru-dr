@@ -469,12 +469,18 @@ export default function Lab3() {
         <div className="space-y-2 font-mono text-sm">
           <div>Click any of them:</div>
           <div>
-            <Link href="/labs/add/1/2" className="text-blue-600 hover:underline">
+            <Link
+              href="/labs/add/1/2"
+              className="text-blue-600 hover:underline"
+            >
               1 + 2
             </Link>
           </div>
           <div>
-            <Link href="/labs/add/3/4" className="text-blue-600 hover:underline">
+            <Link
+              href="/labs/add/3/4"
+              className="text-blue-600 hover:underline"
+            >
               3 + 4
             </Link>
           </div>

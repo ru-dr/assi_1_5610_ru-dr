@@ -3,11 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  Menu,
-  X,
-  Search,
-} from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import peopleData from "@/app/(kambaz)/data/peopleData";
 import { getCourseById } from "@/app/(kambaz)/data/coursesData";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
@@ -37,7 +33,7 @@ export default function CoursePeople() {
     );
   }
 
-  const people = peopleData.map(person => ({
+  const people = peopleData.map((person) => ({
     ...person,
     section: course.fullName,
     avatar: null,

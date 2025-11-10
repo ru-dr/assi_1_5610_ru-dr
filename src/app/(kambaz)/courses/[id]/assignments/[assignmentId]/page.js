@@ -4,17 +4,14 @@ import { use, useState } from "react";
 import Link from "next/link";
 import { getCourseById } from "@/app/(kambaz)/data/coursesData";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
-import { 
+import {
   getAssignmentById,
   assignmentGroupOptions,
   displayGradeOptions,
   submissionTypeOptions,
   onlineEntryOptionsData,
 } from "@/app/(kambaz)/data/assignmentsData";
-import {
-  Menu,
-  X,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export default function AssignmentEditor({ params }) {
   const { id: courseId, assignmentId } = use(params);
@@ -26,7 +23,8 @@ export default function AssignmentEditor({ params }) {
 
   const [formData, setFormData] = useState({
     assignmentName: assignmentData?.title || "",
-    description: assignmentData?.description || "This is assignment 2 description.",
+    description:
+      assignmentData?.description || "This is assignment 2 description.",
     points: assignmentData?.points || 375,
     assignmentGroup: "ASSIGNMENTS",
     displayGradeAs: "Percentage",
@@ -224,8 +222,10 @@ export default function AssignmentEditor({ params }) {
                         onChange={handleChange}
                         className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
-                        {assignmentGroupOptions.map(option => (
-                          <option key={option} value={option}>{option}</option>
+                        {assignmentGroupOptions.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -244,11 +244,13 @@ export default function AssignmentEditor({ params }) {
                       value={formData.displayGradeAs}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {displayGradeOptions.map(option => (
-                          <option key={option} value={option}>{option}</option>
-                        ))}
-                      </select>
+                    >
+                      {displayGradeOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div>
@@ -264,11 +266,13 @@ export default function AssignmentEditor({ params }) {
                       value={formData.submissionType}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded text-black px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {submissionTypeOptions.map(option => (
-                          <option key={option} value={option}>{option}</option>
-                        ))}
-                      </select>
+                    >
+                      {submissionTypeOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   {formData.submissionType === "Online" && (
@@ -277,11 +281,16 @@ export default function AssignmentEditor({ params }) {
                         Online Entry Options
                       </p>
                       <div className="space-y-2">
-                        {onlineEntryOptionsData.map(option => (
-                          <label key={option} className="flex items-center text-sm text-gray-700">
+                        {onlineEntryOptionsData.map((option) => (
+                          <label
+                            key={option}
+                            className="flex items-center text-sm text-gray-700"
+                          >
                             <input
                               type="checkbox"
-                              checked={formData.onlineEntryOptions.includes(option)}
+                              checked={formData.onlineEntryOptions.includes(
+                                option,
+                              )}
                               onChange={() => handleCheckboxChange(option)}
                               className="mr-2"
                             />

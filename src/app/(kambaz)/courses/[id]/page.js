@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
 import {
   Menu,
   X,
@@ -14,12 +15,11 @@ import {
   Link as LinkIcon,
   FileText,
 } from "lucide-react";
-import { getCourseById } from "@/app/(kambaz)/data/coursesData";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
-import { 
-  getHomeScreenModules, 
-  getTodoItems, 
-  getRecentFeedback 
+import {
+  getHomeScreenModules,
+  getTodoItems,
+  getRecentFeedback,
 } from "@/app/(kambaz)/data/homeScreenData";
 
 export default function CourseHome() {
@@ -32,14 +32,16 @@ export default function CourseHome() {
     3: true,
   });
 
-  const course = getCourseById(courseId);
+  const courses = useSelector((state) => state.courses.courses);
+  const course = courses.find((c) => c.id === courseId);
+
   const courseNav = getCourseNavigation(courseId);
   const modules = getHomeScreenModules(courseId);
-  const todoItems = getTodoItems(courseId).map(item => ({
+  const todoItems = getTodoItems(courseId).map((item) => ({
     ...item,
     course: course?.title || "",
   }));
-  const recentFeedback = getRecentFeedback(courseId).map(item => ({
+  const recentFeedback = getRecentFeedback(courseId).map((item) => ({
     ...item,
     course: course?.fullName || "",
   }));
@@ -111,7 +113,9 @@ export default function CourseHome() {
             <Menu className="w-5 h-5 text-gray-700" />
           </button>
           <div className="min-w-0">
-            <h1 className="text-red-600 font-medium text-sm sm:text-base truncate">{course.fullName}</h1>
+            <h1 className="text-red-600 font-medium text-sm sm:text-base truncate">
+              {course.fullName}
+            </h1>
             <p className="text-xs sm:text-sm text-gray-600">Modules</p>
           </div>
         </div>

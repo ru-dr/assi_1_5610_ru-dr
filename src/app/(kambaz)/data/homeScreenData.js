@@ -16,7 +16,12 @@ export const homeScreenModulesData = {
       id: 2,
       title: "GITHUB",
       items: [
-        { type: "link", title: "Jose's GitHub username: jannunzi", icon: "🔗", href: "https://github.com/jannunzi" },
+        {
+          type: "link",
+          title: "Jose's GitHub username: jannunzi",
+          icon: "🔗",
+          href: "https://github.com/jannunzi",
+        },
       ],
     },
     {
@@ -49,7 +54,12 @@ export const homeScreenModulesData = {
       id: 2,
       title: "GITHUB",
       items: [
-        { type: "link", title: "Jose's GitHub username: jannunzi", icon: "🔗", href: "https://github.com/jannunzi" },
+        {
+          type: "link",
+          title: "Jose's GitHub username: jannunzi",
+          icon: "🔗",
+          href: "https://github.com/jannunzi",
+        },
       ],
     },
     {
