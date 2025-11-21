@@ -32,73 +32,7 @@ export default function Calendar() {
     },
   ];
 
-  const renderNavigation = () => (
-    <nav className="w-64 bg-gray-100 dark:bg-[#0a0a0a] text-gray-900 dark:text-white p-4 border-r border-gray-300 dark:border-gray-600">
-      <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Kambaz</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://northeastern.edu"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              🏫 NEU
-            </a>
-          </li>
-          <li>
-            <Link
-              href="/account"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              👤 Account
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/dashboard"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              📊 Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/courses"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              📚 Courses
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/calendar"
-              className="block bg-gray-300 dark:bg-gray-700 p-2 rounded"
-            >
-              📅 Calendar
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/inbox"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              📧 Inbox
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/labs"
-              className="block hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded transition-colors"
-            >
-              🧪 Labs
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
+  
 
   const getEventTypeColor = (type) => {
     switch (type) {

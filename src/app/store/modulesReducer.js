@@ -1,18 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { modulesData } from "../(kambaz)/data/modulesData";
-
-const flattenModules = () => {
-  const flat = [];
-  Object.keys(modulesData).forEach((courseId) => {
-    modulesData[courseId].forEach((module) => {
-      flat.push({ ...module, course: courseId });
-    });
-  });
-  return flat;
-};
 
 const initialState = {
-  modules: flattenModules(),
+  modules: [],
   module: {
     id: "",
     title: "",
@@ -25,10 +14,19 @@ const modulesSlice = createSlice({
   name: "modules",
   initialState,
   reducers: {
+    setModules: (state, { payload }) => {
+      state.modules = payload.map(m => ({
+        ...m,
+        id: m._id || m.id,
+        title: m.name || m.title,
+        course: m.course,
+      }));
+    },
     addModule: (state, { payload: module }) => {
       const newModule = {
         ...module,
-        id: new Date().getTime().toString(),
+        id: module._id || module.id || new Date().getTime().toString(),
+        title: module.name || module.title,
         lessons: module.lessons || [],
       };
       state.modules = [...state.modules, newModule];
@@ -40,11 +38,11 @@ const modulesSlice = createSlice({
       };
     },
     deleteModule: (state, { payload: moduleId }) => {
-      state.modules = state.modules.filter((m) => m.id !== moduleId);
+      state.modules = state.modules.filter((m) => m.id !== moduleId && m._id !== moduleId);
     },
     updateModule: (state, { payload: module }) => {
       state.modules = state.modules.map((m) =>
-        m.id === module.id ? module : m,
+        (m.id === module.id || m._id === module._id) ? module : m,
       );
       state.module = {
         id: "",
@@ -59,6 +57,6 @@ const modulesSlice = createSlice({
   },
 });
 
-export const { addModule, deleteModule, updateModule, setModule } =
+export const { addModule, deleteModule, updateModule, setModule, setModules } =
   modulesSlice.actions;
 export default modulesSlice.reducer;

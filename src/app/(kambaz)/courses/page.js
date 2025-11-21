@@ -3,6 +3,9 @@ import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Star, X, ArrowUpDown } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import { setCourses } from "../../store/coursesReducer";
+import * as coursesClient from "./client";
 
 function SidebarHandler({ setSidebarOpen }) {
   const router = useRouter();
@@ -21,71 +24,32 @@ function SidebarHandler({ setSidebarOpen }) {
 function CoursesContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
-  const courses = [
-    {
-      id: 1,
-      favorite: false,
-      color: "bg-blue-500",
-      name: "CS5010 Program Design Paradigms (Boston) Fall 2025",
-      nickname: "PDP",
-      term: "202610_1 Fall 2025 Semeste...",
-      enrolled: "Student",
-      published: "Yes",
-    },
-    {
-      id: 2,
-      favorite: false,
-      color: "bg-purple-900",
-      name: "CS5610 18616 Web Development SEC 04 Fall 2025 [BOS-1-TR]",
-      nickname: "Web Dev",
-      term: "202610_1 Fall 2025 Semeste...",
-      enrolled: "Student",
-      published: "Yes",
-    },
-    {
-      id: 3,
-      favorite: false,
-      color: "bg-gray-700",
-      name: "Fall 2025 - Career Preparation/Co-op Acceptance Procedures/Co-o...",
-      nickname: "CO-OP Prep",
-      term: "",
-      enrolled: "Student",
-      published: "Yes",
-    },
-    {
-      id: 4,
-      favorite: false,
-      color: "bg-green-700",
-      name: "Khoury College New Master's Student Welcome Page",
-      nickname: "Welcome",
-      term: "Group Courses Term",
-      enrolled: "Student",
-      published: "Yes",
-    },
-    {
-      id: 5,
-      favorite: false,
-      color: "bg-gray-400",
-      name: "CS5011 18546 Recitation For CS 5010 SEC 12 Fall 2025 [BOS-1-TR]",
-      nickname: "PDP Recitation",
-      term: "202610_1 Fall 2025 Semeste...",
-      enrolled: "Student",
-      published: "No",
-    },
-  ];
+  const dispatch = useDispatch();
+  const courses = useSelector((state) => state.courses.courses);
+  const [loading, setLoading] = useState(true);
 
-  const pastCourses = [
-    {
-      id: 6,
-      favorite: false,
-      color: "bg-teal-600",
-      name: "Master's and Professional Doctorate Orientation",
-      nickname: "Orientation",
-      term: "Group Courses Term",
-      enrolled: "Student",
-      published: "Yes",
-    },
-  ];
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const allCourses = await coursesClient.fetchAllCourses();
+        dispatch(setCourses(allCourses));
+      } catch (err) {
+        console.error('Error fetching courses:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+  }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-gray-600">Loading courses...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white min-h-screen relative">
@@ -117,79 +81,27 @@ function CoursesContent() {
         </div>
 
         <div className="space-y-2">
-          <Link
-            href="/courses/1"
-            className={`block p-2 rounded text-sm ${
-              pathname === "/courses/1"
-                ? "bg-red-50 border-l-4 border-red-600"
-                : "hover:bg-gray-100"
-            }`}
-          >
-            <div className="font-medium text-gray-900">
-              CS5010 Program Design Paradigms (Boston) Fall 2025
-            </div>
-            <div className="text-xs text-gray-600">
-              Term: 202610_1 Fall 2025 Semester Full Term
-            </div>
-          </Link>
-
-          <Link
-            href="/courses/2"
-            className={`block p-2 rounded text-sm ${
-              pathname === "/courses/2"
-                ? "bg-red-50 border-l-4 border-red-600"
-                : "hover:bg-gray-100"
-            }`}
-          >
-            <div className="font-medium text-gray-900">
-              CS5610 18616 Web Development SEC 04 Fall 2025 [BOS-1-TR]
-            </div>
-            <div className="text-xs text-gray-600">
-              Term: 202610_1 Fall 2025 Semester Full Term
-            </div>
-          </Link>
-
-          <Link
-            href="/courses/3"
-            className={`block p-2 rounded text-sm ${
-              pathname === "/courses/3"
-                ? "bg-red-50 border-l-4 border-red-600"
-                : "hover:bg-gray-100"
-            }`}
-          >
-            <div className="font-medium text-gray-900">
-              Fall 2025 - Career Preparation/Co-op Acceptance Procedures/Co-op
-              Success Resources
-            </div>
-            <div className="text-xs text-gray-600">
-              Career.Prep.Coop.Success.FA...
-            </div>
-          </Link>
-
-          <Link
-            href="/courses/4"
-            className={`block p-2 rounded text-sm ${
-              pathname === "/courses/4"
-                ? "bg-red-50 border-l-4 border-red-600"
-                : "hover:bg-gray-100"
-            }`}
-          >
-            <div className="font-medium text-gray-900">
-              Khoury College New Master&apos;s Student Welcome Page
-            </div>
-            <div className="text-xs text-gray-600">
-              Term: Group Courses Term
-            </div>
-          </Link>
-        </div>
-
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <p className="text-sm text-gray-600">
-            Welcome to your courses! To customize the list of courses, click on
-            the &quot;All Courses&quot; link and star the courses to display.
-          </p>
+          {courses.map((course) => (
+            <Link
+              key={course._id}
+              href={`/courses/${course._id}`}
+              className={`block p-2 rounded text-sm ${
+                pathname === `/courses/${course._id}`
+                  ? "bg-red-50 border-l-4 border-red-600"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              <div className="font-medium text-gray-900">
+                {course.fullName || course.name}
+              </div>
+              <div className="text-xs text-gray-600">
+                {course.term || 'N/A'}
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
+      
       <div className="p-6">
         <h1 className="text-2xl font-normal text-gray-800 mb-6">All Courses</h1>
 
@@ -211,7 +123,7 @@ function CoursesContent() {
                 </th>
                 <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
                   <button className="flex items-center space-x-1">
-                    <span>Nickname</span>
+                    <span>Code</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </button>
                 </th>
@@ -223,118 +135,22 @@ function CoursesContent() {
                 </th>
                 <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
                   <button className="flex items-center space-x-1">
-                    <span>Enrolled as</span>
+                    <span>Instructor</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </button>
                 </th>
                 <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
                   <button className="flex items-center space-x-1">
-                    <span>Published</span>
+                    <span>Credits</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </button>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {courses.map((course, index) => (
+              {courses.map((course) => (
                 <tr
-                  key={course.id}
-                  className={`border-b border-gray-200 hover:bg-gray-50 ${index === courses.length - 1 ? "bg-gray-100" : ""}`}
-                >
-                  <td className="py-3 px-4">
-                    <button className="text-gray-400 hover:text-yellow-500">
-                      <Star className="w-5 h-5" />
-                    </button>
-                  </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center space-x-3">
-                      <div className={`w-1 h-8 ${course.color}`}></div>
-                      <Link
-                        href={`/courses/${course.id}`}
-                        className="text-red-600 hover:underline text-sm"
-                      >
-                        {course.name}
-                      </Link>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 text-sm text-gray-700">
-                    {course.nickname}
-                  </td>
-                  <td className="py-3 px-4 text-sm text-gray-700">
-                    {course.term}
-                  </td>
-                  <td className="py-3 px-4 text-sm">
-                    <Link href="#" className="text-blue-600 hover:underline">
-                      {course.enrolled}
-                    </Link>
-                  </td>
-                  <td className="py-3 px-4 text-sm">
-                    <span
-                      className={
-                        course.published === "Yes"
-                          ? "text-gray-700"
-                          : "text-red-600"
-                      }
-                    >
-                      {course.published}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <h2 className="text-xl font-normal text-gray-800 mt-8 mb-4">
-          Past Enrollments
-        </h2>
-
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border-collapse">
-            <thead>
-              <tr className="border-b border-gray-300">
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
-                  <button className="flex items-center space-x-1">
-                    <span>Favorite</span>
-                    <ArrowUpDown className="w-3 h-3" />
-                  </button>
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
-                  <button className="flex items-center space-x-1">
-                    <span>Course</span>
-                    <ArrowUpDown className="w-3 h-3" />
-                  </button>
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
-                  <button className="flex items-center space-x-1">
-                    <span>Nickname</span>
-                    <ArrowUpDown className="w-3 h-3" />
-                  </button>
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
-                  <button className="flex items-center space-x-1">
-                    <span>Term</span>
-                    <ArrowUpDown className="w-3 h-3" />
-                  </button>
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
-                  <button className="flex items-center space-x-1">
-                    <span>Enrolled as</span>
-                    <ArrowUpDown className="w-3 h-3" />
-                  </button>
-                </th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">
-                  <button className="flex items-center space-x-1">
-                    <span>Published</span>
-                    <ArrowUpDown className="w-3 h-3" />
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {pastCourses.map((course) => (
-                <tr
-                  key={course.id}
+                  key={course._id}
                   className="border-b border-gray-200 hover:bg-gray-50"
                 >
                   <td className="py-3 px-4">
@@ -344,28 +160,26 @@ function CoursesContent() {
                   </td>
                   <td className="py-3 px-4">
                     <div className="flex items-center space-x-3">
-                      <div className={`w-1 h-8 ${course.color}`}></div>
+                      <div className={`w-1 h-8 ${course.color || 'bg-blue-500'}`}></div>
                       <Link
-                        href={`/courses/${course.id}`}
+                        href={`/courses/${course._id}`}
                         className="text-red-600 hover:underline text-sm"
                       >
-                        {course.name}
+                        {course.fullName || course.name}
                       </Link>
                     </div>
                   </td>
                   <td className="py-3 px-4 text-sm text-gray-700">
-                    {course.nickname}
+                    {course.code || course.number}
                   </td>
                   <td className="py-3 px-4 text-sm text-gray-700">
-                    {course.term}
-                  </td>
-                  <td className="py-3 px-4 text-sm">
-                    <Link href="#" className="text-blue-600 hover:underline">
-                      {course.enrolled}
-                    </Link>
+                    {course.term || 'N/A'}
                   </td>
                   <td className="py-3 px-4 text-sm text-gray-700">
-                    {course.published}
+                    {course.instructor || 'N/A'}
+                  </td>
+                  <td className="py-3 px-4 text-sm text-gray-700">
+                    {course.credits || 4}
                   </td>
                 </tr>
               ))}

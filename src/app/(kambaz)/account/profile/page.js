@@ -1,310 +1,268 @@
 "use client";
 
-import { useState } from "react";
-import { Camera, Mail, Phone, MapPin, Calendar, Globe } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import * as client from "../client";
 
 export default function Profile() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "Rudra",
-    lastName: "Patel",
-    email: "patel.rudraja@northeastern.edu",
-    phone: "+1 (999) 999-999",
-    bio: "Computer Science graduate student at Northeastern University",
-    location: "Boston, MA",
-    birthday: "2004-07-26",
-    website: "https://rudr.me",
-    timezone: "America/New_York",
-  });
+  const router = useRouter();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      setLoading(true);
+      const user = await client.profile();
+      setProfile(user);
+    } catch (err) {
+      console.error("Profile fetch error:", err);
+      if (err.response?.status === 401) {
+        router.push("/account/signin");
+      } else {
+        setError("Failed to load profile");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    setError("");
+    setSuccess("");
+    setSaving(true);
+
+    try {
+      const updatedProfile = await client.updateUser(profile);
+      setProfile(updatedProfile);
+      setSuccess("Profile updated successfully!");
+    } catch (err) {
+      console.error("Profile update error:", err);
+      setError("Failed to update profile");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSignout = async () => {
+    try {
+      await client.signout();
+      router.push("/account/signin");
+    } catch (err) {
+      console.error("Signout error:", err);
+    }
+  };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setProfile({
+      ...profile,
       [e.target.name]: e.target.value,
     });
+    setSuccess("");
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsEditing(false);
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Please sign in to view your profile</p>
+          <button
+            onClick={() => router.push("/account/signin")}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 max-w-4xl">
-      <div className="bg-white rounded-lg shadow">
-        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <h1 className="text-2xl font-semibold text-gray-900">Profile</h1>
-          {!isEditing ? (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Edit Profile
-            </button>
-          ) : (
-            <div className="space-x-2">
-              <button
-                onClick={() => setIsEditing(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-              >
-                Save Changes
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="p-6">
-          <div className="flex items-center space-x-6 mb-8">
-            <div className="relative">
-              <div className="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center text-4xl font-semibold text-blue-600">
-                {formData.firstName[0]}
-                {formData.lastName[0]}
-              </div>
-              {isEditing && (
-                <button className="absolute bottom-0 right-0 bg-red-600 text-white p-2 rounded-full hover:bg-red-700">
-                  <Camera className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                {formData.firstName} {formData.lastName}
-              </h2>
-              <p className="text-gray-600">Student</p>
-              <p className="text-sm text-gray-500 mt-1">
-                Member since October 2024
-              </p>
-            </div>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+          <div className="bg-red-600 px-6 py-4">
+            <h2 className="text-2xl font-bold text-white">Profile</h2>
+            <p className="text-red-100">Manage your account information</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Personal Information
-              </h3>
+          <div className="px-6 py-6">
+            {error && (
+              <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded" role="alert">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded" role="alert">
+                {success}
+              </div>
+            )}
+
+            <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     First Name
                   </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
-                  ) : (
-                    <p className="text-gray-900 py-2">{formData.firstName}</p>
-                  )}
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={profile.firstName || ""}
+                    onChange={handleChange}
+                    id="wd-firstname"
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-gray-900 focus:ring-red-500 focus:border-red-500"
+                  />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Last Name
                   </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
-                  ) : (
-                    <p className="text-gray-900 py-2">{formData.lastName}</p>
-                  )}
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={profile.lastName || ""}
+                    onChange={handleChange}
+                    id="wd-lastname"
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-gray-900 focus:ring-red-500 focus:border-red-500"
+                  />
                 </div>
               </div>
-            </div>
 
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Contact Information
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    <Mail className="w-4 h-4 inline mr-2" />
-                    Email Address
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
-                  ) : (
-                    <p className="text-gray-900 py-2">{formData.email}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    <Phone className="w-4 h-4 inline mr-2" />
-                    Phone Number
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
-                  ) : (
-                    <p className="text-gray-900 py-2">{formData.phone}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    <MapPin className="w-4 h-4 inline mr-2" />
-                    Location
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="location"
-                      value={formData.location}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
-                  ) : (
-                    <p className="text-gray-900 py-2">{formData.location}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                About Me
-              </h3>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Bio
+                  Username
                 </label>
-                {isEditing ? (
-                  <textarea
-                    name="bio"
-                    value={formData.bio}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                  />
-                ) : (
-                  <p className="text-gray-900 py-2">{formData.bio}</p>
-                )}
+                <input
+                  type="text"
+                  name="username"
+                  value={profile.username || ""}
+                  disabled
+                  className="w-full px-3 py-2 border border-gray-300 rounded text-gray-500 bg-gray-100 cursor-not-allowed"
+                />
+                <p className="text-xs text-gray-500 mt-1">Username cannot be changed</p>
               </div>
-            </div>
 
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Additional Information
-              </h3>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={profile.email || ""}
+                  onChange={handleChange}
+                  id="wd-email"
+                  className="w-full px-3 py-2 border border-gray-300 rounded text-gray-900 focus:ring-red-500 focus:border-red-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Date of Birth
+                </label>
+                <input
+                  type="date"
+                  name="dob"
+                  value={profile.dob?.split('T')[0] || ""}
+                  onChange={handleChange}
+                  id="wd-dob"
+                  className="w-full px-3 py-2 border border-gray-300 rounded text-gray-900 focus:ring-red-500 focus:border-red-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Role
+                </label>
+                <select
+                  name="role"
+                  value={profile.role || "STUDENT"}
+                  onChange={handleChange}
+                  id="wd-role"
+                  className="w-full px-3 py-2 border border-gray-300 rounded text-gray-900 focus:ring-red-500 focus:border-red-500"
+                >
+                  <option value="STUDENT">Student</option>
+                  <option value="FACULTY">Faculty</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    <Calendar className="w-4 h-4 inline mr-2" />
-                    Birthday
+                    Login ID
                   </label>
-                  {isEditing ? (
-                    <input
-                      type="date"
-                      name="birthday"
-                      value={formData.birthday}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
-                  ) : (
-                    <p className="text-gray-900 py-2">
-                      {(() => {
-                        const [year, month, day] = formData.birthday.split("-");
-                        const date = new Date(
-                          parseInt(year),
-                          parseInt(month) - 1,
-                          parseInt(day),
-                        );
-                        return date.toLocaleDateString("en-US", {
-                          month: "long",
-                          day: "numeric",
-                          year: "numeric",
-                        });
-                      })()}
-                    </p>
-                  )}
+                  <input
+                    type="text"
+                    name="loginId"
+                    value={profile.loginId || ""}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-gray-900 focus:ring-red-500 focus:border-red-500"
+                  />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    <Globe className="w-4 h-4 inline mr-2" />
-                    Website
+                    Section
                   </label>
-                  {isEditing ? (
-                    <input
-                      type="url"
-                      name="website"
-                      value={formData.website}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                    />
-                  ) : (
-                    <a
-                      href={formData.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-red-600 hover:underline py-2 block"
-                    >
-                      {formData.website}
-                    </a>
-                  )}
+                  <input
+                    type="text"
+                    name="section"
+                    value={profile.section || ""}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-gray-900 focus:ring-red-500 focus:border-red-500"
+                  />
                 </div>
               </div>
-            </div>
 
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Privacy Settings
-              </h3>
-              <div className="space-y-3">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">
-                    Make my profile visible to other students
-                  </span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">
-                    Allow instructors to see my profile
-                  </span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">
-                    Show my email address in profile
-                  </span>
-                </label>
+              <div className="flex gap-4 pt-4">
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  id="wd-update-btn"
+                  className="flex-1 py-2 px-4 border border-transparent rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:bg-red-400 disabled:cursor-not-allowed"
+                >
+                  {saving ? "Saving..." : "Update Profile"}
+                </button>
+
+                <button
+                  onClick={handleSignout}
+                  id="wd-signout-btn"
+                  className="flex-1 py-2 px-4 border border-gray-300 rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  Sign Out
+                </button>
               </div>
             </div>
-          </form>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="text-red-600 hover:text-red-500"
+          >
+            ← Back to Dashboard
+          </button>
         </div>
       </div>
     </div>

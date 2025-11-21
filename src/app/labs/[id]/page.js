@@ -1,9 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import Lab1 from "../components/Lab1";
 import Lab2 from "../components/Lab2";
 import Lab3 from "../components/Lab3";
 import Lab4 from "../components/Lab4";
+import Lab5 from "../components/Lab5";
+import { ArrowLeft } from "lucide-react";
 
 export default async function LabDetail({ params }) {
   const { id } = await params;
@@ -16,6 +17,8 @@ export default async function LabDetail({ params }) {
     return <Lab3 />;
   } else if (id === "lab4") {
     return <Lab4 />;
+  } else if (id === "lab5") {
+    return <Lab5 />;
   }
 
   return (
@@ -23,9 +26,9 @@ export default async function LabDetail({ params }) {
       <div className="mb-6">
         <Link
           href="/labs"
-          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 flex"
         >
-          ← Back to Labs
+          <ArrowLeft className="h-5 w-5" /> Back to Labs
         </Link>
       </div>
 

@@ -1,18 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { assignmentsData } from "../(kambaz)/data/assignmentsData";
-
-const flattenAssignments = () => {
-  const flat = [];
-  Object.keys(assignmentsData).forEach((courseId) => {
-    assignmentsData[courseId].forEach((assignment) => {
-      flat.push({ ...assignment, course: courseId });
-    });
-  });
-  return flat;
-};
 
 const initialState = {
-  assignments: flattenAssignments(),
+  assignments: [],
   assignment: {
     id: "",
     title: "",
@@ -27,10 +16,17 @@ const assignmentsSlice = createSlice({
   name: "assignments",
   initialState,
   reducers: {
+    setAssignments: (state, { payload }) => {
+      state.assignments = payload.map(a => ({
+        ...a,
+        id: a._id || a.id,
+        course: a.course,
+      }));
+    },
     addAssignment: (state, { payload: assignment }) => {
       const newAssignment = {
         ...assignment,
-        id: new Date().getTime().toString(),
+        id: assignment._id || assignment.id || new Date().getTime().toString(),
       };
       state.assignments = [...state.assignments, newAssignment];
       state.assignment = {
@@ -44,12 +40,12 @@ const assignmentsSlice = createSlice({
     },
     deleteAssignment: (state, { payload: assignmentId }) => {
       state.assignments = state.assignments.filter(
-        (a) => a.id !== assignmentId,
+        (a) => a.id !== assignmentId && a._id !== assignmentId,
       );
     },
     updateAssignment: (state, { payload: assignment }) => {
       state.assignments = state.assignments.map((a) =>
-        a.id === assignment.id ? assignment : a,
+        (a.id === assignment.id || a._id === assignment._id) ? assignment : a,
       );
       state.assignment = {
         id: "",
@@ -71,5 +67,6 @@ export const {
   deleteAssignment,
   updateAssignment,
   setAssignment,
+  setAssignments,
 } = assignmentsSlice.actions;
 export default assignmentsSlice.reducer;

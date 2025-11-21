@@ -1,15 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
 import {
-  addAssignment,
-  deleteAssignment,
-  updateAssignment,
-  setAssignment,
+  addAssignment as addAssignmentAction,
+  deleteAssignment as deleteAssignmentAction,
+  updateAssignment as updateAssignmentAction,
+  setAssignments,
 } from "@/app/store/assignmentsReducer";
+import * as coursesClient from "@/app/(kambaz)/courses/client";
 import {
   Menu,
   X,
@@ -41,33 +42,70 @@ export default function Assignments() {
 
   const courses = useSelector((state) => state.courses.courses);
   const allAssignments = useSelector((state) => state.assignments.assignments);
-  const course = courses.find((c) => c.id === courseId);
+  const course = courses.find((c) => c._id === courseId || c.id === courseId);
   const assignments = allAssignments.filter((a) => a.course === courseId);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch assignments from backend on mount
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        setLoading(true);
+        const data = await coursesClient.findAssignmentsForCourse(courseId);
+        dispatch(setAssignments(data));
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching assignments:', err);
+        setError('Failed to load assignments');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAssignments();
+  }, [courseId, dispatch]);
 
   const courseNav = getCourseNavigation(courseId);
 
-  const handleAddAssignment = () => {
+  const handleAddAssignment = async () => {
     if (newAssignment.title.trim()) {
-      dispatch(
-        addAssignment({
-          ...newAssignment,
+      try {
+        const created = await coursesClient.createAssignmentForCourse(courseId, {
+          title: newAssignment.title,
+          description: newAssignment.description,
+          points: newAssignment.points,
+          dueDate: newAssignment.dueDate,
+          availableFrom: newAssignment.availableFrom,
           course: courseId,
-        }),
-      );
-      setNewAssignment({
-        title: "",
-        dueDate: "",
-        points: 100,
-        availableFrom: "",
-        description: "",
-      });
-      setShowAddForm(false);
+        });
+        dispatch(addAssignmentAction({
+          ...created,
+          course: courseId,
+        }));
+        setNewAssignment({
+          title: "",
+          dueDate: "",
+          points: 100,
+          availableFrom: "",
+          description: "",
+        });
+        setShowAddForm(false);
+      } catch (err) {
+        console.error('Error creating assignment:', err);
+        alert('Failed to create assignment');
+      }
     }
   };
 
-  const handleDeleteAssignment = (assignmentId) => {
+  const handleDeleteAssignment = async (assignmentId) => {
     if (confirm("Are you sure you want to delete this assignment?")) {
-      dispatch(deleteAssignment(assignmentId));
+      try {
+        await coursesClient.deleteAssignment(assignmentId);
+        dispatch(deleteAssignmentAction(assignmentId));
+      } catch (err) {
+        console.error('Error deleting assignment:', err);
+        alert('Failed to delete assignment');
+      }
     }
   };
 
@@ -75,9 +113,26 @@ export default function Assignments() {
     setEditingAssignment({ ...assignment });
   };
 
-  const handleUpdateAssignment = () => {
-    dispatch(updateAssignment(editingAssignment));
-    setEditingAssignment(null);
+  const handleUpdateAssignment = async () => {
+    try {
+      const updated = await coursesClient.updateAssignment({
+        _id: editingAssignment._id || editingAssignment.id,
+        title: editingAssignment.title,
+        description: editingAssignment.description,
+        points: editingAssignment.points,
+        dueDate: editingAssignment.dueDate,
+        availableFrom: editingAssignment.availableFrom,
+        course: courseId,
+      });
+      dispatch(updateAssignmentAction({
+        ...editingAssignment,
+        ...updated,
+      }));
+      setEditingAssignment(null);
+    } catch (err) {
+      console.error('Error updating assignment:', err);
+      alert('Failed to update assignment');
+    }
   };
 
   if (!course) {
@@ -148,6 +203,16 @@ export default function Assignments() {
         </div>
 
         <div className="flex-1 overflow-auto p-3 sm:p-6">
+          {loading && (
+            <div className="bg-white border border-gray-300 mb-4 rounded p-8 text-center">
+              <p className="text-gray-600">Loading assignments...</p>
+            </div>
+          )}
+          {error && (
+            <div className="bg-red-50 border border-red-300 mb-4 rounded p-4">
+              <p className="text-red-600">{error}</p>
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <div className="relative w-full sm:w-64">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -363,9 +428,15 @@ export default function Assignments() {
               </h2>
             </div>
             <div id="wd-assignment-list">
+              {!loading && assignments.length === 0 && (
+                <div className="p-8 text-center">
+                  <p className="text-gray-600 mb-2">No assignments yet</p>
+                  <p className="text-sm text-gray-500">Click "+ Assignment" to create your first assignment</p>
+                </div>
+              )}
               {assignments.map((assignment) => (
                 <div
-                  key={assignment.id}
+                  key={assignment._id || assignment.id}
                   className="wd-assignment-list-item flex items-center border-b border-gray-200 hover:bg-gray-50"
                 >
                   <div className="flex items-center space-x-3 p-4 flex-1 border-l-4 border-green-600">
@@ -373,7 +444,7 @@ export default function Assignments() {
                     <FileText className="w-5 h-5 text-gray-600" />
                     <div className="flex-1">
                       <Link
-                        href={`/courses/${courseId}/assignments/${assignment.id}`}
+                        href={`/courses/${courseId}/assignments/${assignment._id || assignment.id}`}
                         className="wd-assignment-link text-red-600 hover:underline font-medium"
                       >
                         {assignment.title}
@@ -404,7 +475,7 @@ export default function Assignments() {
                         <Edit className="w-4 h-4 text-blue-600" />
                       </button>
                       <button
-                        onClick={() => handleDeleteAssignment(assignment.id)}
+                        onClick={() => handleDeleteAssignment(assignment._id || assignment.id)}
                         className="p-1 hover:bg-gray-200 rounded"
                         title="Delete Assignment"
                       >

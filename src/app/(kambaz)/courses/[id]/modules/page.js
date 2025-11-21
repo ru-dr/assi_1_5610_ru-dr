@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
 import {
-  addModule,
-  deleteModule,
-  updateModule,
-  setModule,
+  addModule as addModuleAction,
+  deleteModule as deleteModuleAction,
+  updateModule as updateModuleAction,
+  setModules,
 } from "@/app/store/modulesReducer";
+import * as coursesClient from "@/app/(kambaz)/courses/client";
 import {
   Menu,
   X,
@@ -46,29 +47,63 @@ export default function CourseModules() {
 
   const courses = useSelector((state) => state.courses.courses);
   const allModules = useSelector((state) => state.modules.modules);
-  const course = courses.find((c) => c.id === courseId);
+  const course = courses.find((c) => c._id === courseId || c.id === courseId);
   const modules = allModules.filter((module) => module.course === courseId);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch modules from backend on mount
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        setLoading(true);
+        const data = await coursesClient.findModulesForCourse(courseId);
+        dispatch(setModules(data));
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching modules:', err);
+        setError('Failed to load modules');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchModules();
+  }, [courseId, dispatch]);
 
   const courseNav = getCourseNavigation(courseId);
 
-  const handleAddModule = () => {
+  const handleAddModule = async () => {
     if (newModuleTitle.trim()) {
-      dispatch(
-        addModule({
-          title: newModuleTitle,
+      try {
+        const newModule = await coursesClient.createModuleForCourse(courseId, {
+          name: newModuleTitle,
+          description: "New module",
           course: courseId,
+        });
+        dispatch(addModuleAction({
+          ...newModule,
+          title: newModule.name,
           status: "Not Started",
           lessons: [],
-        }),
-      );
-      setNewModuleTitle("");
-      setShowAddForm(false);
+        }));
+        setNewModuleTitle("");
+        setShowAddForm(false);
+      } catch (err) {
+        console.error('Error creating module:', err);
+        alert('Failed to create module');
+      }
     }
   };
 
-  const handleDeleteModule = (moduleId) => {
+  const handleDeleteModule = async (moduleId) => {
     if (confirm("Are you sure you want to delete this module?")) {
-      dispatch(deleteModule(moduleId));
+      try {
+        await coursesClient.deleteModule(moduleId);
+        dispatch(deleteModuleAction(moduleId));
+      } catch (err) {
+        console.error('Error deleting module:', err);
+        alert('Failed to delete module');
+      }
     }
   };
 
@@ -76,9 +111,24 @@ export default function CourseModules() {
     setEditingModule({ ...module });
   };
 
-  const handleUpdateModule = () => {
-    dispatch(updateModule(editingModule));
-    setEditingModule(null);
+  const handleUpdateModule = async () => {
+    try {
+      const updated = await coursesClient.updateModule({
+        _id: editingModule._id || editingModule.id,
+        name: editingModule.title,
+        description: editingModule.description || "Updated module",
+        course: courseId,
+      });
+      dispatch(updateModuleAction({
+        ...editingModule,
+        ...updated,
+        title: updated.name,
+      }));
+      setEditingModule(null);
+    } catch (err) {
+      console.error('Error updating module:', err);
+      alert('Failed to update module');
+    }
   };
 
   if (!course) {
@@ -227,6 +277,16 @@ export default function CourseModules() {
 
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 overflow-y-auto p-3 sm:p-6 bg-gray-50">
+            {loading && (
+              <div className="bg-white border border-gray-300 mb-4 rounded p-8 text-center">
+                <p className="text-gray-600">Loading modules...</p>
+              </div>
+            )}
+            {error && (
+              <div className="bg-red-50 border border-red-300 mb-4 rounded p-4">
+                <p className="text-red-600">{error}</p>
+              </div>
+            )}
             {showAddForm && (
               <div className="bg-white border border-gray-300 mb-4 rounded p-4">
                 <h3 className="font-semibold mb-3 text-black">
@@ -308,6 +368,12 @@ export default function CourseModules() {
             )}
 
             <div id="wd-modules">
+              {!loading && modules.length === 0 && (
+                <div className="bg-white border border-gray-300 rounded p-8 text-center">
+                  <p className="text-gray-600 mb-2">No modules yet</p>
+                  <p className="text-sm text-gray-500">Click "+ Module" to create your first module</p>
+                </div>
+              )}
               {modules.map((module, index) => (
                 <div
                   key={index}
@@ -328,7 +394,7 @@ export default function CourseModules() {
                           )}
                         </button>
                         <h3 className="wd-title font-semibold text-gray-900">
-                          {module.title}
+                          {module.title || module.name}
                         </h3>
                       </div>
                       <div className="flex items-center space-x-2">

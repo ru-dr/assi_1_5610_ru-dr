@@ -26,6 +26,12 @@ export default function Labs() {
       description:
         "Learn React state management with hooks and Redux, including user events, component state, and application state",
     },
+    {
+      id: "lab5",
+      title: "Lab 5 - RESTful Web APIs",
+      description:
+        "Practice integrating React with Node.js backend, HTTP requests, path/query parameters, and CRUD operations",
+    },
   ];
 
   return (

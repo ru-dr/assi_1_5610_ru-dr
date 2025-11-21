@@ -6,45 +6,21 @@ import { useSelector } from "react-redux";
 import {
   Menu,
   X,
-  CheckCircle,
-  Calendar as CalendarIcon,
-  ChevronDown,
-  ChevronRight,
-  Bell,
   BarChart2,
-  Link as LinkIcon,
-  FileText,
+  Calendar as CalendarIcon,
+  Bell,
 } from "lucide-react";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
-import {
-  getHomeScreenModules,
-  getTodoItems,
-  getRecentFeedback,
-} from "@/app/(kambaz)/data/homeScreenData";
 
 export default function CourseHome() {
   const params = useParams();
   const courseId = params.id;
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [expandedModules, setExpandedModules] = useState({
-    1: true,
-    2: true,
-    3: true,
-  });
 
   const courses = useSelector((state) => state.courses.courses);
-  const course = courses.find((c) => c.id === courseId);
+  const course = courses.find((c) => c._id === courseId || c.id === courseId);
 
   const courseNav = getCourseNavigation(courseId);
-  const modules = getHomeScreenModules(courseId);
-  const todoItems = getTodoItems(courseId).map((item) => ({
-    ...item,
-    course: course?.title || "",
-  }));
-  const recentFeedback = getRecentFeedback(courseId).map((item) => ({
-    ...item,
-    course: course?.fullName || "",
-  }));
 
   if (!course) {
     return (
@@ -61,13 +37,6 @@ export default function CourseHome() {
     );
   }
 
-  const toggleModule = (moduleId) => {
-    setExpandedModules((prev) => ({
-      ...prev,
-      [moduleId]: !prev[moduleId],
-    }));
-  };
-
   return (
     <div className="flex h-screen bg-gray-50">
       <div
@@ -77,7 +46,7 @@ export default function CourseHome() {
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="font-semibold text-sm text-gray-900">
-            {course.fullName}
+            {course.fullName || course.name}
           </h2>
           <button onClick={() => setSidebarOpen(false)}>
             <X className="w-5 h-5 text-gray-600" />
@@ -114,90 +83,39 @@ export default function CourseHome() {
           </button>
           <div className="min-w-0">
             <h1 className="text-red-600 font-medium text-sm sm:text-base truncate">
-              {course.fullName}
+              {course.fullName || course.name}
             </h1>
-            <p className="text-xs sm:text-sm text-gray-600">Modules</p>
+            <p className="text-xs sm:text-sm text-gray-600">Home</p>
           </div>
         </div>
 
         <div className="flex-1 overflow-auto">
           <div className="flex h-full">
             <div className="flex-1 p-3 sm:p-6 bg-gray-50 overflow-y-auto">
-              {modules.map((module) => (
-                <div
-                  key={module.id}
-                  className="bg-white border border-gray-300 mb-4"
-                >
-                  <button
-                    onClick={() => toggleModule(module.id)}
-                    className="w-full flex items-center p-4 bg-gray-200 hover:bg-gray-300 text-left"
-                  >
-                    <div className="flex items-center space-x-2">
-                      {expandedModules[module.id] ? (
-                        <ChevronDown className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 text-gray-600" />
-                      )}
-                      <h3 className="font-semibold text-gray-800">
-                        {module.title}
-                      </h3>
-                    </div>
-                  </button>
-
-                  {expandedModules[module.id] && (
-                    <div className="border-t border-gray-200">
-                      {module.items.map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center space-x-3 py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0 border-l-4 border-l-green-600"
-                        >
-                          {item.type === "link" ? (
-                            <>
-                              <LinkIcon className="w-4 h-4 text-gray-600" />
-                              <Link
-                                href={item.href || "#"}
-                                className="text-red-600 hover:underline text-sm flex-1"
-                              >
-                                {item.title}
-                              </Link>
-                              <span className="text-gray-400 text-sm">⤴</span>
-                            </>
-                          ) : (
-                            <>
-                              <FileText className="w-4 h-4 text-gray-600" />
-                              <span className="text-gray-800 text-sm flex-1">
-                                {item.title}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      ))}
+              <div className="bg-white border border-gray-300 p-6 rounded">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  {course.code || course.number} - {course.name}
+                </h2>
+                <div className="space-y-3 text-gray-700">
+                  <p><strong>Course:</strong> {course.fullName || course.name}</p>
+                  <p><strong>Term:</strong> {course.term || 'N/A'}</p>
+                  <p><strong>Instructor:</strong> {course.instructor || 'N/A'}</p>
+                  <p><strong>Credits:</strong> {course.credits || 4}</p>
+                  {course.description && (
+                    <div>
+                      <strong>Description:</strong>
+                      <p className="mt-1">{course.description}</p>
                     </div>
                   )}
+                  {course.startDate && course.endDate && (
+                    <p><strong>Duration:</strong> {new Date(course.startDate).toLocaleDateString()} - {new Date(course.endDate).toLocaleDateString()}</p>
+                  )}
                 </div>
-              ))}
+              </div>
             </div>
 
             <div className="hidden lg:block w-80 bg-white border-l border-gray-300 overflow-y-auto">
               <div className="p-4 border-b border-gray-200 space-y-2">
-                <button
-                  onClick={() => {
-                    const allExpanded =
-                      Object.keys(expandedModules).length > 0 &&
-                      Object.values(expandedModules).every((v) => v);
-                    if (allExpanded) {
-                      setExpandedModules({});
-                    } else {
-                      setExpandedModules({ 1: true, 2: true, 3: true });
-                    }
-                  }}
-                  className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left"
-                >
-                  {Object.keys(expandedModules).length > 0 &&
-                  Object.values(expandedModules).every((v) => v)
-                    ? "Collapse All"
-                    : "Expand All"}
-                </button>
                 <button className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left flex items-center">
                   <BarChart2 className="w-4 h-4 mr-2" />
                   View Course Stream
@@ -218,72 +136,14 @@ export default function CourseHome() {
 
               <div className="p-4 border-b border-gray-200">
                 <h3 className="font-semibold text-gray-800 mb-3">To Do</h3>
-                <div className="space-y-4">
-                  {todoItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="border-l-2 border-red-600 pl-3 relative"
-                    >
-                      <button
-                        className="absolute -left-2 top-0 w-4 h-4 bg-white rounded-full flex items-center justify-center hover:bg-gray-50"
-                        title="Dismiss"
-                      >
-                        <X className="w-3 h-3 text-gray-400 hover:text-gray-700" />
-                      </button>
-                      <div className="text-sm">
-                        <div className="flex items-start space-x-1">
-                          <CalendarIcon className="w-3.5 h-3.5 text-gray-500 mt-0.5 flex-shrink-0" />
-                          <Link
-                            href="#"
-                            className="text-red-600 hover:underline font-medium"
-                          >
-                            {item.title}
-                          </Link>
-                        </div>
-                        <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                          {item.course}
-                        </p>
-                        {item.points && (
-                          <p className="text-xs text-gray-600 mt-0.5">
-                            {item.points} points
-                          </p>
-                        )}
-                        {item.dueDate && (
-                          <p className="text-xs text-gray-600 mt-0.5">
-                            {item.dueDate}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-sm text-gray-500">Nothing for now</p>
               </div>
 
               <div className="p-4">
                 <h3 className="font-semibold text-gray-800 mb-3">
                   Recent Feedback
                 </h3>
-                <div className="space-y-3">
-                  {recentFeedback.map((item) => (
-                    <div key={item.id} className="flex items-start space-x-2">
-                      <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
-                      <div className="text-sm">
-                        <Link
-                          href="#"
-                          className="text-red-600 hover:underline font-medium"
-                        >
-                          {item.title}
-                        </Link>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {item.course}
-                        </p>
-                        <p className="text-xs text-gray-600 mt-0.5">
-                          {item.score}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-sm text-gray-500">Nothing for now</p>
               </div>
             </div>
           </div>
