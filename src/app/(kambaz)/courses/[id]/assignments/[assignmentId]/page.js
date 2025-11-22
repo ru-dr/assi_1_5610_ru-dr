@@ -42,13 +42,17 @@ export default function AssignmentEditor() {
           setLoading(true);
           const data = await coursesClient.findAssignmentById(assignmentId);
           setAssignment({
-            ...assignment,
-            ...data,
+            title: data.title || "New Assignment",
+            description: data.description || "This is a new assignment",
+            points: data.points || 100,
             assignmentGroup: data.assignmentGroup || "ASSIGNMENTS",
             displayGradeAs: data.displayGradeAs || "Percentage",
             submissionType: data.submissionType || "Online",
             onlineEntryOptions: data.onlineEntryOptions || ["Text Entry"],
             assignTo: data.assignTo || "Everyone",
+            dueDate: data.dueDate || "2024-05-13",
+            availableFrom: data.availableFrom || "2024-05-06",
+            until: data.until || "2024-05-20",
           });
         } catch (err) {
           console.error('Error fetching assignment:', err);

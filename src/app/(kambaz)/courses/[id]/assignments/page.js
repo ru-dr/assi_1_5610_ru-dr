@@ -431,7 +431,7 @@ export default function Assignments() {
               {!loading && assignments.length === 0 && (
                 <div className="p-8 text-center">
                   <p className="text-gray-600 mb-2">No assignments yet</p>
-                  <p className="text-sm text-gray-500">Click "+ Assignment" to create your first assignment</p>
+                  <p className="text-sm text-gray-500">Click &quot;+ Assignment&quot; to create your first assignment</p>
                 </div>
               )}
               {assignments.map((assignment) => (

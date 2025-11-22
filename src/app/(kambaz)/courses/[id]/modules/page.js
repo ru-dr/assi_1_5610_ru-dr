@@ -141,21 +141,21 @@ export default function CourseModules() {
   const handleAddLesson = async (moduleId) => {
     if (newLessonName.trim()) {
       try {
-        const module = modules.find(m => (m._id || m.id) === moduleId);
-        const updatedLessons = [...(module.lessons || []), { 
+        const moduleToUpdate = modules.find(m => (m._id || m.id) === moduleId);
+        const updatedLessons = [...(moduleToUpdate.lessons || []), { 
           _id: Date.now().toString(), 
           name: newLessonName 
         }];
         
         const updated = await coursesClient.updateModule({
           _id: moduleId,
-          name: module.name,
+          name: moduleToUpdate.name,
           lessons: updatedLessons,
           course: courseId,
         });
         
         dispatch(updateModuleAction({
-          ...module,
+          ...moduleToUpdate,
           ...updated,
           title: updated.name,
           lessons: updatedLessons,
@@ -173,18 +173,18 @@ export default function CourseModules() {
   const handleDeleteLesson = async (moduleId, lessonId) => {
     if (confirm("Are you sure you want to delete this lesson?")) {
       try {
-        const module = modules.find(m => (m._id || m.id) === moduleId);
-        const updatedLessons = (module.lessons || []).filter(l => l._id !== lessonId);
+        const moduleToUpdate = modules.find(m => (m._id || m.id) === moduleId);
+        const updatedLessons = (moduleToUpdate.lessons || []).filter(l => l._id !== lessonId);
         
         const updated = await coursesClient.updateModule({
           _id: moduleId,
-          name: module.name,
+          name: moduleToUpdate.name,
           lessons: updatedLessons,
           course: courseId,
         });
         
         dispatch(updateModuleAction({
-          ...module,
+          ...moduleToUpdate,
           ...updated,
           title: updated.name,
           lessons: updatedLessons,
@@ -202,20 +202,20 @@ export default function CourseModules() {
 
   const handleUpdateLesson = async () => {
     try {
-      const module = modules.find(m => (m._id || m.id) === editingLesson.moduleId);
-      const updatedLessons = (module.lessons || []).map(l => 
+      const moduleToUpdate = modules.find(m => (m._id || m.id) === editingLesson.moduleId);
+      const updatedLessons = (moduleToUpdate.lessons || []).map(l => 
         l._id === editingLesson._id ? { ...l, name: editingLesson.name } : l
       );
       
       const updated = await coursesClient.updateModule({
         _id: editingLesson.moduleId,
-        name: module.name,
+        name: moduleToUpdate.name,
         lessons: updatedLessons,
         course: courseId,
       });
       
       dispatch(updateModuleAction({
-        ...module,
+        ...moduleToUpdate,
         ...updated,
         title: updated.name,
         lessons: updatedLessons,
@@ -509,7 +509,7 @@ export default function CourseModules() {
               {!loading && modules.length === 0 && (
                 <div className="bg-white border border-gray-300 rounded p-8 text-center">
                   <p className="text-gray-600 mb-2">No modules yet</p>
-                  <p className="text-sm text-gray-500">Click "+ Module" to create your first module</p>
+                  <p className="text-sm text-gray-500">Click &quot;+ Module&quot; to create your first module</p>
                 </div>
               )}
               {modules.map((module, index) => (

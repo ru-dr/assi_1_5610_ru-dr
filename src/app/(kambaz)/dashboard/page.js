@@ -35,11 +35,13 @@ export default function Dashboard() {
   useEffect(() => {
     fetchCourses();
     fetchEnrollments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Refetch courses when toggle changes
   useEffect(() => {
     fetchCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showAllCourses]);
 
   const fetchCourses = async () => {

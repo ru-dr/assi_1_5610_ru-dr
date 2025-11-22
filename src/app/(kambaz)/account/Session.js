@@ -12,6 +12,7 @@ export default function Session({ children }) {
 
   useEffect(() => {
     checkSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkSession = async () => {
