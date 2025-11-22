@@ -282,5 +282,216 @@ export default function CourseModules() {
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
-  
-  // [Rest of the JSX remains exactly the same as before - the entire return statement]
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Module Add Form */}
+      {showAddForm && (
+        <div className="mb-4 p-4 bg-white rounded shadow">
+          <input
+            type="text"
+            value={newModuleTitle}
+            onChange={(e) => setNewModuleTitle(e.target.value)}
+            placeholder="Module Title"
+            className="w-full px-3 py-2 border rounded mb-2"
+          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddModule}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Add Module
+            </button>
+            <button
+              onClick={() => setShowAddForm(false)}
+              className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Module Edit Modal */}
+      {editingModule && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Edit Module</h3>
+            <input
+              type="text"
+              value={editingModule.title}
+              onChange={(e) => setEditingModule({ ...editingModule, title: e.target.value })}
+              placeholder="Module Title"
+              className="w-full px-3 py-2 border rounded mb-2"
+            />
+            <input
+              type="text"
+              value={editingModule.description || ''}
+              onChange={(e) => setEditingModule({ ...editingModule, description: e.target.value })}
+              placeholder="Description"
+              className="w-full px-3 py-2 border rounded mb-4"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleUpdateModule}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Update
+              </button>
+              <button
+                onClick={() => setEditingModule(null)}
+                className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Lesson Edit Modal */}
+      {editingLesson && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Edit Lesson</h3>
+            <input
+              type="text"
+              value={editingLesson.name}
+              onChange={(e) => setEditingLesson({ ...editingLesson, name: e.target.value })}
+              placeholder="Lesson Name"
+              className="w-full px-3 py-2 border rounded mb-4"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleUpdateLesson}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Update
+              </button>
+              <button
+                onClick={() => setEditingLesson(null)}
+                className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modules List */}
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Modules</h2>
+          <button
+            onClick={() => setShowAddForm(true)}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Module
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          {modules.map((module, index) => (
+            <div key={module._id || module.id} className="bg-white rounded shadow">
+              <div className="flex items-center justify-between p-4 border-b">
+                <div className="flex items-center gap-2 flex-1">
+                  <button onClick={() => toggleModule(index)}>
+                    {expandedModules.includes(index) ? (
+                      <ChevronDown className="w-5 h-5" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5" />
+                    )}
+                  </button>
+                  <GripVertical className="w-5 h-5 text-gray-400" />
+                  <span className="font-semibold">{module.title || module.name}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleEditModule(module)}
+                    className="p-1 hover:bg-gray-100 rounded"
+                  >
+                    <Edit className="w-4 h-4 text-blue-600" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteModule(module._id || module.id)}
+                    className="p-1 hover:bg-gray-100 rounded"
+                  >
+                    <Trash2 className="w-4 h-4 text-red-600" />
+                  </button>
+                  <EllipsisVertical className="w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+
+              {expandedModules.includes(index) && (
+                <div className="p-4">
+                  <div className="space-y-2">
+                    {(module.lessons || []).map((lesson) => (
+                      <div key={lesson._id} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+                        <div className="flex items-center gap-2">
+                          <GripVertical className="w-4 h-4 text-gray-400" />
+                          <FileText className="w-4 h-4 text-green-600" />
+                          <span>{lesson.name}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleEditLesson(module._id || module.id, lesson)}
+                            className="p-1 hover:bg-gray-100 rounded"
+                          >
+                            <Edit className="w-3 h-3 text-blue-600" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteLesson(module._id || module.id, lesson._id)}
+                            className="p-1 hover:bg-gray-100 rounded"
+                          >
+                            <Trash2 className="w-3 h-3 text-red-600" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {addingLessonToModule === (module._id || module.id) ? (
+                    <div className="mt-2 flex gap-2">
+                      <input
+                        type="text"
+                        value={newLessonName}
+                        onChange={(e) => setNewLessonName(e.target.value)}
+                        placeholder="Lesson Name"
+                        className="flex-1 px-3 py-1 border rounded text-sm"
+                      />
+                      <button
+                        onClick={() => handleAddLesson(module._id || module.id)}
+                        className="px-3 py-1 bg-green-600 text-white rounded text-sm"
+                      >
+                        Add
+                      </button>
+                      <button
+                        onClick={() => {
+                          setAddingLessonToModule(null);
+                          setNewLessonName("");
+                        }}
+                        className="px-3 py-1 bg-gray-400 text-white rounded text-sm"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setAddingLessonToModule(module._id || module.id)}
+                      className="mt-2 px-3 py-1 text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-1"
+                    >
+                      <Plus className="w-3 h-3" />
+                      Add Lesson
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

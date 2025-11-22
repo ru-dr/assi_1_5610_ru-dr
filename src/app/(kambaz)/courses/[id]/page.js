@@ -11,7 +11,7 @@ import {
   Bell,
 } from "lucide-react";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
-import * as coursesClient from "../../client";
+import * as coursesClient from "@/app/(kambaz)/courses/client";
 import { setCourses } from "@/app/store/coursesReducer";
 
 export default function CourseHome() {
