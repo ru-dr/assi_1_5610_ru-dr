@@ -44,6 +44,9 @@ export default function CourseModules() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingModule, setEditingModule] = useState(null);
   const [newModuleTitle, setNewModuleTitle] = useState("");
+  const [addingLessonToModule, setAddingLessonToModule] = useState(null);
+  const [newLessonName, setNewLessonName] = useState("");
+  const [editingLesson, setEditingLesson] = useState(null);
 
   const courses = useSelector((state) => state.courses.courses);
   const allModules = useSelector((state) => state.modules.modules);
@@ -108,7 +111,11 @@ export default function CourseModules() {
   };
 
   const handleEditModule = (module) => {
-    setEditingModule({ ...module });
+    setEditingModule({ 
+      ...module, 
+      title: module.name || module.title,
+      status: module.status || "Not Started"
+    });
   };
 
   const handleUpdateModule = async () => {
@@ -128,6 +135,96 @@ export default function CourseModules() {
     } catch (err) {
       console.error('Error updating module:', err);
       alert('Failed to update module');
+    }
+  };
+
+  const handleAddLesson = async (moduleId) => {
+    if (newLessonName.trim()) {
+      try {
+        const module = modules.find(m => (m._id || m.id) === moduleId);
+        const updatedLessons = [...(module.lessons || []), { 
+          _id: Date.now().toString(), 
+          name: newLessonName 
+        }];
+        
+        const updated = await coursesClient.updateModule({
+          _id: moduleId,
+          name: module.name,
+          lessons: updatedLessons,
+          course: courseId,
+        });
+        
+        dispatch(updateModuleAction({
+          ...module,
+          ...updated,
+          title: updated.name,
+          lessons: updatedLessons,
+        }));
+        
+        setAddingLessonToModule(null);
+        setNewLessonName("");
+      } catch (err) {
+        console.error('Error adding lesson:', err);
+        alert('Failed to add lesson');
+      }
+    }
+  };
+
+  const handleDeleteLesson = async (moduleId, lessonId) => {
+    if (confirm("Are you sure you want to delete this lesson?")) {
+      try {
+        const module = modules.find(m => (m._id || m.id) === moduleId);
+        const updatedLessons = (module.lessons || []).filter(l => l._id !== lessonId);
+        
+        const updated = await coursesClient.updateModule({
+          _id: moduleId,
+          name: module.name,
+          lessons: updatedLessons,
+          course: courseId,
+        });
+        
+        dispatch(updateModuleAction({
+          ...module,
+          ...updated,
+          title: updated.name,
+          lessons: updatedLessons,
+        }));
+      } catch (err) {
+        console.error('Error deleting lesson:', err);
+        alert('Failed to delete lesson');
+      }
+    }
+  };
+
+  const handleEditLesson = (moduleId, lesson) => {
+    setEditingLesson({ moduleId, ...lesson });
+  };
+
+  const handleUpdateLesson = async () => {
+    try {
+      const module = modules.find(m => (m._id || m.id) === editingLesson.moduleId);
+      const updatedLessons = (module.lessons || []).map(l => 
+        l._id === editingLesson._id ? { ...l, name: editingLesson.name } : l
+      );
+      
+      const updated = await coursesClient.updateModule({
+        _id: editingLesson.moduleId,
+        name: module.name,
+        lessons: updatedLessons,
+        course: courseId,
+      });
+      
+      dispatch(updateModuleAction({
+        ...module,
+        ...updated,
+        title: updated.name,
+        lessons: updatedLessons,
+      }));
+      
+      setEditingLesson(null);
+    } catch (err) {
+      console.error('Error updating lesson:', err);
+      alert('Failed to update lesson');
     }
   };
 
@@ -188,7 +285,7 @@ export default function CourseModules() {
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="bg-white border-b border-gray-300 px-3 sm:px-4 py-3 flex items-center justify-between overflow-x-auto">
+        <div className="bg-white border-b border-gray-300 px-3 sm:px-4 py-3 flex items-center justify-between overflow-visible relative z-10">
           <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -207,10 +304,16 @@ export default function CourseModules() {
 
           <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
             <button
-              onClick={() => setExpandedModules([])}
+              onClick={() => {
+                if (expandedModules.length > 0) {
+                  setExpandedModules([]);
+                } else {
+                  setExpandedModules(modules.map((_, idx) => idx));
+                }
+              }}
               className="px-2 sm:px-3 py-1.5 text-xs sm:text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300 whitespace-nowrap"
             >
-              {expandedModules.length > 0 ? "Collapse" : "Expand"}
+              {expandedModules.length > 0 ? "Collapse All" : "Expand All"}
             </button>
             <button className="hidden sm:inline-block px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded border border-gray-300">
               View Progress
@@ -221,21 +324,21 @@ export default function CourseModules() {
                 Publish All
                 <ChevronDown className="w-4 h-4" />
               </button>
-              <div className="hidden group-hover:block absolute top-full left-0 mt-1 w-64 bg-white border border-gray-300 rounded shadow-lg z-50">
-                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
+              <div className="hidden group-hover:block absolute top-full right-0 mt-1 w-64 bg-white border border-gray-300 rounded shadow-lg z-[100]">              
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-gray-600" />
                   Publish all
                 </button>
-                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
-                  <Ban className="w-4 h-4" />
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                  <Ban className="w-4 h-4 text-gray-600" />
                   Unpublish all
                 </button>
-                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-gray-600" />
                   Publish all modules and items
                 </button>
-                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
-                  <Ban className="w-4 h-4" />
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2">
+                  <Ban className="w-4 h-4 text-gray-600" />
                   Unpublish all modules and items
                 </button>
               </div>
@@ -275,7 +378,7 @@ export default function CourseModules() {
           </div>
         </div>
 
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 overflow-hidden relative">
           <div className="flex-1 overflow-y-auto p-3 sm:p-6 bg-gray-50">
             {loading && (
               <div className="bg-white border border-gray-300 mb-4 rounded p-8 text-center">
@@ -297,7 +400,7 @@ export default function CourseModules() {
                   value={newModuleTitle}
                   onChange={(e) => setNewModuleTitle(e.target.value)}
                   placeholder="Module Title"
-                  className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-black"
+                  className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-gray-900"
                 />
                 <div className="flex gap-2">
                   <button
@@ -319,21 +422,56 @@ export default function CourseModules() {
               </div>
             )}
 
+            {editingLesson && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="bg-white rounded-lg p-6 max-w-md w-full">
+                  <h3 className="font-semibold mb-3 text-black">Edit Lesson</h3>
+                  <input
+                    type="text"
+                    value={editingLesson.name || ''}
+                    onChange={(e) =>
+                      setEditingLesson({
+                        ...editingLesson,
+                        name: e.target.value,
+                      })
+                    }
+                    placeholder="Lesson Name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-gray-900"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleUpdateLesson}
+                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => setEditingLesson(null)}
+                      className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {editingModule && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                 <div className="bg-white rounded-lg p-6 max-w-md w-full">
                   <h3 className="font-semibold mb-3 text-black">Edit Module</h3>
                   <input
                     type="text"
-                    value={editingModule.title}
+                    value={editingModule.title || editingModule.name || ''}
                     onChange={(e) =>
                       setEditingModule({
                         ...editingModule,
                         title: e.target.value,
+                        name: e.target.value,
                       })
                     }
                     placeholder="Module Title"
-                    className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-black"
+                    className="w-full px-3 py-2 border border-gray-300 rounded mb-3 bg-white text-gray-900"
                   />
                   <select
                     value={editingModule.status}
@@ -394,7 +532,7 @@ export default function CourseModules() {
                           )}
                         </button>
                         <h3 className="wd-title font-semibold text-gray-900">
-                          {module.title || module.name}
+                          {module.name || module.title}
                         </h3>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -405,12 +543,16 @@ export default function CourseModules() {
                           <Edit className="w-4 h-4 text-gray-600" />
                         </button>
                         <button
-                          onClick={() => handleDeleteModule(module.id)}
+                          onClick={() => handleDeleteModule(module._id || module.id)}
                           className="p-1 hover:bg-gray-300 rounded"
                         >
                           <Trash2 className="w-4 h-4 text-gray-600" />
                         </button>
-                        <button className="p-1 hover:bg-gray-300 rounded">
+                        <button 
+                          onClick={() => setAddingLessonToModule(module._id || module.id)}
+                          className="p-1 hover:bg-gray-300 rounded"
+                          title="Add Lesson"
+                        >
                           <Plus className="w-4 h-4 text-gray-600" />
                         </button>
                         <button className="p-1 hover:bg-gray-300 rounded">
@@ -422,7 +564,42 @@ export default function CourseModules() {
 
                   {expandedModules.includes(index) && (
                     <div className="wd-lessons">
-                      {module.lessons.map((lesson, lessonIndex) => (
+                      {addingLessonToModule === (module._id || module.id) && (
+                        <div className="p-4 bg-gray-50 border-b border-gray-200">
+                          <input
+                            type="text"
+                            value={newLessonName}
+                            onChange={(e) => setNewLessonName(e.target.value)}
+                            placeholder="Lesson name"
+                            className="w-full px-3 py-2 border border-gray-300 rounded mb-2 bg-white text-gray-900 text-sm"
+                            autoFocus
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleAddLesson(module._id || module.id)}
+                              className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+                            >
+                              Add
+                            </button>
+                            <button
+                              onClick={() => {
+                                setAddingLessonToModule(null);
+                                setNewLessonName("");
+                              }}
+                              className="px-3 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 text-sm"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      {(!module.lessons || module.lessons.length === 0) ? (
+                        <div className="py-8 px-6 text-center text-gray-500">
+                          <p className="text-sm">No lessons yet</p>
+                          <p className="text-xs mt-1">Click + to add lessons</p>
+                        </div>
+                      ) : (
+                        module.lessons.map((lesson, lessonIndex) => (
                         <div
                           key={lessonIndex}
                           className="flex items-center justify-between py-3 px-6 hover:bg-gray-50 border-b border-gray-200 last:border-b-0 border-l-4 border-l-green-600"
@@ -431,14 +608,20 @@ export default function CourseModules() {
                             <GripVertical className="w-4 h-4 text-gray-400" />
                             <FileText className="w-5 h-5 text-gray-600" />
                             <span className="text-gray-800 text-sm">
-                              {lesson.title}
+                              {lesson.name || lesson.title}
                             </span>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <button className="p-1 hover:bg-gray-200 rounded">
+                            <button 
+                              onClick={() => handleEditLesson(module._id || module.id, lesson)}
+                              className="p-1 hover:bg-gray-200 rounded"
+                            >
                               <Edit className="w-4 h-4 text-gray-500" />
                             </button>
-                            <button className="p-1 hover:bg-gray-200 rounded">
+                            <button 
+                              onClick={() => handleDeleteLesson(module._id || module.id, lesson._id)}
+                              className="p-1 hover:bg-gray-200 rounded"
+                            >
                               <Trash2 className="w-4 h-4 text-gray-500" />
                             </button>
                             <button className="p-1 hover:bg-gray-200 rounded">
@@ -446,7 +629,7 @@ export default function CourseModules() {
                             </button>
                           </div>
                         </div>
-                      ))}
+                      )))}
                     </div>
                   )}
                 </div>
@@ -457,7 +640,13 @@ export default function CourseModules() {
           <div className="hidden xl:block w-80 bg-white border-l border-gray-300 overflow-y-auto">
             <div className="p-4 border-b border-gray-200 space-y-2">
               <button
-                onClick={() => setExpandedModules([])}
+                onClick={() => {
+                  if (expandedModules.length > 0) {
+                    setExpandedModules([]);
+                  } else {
+                    setExpandedModules(modules.map((_, idx) => idx));
+                  }
+                }}
                 className="w-full px-3 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded text-left"
               >
                 {expandedModules.length > 0 ? "Collapse All" : "Expand All"}

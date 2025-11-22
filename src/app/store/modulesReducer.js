@@ -20,6 +20,8 @@ const modulesSlice = createSlice({
         id: m._id || m.id,
         title: m.name || m.title,
         course: m.course,
+        lessons: m.lessons || [],
+        status: m.status || "Not Started",
       }));
     },
     addModule: (state, { payload: module }) => {
