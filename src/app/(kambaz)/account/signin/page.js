@@ -20,14 +20,20 @@ export default function Signin() {
     setError("");
     setLoading(true);
 
+    console.log('Attempting signin with:', credentials);
+
     try {
       const user = await client.signin(credentials);
+      console.log('Signin successful, user:', user);
       if (user) {
         router.push("/dashboard");
+      } else {
+        setError("Invalid credentials");
       }
     } catch (err) {
       console.error("Signin error:", err);
-      setError(err.response?.data?.message || "Invalid username or password");
+      console.error("Error response:", err.response);
+      setError(err.response?.data?.message || "Invalid username or password. Please try again.");
     } finally {
       setLoading(false);
     }

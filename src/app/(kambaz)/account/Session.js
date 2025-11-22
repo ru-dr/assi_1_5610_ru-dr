@@ -20,16 +20,8 @@ export default function Session({ children }) {
       const currentUser = await client.profile();
       setUser(currentUser);
     } catch (err) {
-      // User not logged in - that's okay
+      // User not logged in - that's okay, don't redirect here
       setUser(null);
-      
-      // Redirect to signin if trying to access protected routes
-      const protectedRoutes = ["/dashboard", "/courses", "/account/profile"];
-      const isProtected = protectedRoutes.some(route => pathname?.startsWith(route));
-      
-      if (isProtected && pathname !== "/account/signin" && pathname !== "/account/signup") {
-        router.push("/account/signin");
-      }
     } finally {
       setLoading(false);
     }

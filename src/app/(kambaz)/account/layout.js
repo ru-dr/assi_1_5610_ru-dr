@@ -14,18 +14,6 @@ export default function AccountLayout({ children }) {
     { name: "Signin", href: "/account/signin" },
     { name: "Signup", href: "/account/signup" },
     { name: "Profile", href: "/account/profile" },
-    { name: "Notifications", href: "/account/notifications" },
-    { name: "Files", href: "/account/files" },
-    { name: "Settings", href: "/account/settings" },
-    { name: "ePortfolios", href: "/account/eportfolios" },
-    { name: "The Hub", href: "/account/hub" },
-    { name: "Pearson Access", href: "/account/pearson" },
-    { name: "Namecoach", href: "/account/namecoach" },
-    { name: "Qwickly Course Tools", href: "/account/qwickly" },
-    { name: "Follett Discover (Bookstore)", href: "/account/bookstore" },
-    { name: "Course Evaluations", href: "/account/evaluations" },
-    { name: "Harmonize Settings", href: "/account/harmonize" },
-    { name: "Global Announcements", href: "/account/announcements" },
   ];
 
   useEffect(() => {
