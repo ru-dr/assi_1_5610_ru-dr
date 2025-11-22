@@ -122,8 +122,9 @@ export const fetchTodoById = async (id) => {
   return data;
 };
 
+// FIXED: Use query parameter instead of path parameter for filtering
 export const fetchCompletedTodos = async () => {
-  const { data } = await axios.get(`${LAB5_API}/todos/completed`);
+  const { data } = await axios.get(`${LAB5_API}/todos?completed=true`);
   return data;
 };
 
@@ -142,7 +143,7 @@ export const updateTodoTitle = async (id, title) => {
   return data;
 };
 
-// POST/PUT/DELETE
+// POST/PUT/DELETE - RESTful methods
 export const postTodo = async (todo) => {
   const { data } = await axios.post(`${LAB5_API}/todos`, todo);
   return data;
