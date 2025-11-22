@@ -144,8 +144,13 @@ export default function Dashboard() {
     e.stopPropagation();
     try {
       await coursesClient.enrollInCourse(courseId);
+      // Update enrollments state immediately
       setEnrollments([...enrollments, courseId]);
+      
+      // Refetch both enrollments and courses to ensure sync
       await fetchEnrollments();
+      await fetchCourses();
+      
       alert('Successfully enrolled in course!');
     } catch (err) {
       console.error('Error enrolling:', err);
@@ -163,12 +168,13 @@ export default function Dashboard() {
     if (confirm('Are you sure you want to unenroll from this course?')) {
       try {
         await coursesClient.unenrollFromCourse(courseId);
+        // Update enrollments state immediately
         setEnrollments(enrollments.filter(id => id !== courseId));
+        
+        // Refetch both enrollments and courses to ensure sync
         await fetchEnrollments();
-        if (!showAllCourses) {
-          // Refresh courses list if showing only enrolled courses
-          await fetchCourses();
-        }
+        await fetchCourses();
+        
         alert('Successfully unenrolled from course.');
       } catch (err) {
         console.error('Error unenrolling:', err);
@@ -221,7 +227,7 @@ export default function Dashboard() {
               Dashboard
             </h1>
             <p className="text-sm text-gray-600 mt-1">
-              {showAllCourses ? 'All Courses' : 'My Enrolled Courses'}
+              {showAllCourses ? 'All Courses (Enrolled & Not Enrolled)' : 'My Enrolled Courses Only'}
             </p>
           </div>
           <div className="flex gap-2">
@@ -229,7 +235,7 @@ export default function Dashboard() {
               onClick={() => setShowAllCourses(!showAllCourses)}
               className="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
             >
-              {showAllCourses ? 'My Courses' : 'All Courses'}
+              {showAllCourses ? 'Show My Courses' : 'Show All Courses'}
             </button>
             <button
               onClick={() => setShowAddForm(!showAddForm)}
@@ -445,7 +451,7 @@ export default function Dashboard() {
                     </button>
                     {enrollments.includes(course._id) && (
                       <div className="absolute top-2 left-2 px-2 py-1 bg-green-600 text-white text-xs rounded">
-                        Enrolled
+                        ✓ Enrolled
                       </div>
                     )}
                   </div>

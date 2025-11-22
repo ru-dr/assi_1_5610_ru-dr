@@ -147,12 +147,14 @@ export default function CourseModules() {
         _id: editingModule._id || editingModule.id,
         name: editingModule.title,
         description: editingModule.description || "Updated module",
+        status: editingModule.status,
         course: courseId,
       });
       dispatch(updateModuleAction({
         ...editingModule,
         ...updated,
         title: updated.name,
+        status: editingModule.status,
       }));
       setEditingModule(null);
     } catch (err) {
