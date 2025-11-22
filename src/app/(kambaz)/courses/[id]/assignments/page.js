@@ -10,6 +10,7 @@ import {
   updateAssignment as updateAssignmentAction,
   setAssignments,
 } from "@/app/store/assignmentsReducer";
+import { setCourses } from "@/app/store/coursesReducer";
 import * as coursesClient from "@/app/(kambaz)/courses/client";
 import {
   Menu,
@@ -42,30 +43,78 @@ export default function Assignments() {
 
   const courses = useSelector((state) => state.courses.courses);
   const allAssignments = useSelector((state) => state.assignments.assignments);
-  const course = courses.find((c) => c._id === courseId || c.id === courseId);
+  const [course, setCourse] = useState(null);
   const assignments = allAssignments.filter((a) => a.course === courseId);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch assignments from backend on mount
+  // Fetch course and assignments from backend on mount
   useEffect(() => {
-    const fetchAssignments = async () => {
+    const loadData = async () => {
       try {
         setLoading(true);
+        
+        // Check if course exists in Redux store
+        const existingCourse = courses.find(
+          (c) => c._id === courseId || c.id === courseId
+        );
+
+        if (existingCourse) {
+          setCourse(existingCourse);
+        } else {
+          // If not in store, fetch all courses
+          const allCourses = await coursesClient.fetchAllCourses();
+          dispatch(setCourses(allCourses));
+          
+          const foundCourse = allCourses.find(
+            (c) => c._id === courseId || c.id === courseId
+          );
+          
+          setCourse(foundCourse);
+        }
+
+        // Fetch assignments
         const data = await coursesClient.findAssignmentsForCourse(courseId);
         dispatch(setAssignments(data));
         setError(null);
       } catch (err) {
-        console.error('Error fetching assignments:', err);
-        setError('Failed to load assignments');
+        console.error('Error loading data:', err);
+        setError('Failed to load data');
       } finally {
         setLoading(false);
       }
     };
-    fetchAssignments();
-  }, [courseId, dispatch]);
+    
+    loadData();
+  }, [courseId, courses, dispatch]);
 
   const courseNav = getCourseNavigation(courseId);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading course...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!course) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Course Not Found
+          </h1>
+          <Link href="/dashboard" className="text-red-600 hover:underline">
+            Return to Dashboard
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const handleAddAssignment = async () => {
     if (newAssignment.title.trim()) {

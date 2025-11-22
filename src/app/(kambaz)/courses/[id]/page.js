@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Menu,
   X,
@@ -11,16 +11,62 @@ import {
   Bell,
 } from "lucide-react";
 import { getCourseNavigation } from "@/app/(kambaz)/data/courseNavigationData";
+import * as coursesClient from "../../client";
+import { setCourses } from "@/app/store/coursesReducer";
 
 export default function CourseHome() {
   const params = useParams();
   const courseId = params.id;
+  const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [course, setCourse] = useState(null);
 
   const courses = useSelector((state) => state.courses.courses);
-  const course = courses.find((c) => c._id === courseId || c.id === courseId);
+
+  useEffect(() => {
+    const loadCourse = async () => {
+      try {
+        // First check if course exists in Redux store
+        const existingCourse = courses.find(
+          (c) => c._id === courseId || c.id === courseId
+        );
+
+        if (existingCourse) {
+          setCourse(existingCourse);
+          setLoading(false);
+        } else {
+          const allCourses = await coursesClient.fetchAllCourses();
+          dispatch(setCourses(allCourses));
+          
+          const foundCourse = allCourses.find(
+            (c) => c._id === courseId || c.id === courseId
+          );
+          
+          setCourse(foundCourse);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error loading course:", error);
+        setLoading(false);
+      }
+    };
+
+    loadCourse();
+  }, [courseId, courses, dispatch]);
 
   const courseNav = getCourseNavigation(courseId);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading course...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!course) {
     return (
