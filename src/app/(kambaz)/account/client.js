@@ -64,7 +64,7 @@ export const updateUser = async (user) => {
  */
 export const findAllUsers = async () => {
   const response = await axiosWithCredentials.get(USERS_API);
-  return response.data;
+  return response.data.data || response.data;
 };
 
 /**
@@ -72,7 +72,7 @@ export const findAllUsers = async () => {
  */
 export const findUserById = async (userId) => {
   const response = await axiosWithCredentials.get(`${USERS_API}/${userId}`);
-  return response.data;
+  return response.data.data || response.data;
 };
 
 /**
@@ -81,4 +81,15 @@ export const findUserById = async (userId) => {
 export const deleteUser = async (userId) => {
   const response = await axiosWithCredentials.delete(`${USERS_API}/${userId}`);
   return response.data;
+};
+
+/**
+ * Create a new user (admin - without logging in)
+ */
+export const createUser = async (user) => {
+  const response = await axiosWithCredentials.post(
+    `${USERS_API}`,
+    user
+  );
+  return response.data.data || response.data;
 };

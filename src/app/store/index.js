@@ -7,6 +7,8 @@ import todosReducer from "./todosReducer";
 import coursesReducer from "./coursesReducer";
 import modulesReducer from "./modulesReducer";
 import assignmentsReducer from "./assignmentsReducer";
+import usersReducer from "./usersReducer";
+import enrollmentsReducer from "./enrollmentsReducer";
 
 const store = configureStore({
   reducer: {
@@ -17,6 +19,8 @@ const store = configureStore({
     courses: coursesReducer,
     modules: modulesReducer,
     assignments: assignmentsReducer,
+    users: usersReducer,
+    enrollments: enrollmentsReducer,
   },
 });
 

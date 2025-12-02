@@ -1,5 +1,6 @@
 import {
   User,
+  Users,
   LayoutDashboard,
   BookOpen,
   Calendar,
@@ -32,6 +33,14 @@ export const navigationLinks = [
     name: "Courses",
     href: "/courses",
     icon: BookOpen,
+    bgColor: "bg-black",
+    textColor: "text-white",
+    iconColor: "text-red-600",
+  },
+  {
+    name: "Users",
+    href: "/users",
+    icon: Users,
     bgColor: "bg-black",
     textColor: "text-white",
     iconColor: "text-red-600",

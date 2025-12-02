@@ -8,6 +8,8 @@ import axios from 'axios';
 const axiosWithCredentials = axios.create({ withCredentials: true });
 
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER || 'http://localhost:4000';
+
+console.log('🔗 API Server:', HTTP_SERVER);
 const COURSES_API = `${HTTP_SERVER}/api/courses`;
 const USERS_API = `${HTTP_SERVER}/api/users`;
 const MODULES_API = `${HTTP_SERVER}/api/modules`;
@@ -21,8 +23,15 @@ const ASSIGNMENTS_API = `${HTTP_SERVER}/api/assignments`;
  * Get all courses
  */
 export const fetchAllCourses = async () => {
-  const { data } = await axios.get(COURSES_API);
-  return data.data || data; // Handle both wrapped and unwrapped responses
+  try {
+    console.log('📡 Fetching all courses from:', COURSES_API);
+    const { data } = await axios.get(COURSES_API);
+    console.log('✅ Courses fetched:', data);
+    return data.data || data;
+  } catch (error) {
+    console.error('❌ fetchAllCourses error:', error.response?.data || error.message);
+    throw error;
+  }
 };
 
 /**
@@ -220,5 +229,13 @@ export const checkEnrollment = async (courseId) => {
   const response = await axiosWithCredentials.get(
     `${COURSES_API}/${courseId}/enrolled`
   );
+  return response.data;
+};
+
+/**
+ * Get all users enrolled in a course
+ */
+export const findUsersForCourse = async (courseId) => {
+  const response = await axios.get(`${COURSES_API}/${courseId}/users`);
   return response.data;
 };
