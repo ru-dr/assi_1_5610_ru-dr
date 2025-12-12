@@ -16,6 +16,22 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/indeks/:path*",
+        destination: "https://indeks.bl0q.app/:path*",
+      },
+      {
+        source: "/api/:path*",
+        destination: "http://localhost:4000/api/:path*",
+      },
+      {
+        source: "/lab5/:path*",
+        destination: "http://localhost:4000/lab5/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

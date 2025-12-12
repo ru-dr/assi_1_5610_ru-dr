@@ -9,6 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@indeks/core": "^1.5.1",
+    "@indeks/react": "^1.5.1",
+    "@indeks/shared": "^1.5.1",
     "@reduxjs/toolkit": "^2.10.1",
     "axios": "^1.13.2",
     "lucide-react": "^0.544.0",

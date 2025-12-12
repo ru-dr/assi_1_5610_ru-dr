@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER || 'http://localhost:4000';
+const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER || '';
 const LAB5_API = `${HTTP_SERVER}/lab5`;
 
 console.log('Lab5 API URL:', LAB5_API);
